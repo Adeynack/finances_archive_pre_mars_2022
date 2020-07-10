@@ -1,0 +1,5 @@
+rails db:drop && \
+rm -f db/schema.rb && \
+rm -f db/structure.sql && \
+rails db:create db:migrate db:seed db:fixtures:load && \
+annotate --models

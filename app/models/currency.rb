@@ -13,9 +13,7 @@
 #  suffix     :string
 #
 class Currency < ApplicationRecord
-  belongs_to :book, optional: true
-
-  has_many :account, dependent: :destroy
+  has_many :register, dependent: :destroy
 
   validates :name, presence: true
 

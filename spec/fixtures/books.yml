@@ -8,14 +8,14 @@
 #  name       :string           not null
 #  owner_id   :uuid             not null
 #
-joe_s_book:
+joe:
   name: Joe's Book
   owner: joe
 
-book_of_the_holy_mother:
+mary:
   name: Book of the Holy Mother
   owner: mary
 
-the_book_of_bob:
+bob:
   name: The Book of Bob
   owner: bob

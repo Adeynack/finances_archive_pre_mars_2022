@@ -38,24 +38,6 @@ COMMENT ON EXTENSION "uuid-ossp" IS 'generate universally unique identifiers (UU
 
 
 --
--- Name: account_type; Type: TYPE; Schema: public; Owner: -
---
-
-CREATE TYPE public.account_type AS ENUM (
-    'Expense',
-    'Income',
-    'Other',
-    'Bank',
-    'Card',
-    'Investment',
-    'Asset',
-    'Liability',
-    'Loan',
-    'Group'
-);
-
-
---
 -- Name: user_access_level; Type: TYPE; Schema: public; Owner: -
 --
 
@@ -69,54 +51,6 @@ CREATE TYPE public.user_access_level AS ENUM (
 SET default_tablespace = '';
 
 SET default_table_access_method = heap;
-
---
--- Name: accounts; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.accounts (
-    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL,
-    book_id uuid NOT NULL,
-    parent_id uuid,
-    name character varying NOT NULL,
-    type public.account_type NOT NULL,
-    info jsonb,
-    notes character varying,
-    currency_id uuid NOT NULL,
-    initial_balance integer NOT NULL,
-    active boolean DEFAULT true
-);
-
-
---
--- Name: COLUMN accounts.info; Type: COMMENT; Schema: public; Owner: -
---
-
-COMMENT ON COLUMN public.accounts.info IS 'A JSON structure containing details about the account. Different account type have different fields.';
-
-
---
--- Name: COLUMN accounts.currency_id; Type: COMMENT; Schema: public; Owner: -
---
-
-COMMENT ON COLUMN public.accounts.currency_id IS 'Currency in which this account operates.';
-
-
---
--- Name: COLUMN accounts.initial_balance; Type: COMMENT; Schema: public; Owner: -
---
-
-COMMENT ON COLUMN public.accounts.initial_balance IS 'Balance when this account is entered in the system.';
-
-
---
--- Name: COLUMN accounts.active; Type: COMMENT; Schema: public; Owner: -
---
-
-COMMENT ON COLUMN public.accounts.active IS 'Inactive accounts stay in the system for historical purposes but are not displayed to the user by default.';
-
 
 --
 -- Name: ar_internal_metadata; Type: TABLE; Schema: public; Owner: -
@@ -194,6 +128,54 @@ COMMENT ON COLUMN public.currencies.suffix IS 'Text or symbol to suffix when dis
 
 
 --
+-- Name: registers; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.registers (
+    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL,
+    book_id uuid NOT NULL,
+    parent_id uuid,
+    name character varying NOT NULL,
+    type character varying NOT NULL,
+    info jsonb,
+    notes character varying,
+    currency_id uuid NOT NULL,
+    initial_balance integer NOT NULL,
+    active boolean DEFAULT true NOT NULL
+);
+
+
+--
+-- Name: COLUMN registers.info; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.registers.info IS 'A JSON structure containing details about the register. Different register type have different fields.';
+
+
+--
+-- Name: COLUMN registers.currency_id; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.registers.currency_id IS 'Currency in which this register operates.';
+
+
+--
+-- Name: COLUMN registers.initial_balance; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.registers.initial_balance IS 'Balance when this register is entered in the system.';
+
+
+--
+-- Name: COLUMN registers.active; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.registers.active IS 'Inactive registers stay in the system for historical purposes but are not displayed to the user by default.';
+
+
+--
 -- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -214,14 +196,6 @@ CREATE TABLE public.users (
     display_name character varying NOT NULL,
     password_digest character varying NOT NULL
 );
-
-
---
--- Name: accounts accounts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.accounts
-    ADD CONSTRAINT accounts_pkey PRIMARY KEY (id);
 
 
 --
@@ -257,6 +231,14 @@ ALTER TABLE ONLY public.currencies
 
 
 --
+-- Name: registers registers_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.registers
+    ADD CONSTRAINT registers_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: schema_migrations schema_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -270,48 +252,6 @@ ALTER TABLE ONLY public.schema_migrations
 
 ALTER TABLE ONLY public.users
     ADD CONSTRAINT users_pkey PRIMARY KEY (id);
-
-
---
--- Name: index_accounts_on_active; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_accounts_on_active ON public.accounts USING btree (active);
-
-
---
--- Name: index_accounts_on_book_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_accounts_on_book_id ON public.accounts USING btree (book_id);
-
-
---
--- Name: index_accounts_on_book_id_and_parent_id_and_name; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_accounts_on_book_id_and_parent_id_and_name ON public.accounts USING btree (book_id, parent_id, name);
-
-
---
--- Name: index_accounts_on_currency_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_accounts_on_currency_id ON public.accounts USING btree (currency_id);
-
-
---
--- Name: index_accounts_on_parent_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_accounts_on_parent_id ON public.accounts USING btree (parent_id);
-
-
---
--- Name: index_accounts_on_type; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_accounts_on_type ON public.accounts USING btree (type);
 
 
 --
@@ -357,6 +297,48 @@ CREATE UNIQUE INDEX index_currencies_on_iso_code ON public.currencies USING btre
 
 
 --
+-- Name: index_registers_on_active; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_registers_on_active ON public.registers USING btree (active);
+
+
+--
+-- Name: index_registers_on_book_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_registers_on_book_id ON public.registers USING btree (book_id);
+
+
+--
+-- Name: index_registers_on_book_id_and_parent_id_and_name; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_registers_on_book_id_and_parent_id_and_name ON public.registers USING btree (book_id, parent_id, name);
+
+
+--
+-- Name: index_registers_on_currency_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_registers_on_currency_id ON public.registers USING btree (currency_id);
+
+
+--
+-- Name: index_registers_on_parent_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_registers_on_parent_id ON public.registers USING btree (parent_id);
+
+
+--
+-- Name: index_registers_on_type; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_registers_on_type ON public.registers USING btree (type);
+
+
+--
 -- Name: index_users_on_display_name; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -379,19 +361,19 @@ ALTER TABLE ONLY public.books
 
 
 --
--- Name: accounts fk_rails_6d4abe3723; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: registers fk_rails_478010d6cf; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.accounts
-    ADD CONSTRAINT fk_rails_6d4abe3723 FOREIGN KEY (parent_id) REFERENCES public.accounts(id);
+ALTER TABLE ONLY public.registers
+    ADD CONSTRAINT fk_rails_478010d6cf FOREIGN KEY (currency_id) REFERENCES public.currencies(id);
 
 
 --
--- Name: accounts fk_rails_a9fc9e89e5; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: registers fk_rails_8568b4a0d0; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.accounts
-    ADD CONSTRAINT fk_rails_a9fc9e89e5 FOREIGN KEY (book_id) REFERENCES public.books(id);
+ALTER TABLE ONLY public.registers
+    ADD CONSTRAINT fk_rails_8568b4a0d0 FOREIGN KEY (parent_id) REFERENCES public.registers(id);
 
 
 --
@@ -403,11 +385,11 @@ ALTER TABLE ONLY public.book_rights
 
 
 --
--- Name: accounts fk_rails_dd73f000d2; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: registers fk_rails_dcf3a7135d; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.accounts
-    ADD CONSTRAINT fk_rails_dd73f000d2 FOREIGN KEY (currency_id) REFERENCES public.currencies(id);
+ALTER TABLE ONLY public.registers
+    ADD CONSTRAINT fk_rails_dcf3a7135d FOREIGN KEY (book_id) REFERENCES public.books(id);
 
 
 --
@@ -430,10 +412,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190406213401'),
 ('20190406213402'),
 ('20190414223259'),
-('20190414223400'),
 ('20190414223406'),
 ('20200212182458'),
-('20200212183816'),
-('20200317221432');
+('20200212183816');
 
 

@@ -5,3 +5,5 @@
 #
 #   rails db:fixtures:load
 #
+
+Currency.seed_known_currencies
