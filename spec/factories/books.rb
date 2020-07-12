@@ -4,11 +4,12 @@
 #
 # Table name: books
 #
-#  id         :uuid             not null, primary key
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
-#  name       :string           not null
-#  owner_id   :uuid             not null
+#  id                  :uuid             not null, primary key
+#  created_at          :datetime         not null
+#  updated_at          :datetime         not null
+#  name                :string           not null
+#  owner_id            :uuid             not null
+#  default_currency_id :uuid             not null
 #
 FactoryBot.define do
   factory :book do

@@ -87,7 +87,8 @@ CREATE TABLE public.books (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     name character varying NOT NULL,
-    owner_id uuid NOT NULL
+    owner_id uuid NOT NULL,
+    default_currency_id uuid NOT NULL
 );
 
 
@@ -101,8 +102,10 @@ CREATE TABLE public.currencies (
     updated_at timestamp(6) without time zone NOT NULL,
     iso_code character varying,
     name character varying NOT NULL,
-    prefix character varying,
-    suffix character varying
+    symbol character varying,
+    symbol_first boolean NOT NULL,
+    subunit character varying,
+    subunit_to_unit integer NOT NULL
 );
 
 
@@ -114,17 +117,31 @@ COMMENT ON COLUMN public.currencies.iso_code IS 'ISO-4217 Code (https://en.wikip
 
 
 --
--- Name: COLUMN currencies.prefix; Type: COMMENT; Schema: public; Owner: -
+-- Name: COLUMN currencies.symbol; Type: COMMENT; Schema: public; Owner: -
 --
 
-COMMENT ON COLUMN public.currencies.prefix IS 'Text or symbol to prefix when displaying an amount in this currency.';
+COMMENT ON COLUMN public.currencies.symbol IS 'Text or symbol to prefix or suffix when displaying an amount in this currency.';
 
 
 --
--- Name: COLUMN currencies.suffix; Type: COMMENT; Schema: public; Owner: -
+-- Name: COLUMN currencies.symbol_first; Type: COMMENT; Schema: public; Owner: -
 --
 
-COMMENT ON COLUMN public.currencies.suffix IS 'Text or symbol to suffix when displaying an amount in this currency.';
+COMMENT ON COLUMN public.currencies.symbol_first IS 'Indicates if the symbol prefixes (true) or suffixes (false) the amount.';
+
+
+--
+-- Name: COLUMN currencies.subunit; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.currencies.subunit IS 'Name of sub-unit of the currency (if any).';
+
+
+--
+-- Name: COLUMN currencies.subunit_to_unit; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.currencies.subunit_to_unit IS 'How many sub-units does it take to make one unit (ex: 100 cents for 1 dollar, 5 Khoums for 1 Mauritanian Ouguiya)';
 
 
 --
@@ -276,6 +293,13 @@ CREATE INDEX index_book_rights_on_user_id ON public.book_rights USING btree (use
 
 
 --
+-- Name: index_books_on_default_currency_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_books_on_default_currency_id ON public.books USING btree (default_currency_id);
+
+
+--
 -- Name: index_books_on_name_and_owner_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -369,6 +393,14 @@ ALTER TABLE ONLY public.registers
 
 
 --
+-- Name: books fk_rails_6fc465ae85; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.books
+    ADD CONSTRAINT fk_rails_6fc465ae85 FOREIGN KEY (default_currency_id) REFERENCES public.currencies(id);
+
+
+--
 -- Name: registers fk_rails_8568b4a0d0; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -407,13 +439,13 @@ ALTER TABLE ONLY public.book_rights
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
-('20190406213358'),
-('20190406213400'),
-('20190406213401'),
-('20190406213402'),
-('20190414223259'),
-('20190414223406'),
-('20200212182458'),
-('20200212183816');
+('2020071200000001'),
+('2020071200000002'),
+('2020071200000003'),
+('2020071200000004'),
+('2020071200000005'),
+('2020071200000006'),
+('2020071200000007'),
+('2020071200000008');
 
 

@@ -1,5 +1,5 @@
 AllCops:
-  TargetRubyVersion: 2.6.5
+  TargetRubyVersion: 2.6.6
   DisplayCopNames: true
   DisplayStyleGuide: true
   Exclude:
@@ -14,97 +14,46 @@ require:
   - rubocop-rails
   - rubocop-performance
 
-Rails:
+Faker/DeprecatedArguments:
   Enabled: true
 
-Rails/NotNullColumn:
-  Enabled: false
-
-Rails/ReversibleMigration:
-  Enabled: false
-
-Rails/FilePath:
-  Enabled: false
-
-Rails/SkipsModelValidations:
-  Enabled: false
-
-Rails/BulkChangeTable:
-  Enabled: false
-
-Bundler/OrderedGems:
-  Enabled: false
-
-Layout/ParameterAlignment:
-  EnforcedStyle: with_fixed_indentation
-
-Layout/FirstArrayElementIndentation:
-  EnforcedStyle: consistent
+Layout/EmptyLinesAroundAttributeAccessor:
+  Enabled: true
 
 Layout/LineLength:
   Enabled: false
 
-Style/ConditionalAssignment:
-  Enabled: false
-
-Style/Documentation:
-  Enabled: false
-
-Style/EmptyMethod:
-  EnforcedStyle: expanded
-
-Style/MultilineBlockChain:
-  Enabled: false
+Layout/FirstArrayElementIndentation:
+  EnforcedStyle: consistent
 
 Layout/MultilineMethodCallIndentation:
   EnforcedStyle: indented
 
-Style/NilComparison:
-  Enabled: false
+Layout/ParameterAlignment:
+  EnforcedStyle: with_fixed_indentation
 
-Style/ClassAndModuleChildren:
-  Enabled: false
-
-Style/NumericLiterals:
-  MinDigits: 15
-
-Style/NumericPredicate:
-  Enabled: false
-
-Style/WordArray:
-  EnforcedStyle: brackets
-
-Style/SymbolArray:
-  EnforcedStyle: brackets
-
-Style/HashEachMethods:
+Layout/SpaceAroundMethodCallOperator:
   Enabled: true
 
-Style/HashTransformKeys:
+Lint/DeprecatedOpenSSLConstant:
   Enabled: true
 
-Style/HashTransformValues:
+Lint/MixedRegexpCaptureTypes:
   Enabled: true
 
-Style/RescueModifier:
-  Enabled: false
+Lint/RaiseException:
+  Enabled: true
 
-Style/Lambda:
-  EnforcedStyle: literal
-
-Style/RegexpLiteral:
-  Enabled: false
-
-Style/StringLiterals:
-  EnforcedStyle: double_quotes
-
-Style/Alias:
-  Enabled: false
+Lint/StructNewOverride:
+  Enabled: true
 
 Metrics:
   Enabled: false
 
-Faker/DeprecatedArguments:
+Performance/AncestorsInclude:
+  Enabled: true
+
+Performance/BigDecimalWithNumericArgument:
   Enabled: true
 
 Performance/CaseWhenSplat:
@@ -115,3 +64,88 @@ Performance/ChainArrayAllocation:
 
 Performance/OpenStruct:
   Enabled: true
+
+Performance/RedundantSortBlock:
+  Enabled: true
+
+Performance/RedundantStringChars:
+  Enabled: true
+
+Performance/ReverseFirst:
+  Enabled: true
+
+Performance/SortReverse:
+  Enabled: true
+
+Performance/Squeeze:
+  Enabled: true
+
+Performance/StringInclude:
+  Enabled: true
+
+Rails:
+  Enabled: true
+
+Rails/FilePath:
+  Enabled: false # EnforcedStyle: 'arguments' Forces single-quote to be used, which then triggers the "use double quotes" cop.
+  # EnforcedStyle: 'arguments'
+
+Bundler/OrderedGems:
+  Enabled: false
+
+Rails/SkipsModelValidations:
+  Enabled: false
+
+Style/AccessorGrouping:
+  Enabled: false
+
+Style/BisectedAttrAccessor:
+  Enabled: true
+
+Style/ClassAndModuleChildren:
+  Enabled: false
+
+Style/Documentation:
+  Enabled: false
+
+Style/EmptyMethod:
+  EnforcedStyle: expanded
+
+Style/ExponentialNotation:
+  Enabled: true
+
+Style/HashEachMethods:
+  Enabled: true
+
+Style/HashTransformKeys:
+  Enabled: true
+
+Style/HashTransformValues:
+  Enabled: true
+
+Style/Lambda:
+  EnforcedStyle: literal
+
+Style/RedundantAssignment:
+  Enabled: true
+
+Style/RedundantFetchBlock:
+  Enabled: true
+
+Style/RedundantRegexpCharacterClass:
+  Enabled: true
+
+Style/RedundantRegexpEscape:
+  Enabled: true
+
+Style/SlicingWithRange:
+  Enabled: true
+
+Style/StringLiterals:
+  EnforcedStyle: double_quotes
+
+Style/SymbolArray:
+  EnforcedStyle: brackets
+
+Style/WordArray:
+  EnforcedStyle: brackets

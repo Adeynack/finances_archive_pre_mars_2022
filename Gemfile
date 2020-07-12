@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 source "https://rubygems.org"
-ruby "2.6.5"
+ruby "2.6.6"
 
 # Core
-gem "rails", "~> 6.0.2"
+gem "rails", "~> 6.0.3"
 gem "puma"
 
 # Database

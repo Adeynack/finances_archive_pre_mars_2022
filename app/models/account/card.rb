@@ -15,14 +15,7 @@
 #  notes           :string
 #  currency_id     :uuid             not null
 #  initial_balance :integer          not null
-#  active          :boolean          default("true"), not null
+#  active          :boolean          default(TRUE), not null
 #
-class Register::Account < Register
-  KNOWN_TYPES = Register.list_register_classes("Account")
-
-  validate :validate_parent_is_account
-
-  def validate_parent_is_account
-    errors.add :parent, "has to be another account or null" unless parent.nil? || parent.is_a?(Register::Account)
-  end
+class Account::Card < Account
 end

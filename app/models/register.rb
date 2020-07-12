@@ -15,7 +15,7 @@
 #  notes           :string
 #  currency_id     :uuid             not null
 #  initial_balance :integer          not null
-#  active          :boolean          default("true"), not null
+#  active          :boolean          default(TRUE), not null
 #
 class Register < ApplicationRecord
   belongs_to :book
@@ -33,32 +33,33 @@ class Register < ApplicationRecord
 
   class << self
     def list_register_classes(type)
-      Dir[Rails.root.join("app/models/register/#{type.parameterize}/*.rb")].map do |f|
+      Dir[Rails.root.join("app/models/#{type.parameterize}/*.rb")].map do |f|
         class_name = f.split("/").last.delete_suffix(".rb").classify
-        klass = "Register::#{type.classify}::#{class_name}".constantize
+        klass = [type, class_name].join("::").constantize
         [class_name, klass]
       end.to_h
     end
 
-    def sti_name
-      @sti_name ||= name.split("::").last
-    end
+    # def sti_name
+    #   @sti_name ||= name.delete_prefix("Register::")
+    # end
 
-    def find_sti_class(type_name)
-      KNOWN_TYPES.fetch(type_name)
-    end
+    # def find_sti_class(type_name)
+    #   KNOWN_TYPES.fetch(type_name)
+    # end
 
-    KNOWN_TYPES = begin
-      mapping = {}
-      known_types = [Register::Category::KNOWN_TYPES, Register::Account::KNOWN_TYPES].entries.flatten
-      known_types.each do |name, klass|
-        type_already_using_name = mapping.key?(name)
-        raise StandardError, "duplicate STI name '#{name}' for '#{type_already_using_name.name}' and '#{register_type.name}'" if type_already_using_name.present?
+    # # Hash: STI Name => Model Class
+    # KNOWN_TYPES = begin
+    #   mapping = {}
+    #   known_types = [Register::Category::KNOWN_TYPES, Account::KNOWN_TYPES].entries.flatten
+    #   known_types.each do |name, klass|
+    #     type_already_using_name = mapping.key?(name)
+    #     raise StandardError, "duplicate STI name '#{name}' for '#{type_already_using_name.name}' and '#{register_type.name}'" if type_already_using_name.present?
 
-        mapping[name] = klass
-      end
-      mapping.freeze
-    end
+    #     mapping[name] = klass
+    #   end
+    #   mapping.freeze
+    # end
   end
 
   def validate_parent_not_itself

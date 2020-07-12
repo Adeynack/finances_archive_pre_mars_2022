@@ -15,7 +15,7 @@
 #  notes           :string
 #  currency_id     :uuid             not null
 #  initial_balance :integer          not null
-#  active          :boolean          default("true"), not null
+#  active          :boolean          default(TRUE), not null
 #
-class Register::Category::Expense < Register::Category
+class Account::Bank < Account
 end

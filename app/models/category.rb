@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: registers
@@ -13,8 +15,16 @@
 #  notes           :string
 #  currency_id     :uuid             not null
 #  initial_balance :integer          not null
-#  active          :boolean          default("true"), not null
+#  active          :boolean          default(TRUE), not null
 #
-class Register::Account::Liability < Register::Account
-  
+class Category < Register
+  KNOWN_TYPES = Register.list_register_classes(name)
+
+  validate :validate_parent_is_category_of_same_type
+
+  protected
+
+  def validate_parent_is_category_of_same_type
+    errors.add :parent, "has to be another category of the same type or null" unless parent.nil? || parent.type == type
+  end
 end

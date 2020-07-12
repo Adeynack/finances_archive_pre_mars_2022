@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: registers
@@ -13,8 +15,7 @@
 #  notes           :string
 #  currency_id     :uuid             not null
 #  initial_balance :integer          not null
-#  active          :boolean          default("true"), not null
+#  active          :boolean          default(TRUE), not null
 #
-class Register::Account::Other < Register::Account
-  
+class Category::Expense < Register::Category
 end

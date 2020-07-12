@@ -15,14 +15,16 @@
 #  notes           :string
 #  currency_id     :uuid             not null
 #  initial_balance :integer          not null
-#  active          :boolean          default("true"), not null
+#  active          :boolean          default(TRUE), not null
 #
-class Register::Category < Register
-  KNOWN_TYPES = Register.list_register_classes("Category")
+class Account < Register
+  KNOWN_TYPES = Register.list_register_classes(name)
 
-  validate :validate_parent_is_category_of_same_type
+  validate :validate_parent_is_account
 
-  def validate_parent_is_category_of_same_type
-    errors.add :parent, "has to be another category of the same type or null" unless parent.nil? || parent.type == type
+  protected
+
+  def validate_parent_is_account
+    errors.add :parent, "has to be another account or null" unless parent.nil? || parent.is_a?(Account)
   end
 end
