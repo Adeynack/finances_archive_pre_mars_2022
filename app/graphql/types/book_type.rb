@@ -6,5 +6,7 @@ module Types
     field :name, String, null: false
     field :owner, UserType, null: false
     field :book_rights, [BookRightType], null: false
+    # field :accounts, [AccountType], null: false
+    field :categories, [CategoryType], null: false
   end
 end

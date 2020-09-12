@@ -4,28 +4,31 @@
 #
 # Table name: registers
 #
-#  id              :uuid             not null, primary key
-#  created_at      :datetime         not null
-#  updated_at      :datetime         not null
-#  book_id         :uuid             not null
-#  parent_id       :uuid
-#  name            :string           not null
-#  type            :string           not null
-#  info            :jsonb
-#  notes           :string
-#  currency_id     :uuid             not null
-#  initial_balance :integer          not null
-#  active          :boolean          default(TRUE), not null
+#  id                :uuid             not null, primary key
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
+#  book_id           :uuid             not null
+#  parent_id         :uuid
+#  name              :string           not null
+#  type              :string           not null
+#  info              :jsonb
+#  notes             :text
+#  currency_iso_code :string
+#  initial_balance   :integer          not null
+#  active            :boolean          default(TRUE), not null
 #
 class Register < ApplicationRecord
+  include Currencyable
+
   belongs_to :book
   belongs_to :parent, class_name: "Register", optional: true
-  belongs_to :currency
 
   has_many :child, dependent: :destroy, foreign_key: "parent_id", inverse_of: "parent"
 
-  validate :validate_parent_not_itself
+  has_currency :currency, optional: true
+
   validates :name, presence: true
+  validate :validate_parent_not_itself
 
   before_save do
     self.initial_balance ||= 0

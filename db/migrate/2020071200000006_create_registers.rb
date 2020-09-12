@@ -10,9 +10,9 @@ class CreateRegisters < ActiveRecord::Migration[6.0]
       t.string :name, null: false
       t.string :type, null: false
       t.jsonb :info, comment: "A JSON structure containing details about the register. Different register type have different fields."
-      t.string :notes
+      t.text :notes
 
-      t.references :currency, type: :uuid, foreign_key: true, null: false, comment: "Currency in which this register operates."
+      t.string :currency_iso_code, comment: "ISO Code of the currency in which this register operates."
       t.integer :initial_balance, null: false, comment: "Balance when this register is entered in the system."
 
       t.boolean :active, null: false, default: true, comment: "Inactive registers stay in the system for historical purposes but are not displayed to the user by default."
