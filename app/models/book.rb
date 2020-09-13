@@ -12,7 +12,7 @@
 #  default_currency_iso_code :string
 #
 class Book < ApplicationRecord
-  includes Currencyable
+  include Currencyable
 
   belongs_to :owner, class_name: "User"
 
