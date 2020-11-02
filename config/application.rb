@@ -26,8 +26,6 @@ module FinancesRails
     I18n.default_locale = :en
     config.time_zone = "Europe/Berlin"
 
-    config.active_record.schema_format = :sql
-
     config.middleware.use ActionDispatch::Cookies
     config.middleware.use ActionDispatch::Session::CookieStore, key: "_flink", expire_after: 14.days
 

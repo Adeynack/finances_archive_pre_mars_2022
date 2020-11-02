@@ -14,7 +14,7 @@
 class User < ApplicationRecord
   has_secure_password validations: false
 
-  has_many :books, dependent: :destroy, foreign_key: "owner_id", inverse_of: "owner"
+  has_many :books, foreign_key: "owner_id", inverse_of: "owner", dependent: :restrict_with_exception
 
   validates :email, presence: true
   validates :display_name, presence: true

@@ -19,7 +19,7 @@ mary:
   owner: mary
   default_currency_iso_code: EUR
 
-bob:
-  name: The Book of Bob
-  owner: bob
-  default_currency_iso_code: USD
+vlad:
+  name: "The Financial Book of Vlad the Impaler"
+  owner: vlad
+  default_currency_iso_code: RON
