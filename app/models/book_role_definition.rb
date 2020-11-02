@@ -42,22 +42,23 @@ class BookRoleDefinition
       }
     end
 
+    def resolve_effective_roles(source_definition, role)
+      role_attr = source_definition.fetch(role)
+      role_attr[:effective_roles] ||= Array.wrap(role_attr[:all_of])
+        .flat_map { |all_of| resolve_effective_roles(source_definition, all_of) }
+        .push(role)
+        .uniq
+        .freeze
+    end
+
     def all_indexed
       @all_indexed ||= begin
         source_definition = generate_source_definition
-        resolve_effective_roles = ->(role) do
-          role_attr = source_definition.fetch(role)
-          role_attr[:effective_roles] ||= Array.wrap(role_attr[:all_of])
-            .flat_map { |all_of| resolve_effective_roles.call(all_of) }
-            .push(role)
-            .uniq
-            .freeze
-        end
         source_definition.map do |name, attributes|
           record = BookRoleDefinition.new(
             name: name.to_s,
             description: attributes[:description],
-            effective_roles: resolve_effective_roles.call(name).map(&:to_s)
+            effective_roles: resolve_effective_roles(source_definition, name).map(&:to_s)
           )
           [name, record]
         end.to_h

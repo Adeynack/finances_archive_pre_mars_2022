@@ -1,7 +1,8 @@
 AllCops:
-  TargetRubyVersion: 2.6.6
+  TargetRubyVersion: 2.7.2
   DisplayCopNames: true
   DisplayStyleGuide: true
+  NewCops: enable
   Exclude:
     - 'vendor/bundle/**/*'
     - 'bin/**/*'
@@ -14,10 +15,10 @@ require:
   - rubocop-rails
   - rubocop-performance
 
-Faker/DeprecatedArguments:
-  Enabled: true
+Bundler/OrderedGems:
+  Enabled: false
 
-Layout/EmptyLinesAroundAttributeAccessor:
+Faker/DeprecatedArguments:
   Enabled: true
 
 Layout/LineLength:
@@ -29,32 +30,20 @@ Layout/FirstArrayElementIndentation:
 Layout/MultilineMethodCallIndentation:
   EnforcedStyle: indented
 
-Layout/ParameterAlignment:
-  EnforcedStyle: with_fixed_indentation
+# Layout/ParameterAlignment:
+#   EnforcedStyle: with_fixed_indentation
 
-Layout/SpaceAroundMethodCallOperator:
-  Enabled: true
+Metrics/BlockLength:
+  ExcludedMethods:
+    - guard
+    - refine
+    - class_methods
 
-Lint/DeprecatedOpenSSLConstant:
-  Enabled: true
+Metrics/CyclomaticComplexity:
+  Max: 10 # default: 7
 
-Lint/MixedRegexpCaptureTypes:
-  Enabled: true
-
-Lint/RaiseException:
-  Enabled: true
-
-Lint/StructNewOverride:
-  Enabled: true
-
-Metrics:
-  Enabled: false
-
-Performance/AncestorsInclude:
-  Enabled: true
-
-Performance/BigDecimalWithNumericArgument:
-  Enabled: true
+Metrics/MethodLength:
+  Max: 30 # default: 10
 
 Performance/CaseWhenSplat:
   Enabled: true
@@ -65,42 +54,15 @@ Performance/ChainArrayAllocation:
 Performance/OpenStruct:
   Enabled: true
 
-Performance/RedundantSortBlock:
-  Enabled: true
-
-Performance/RedundantStringChars:
-  Enabled: true
-
-Performance/ReverseFirst:
-  Enabled: true
-
-Performance/SortReverse:
-  Enabled: true
-
-Performance/Squeeze:
-  Enabled: true
-
-Performance/StringInclude:
-  Enabled: true
-
-Rails:
-  Enabled: true
-
 Rails/FilePath:
   Enabled: false # EnforcedStyle: 'arguments' Forces single-quote to be used, which then triggers the "use double quotes" cop.
   # EnforcedStyle: 'arguments'
 
-Bundler/OrderedGems:
-  Enabled: false
-
-Rails/SkipsModelValidations:
-  Enabled: false
+# Rails/SkipsModelValidations:
+#   Enabled: false
 
 Style/AccessorGrouping:
   Enabled: false
-
-Style/BisectedAttrAccessor:
-  Enabled: true
 
 Style/ClassAndModuleChildren:
   Enabled: false
@@ -111,35 +73,8 @@ Style/Documentation:
 Style/EmptyMethod:
   EnforcedStyle: expanded
 
-Style/ExponentialNotation:
-  Enabled: true
-
-Style/HashEachMethods:
-  Enabled: true
-
-Style/HashTransformKeys:
-  Enabled: true
-
-Style/HashTransformValues:
-  Enabled: true
-
 Style/Lambda:
   EnforcedStyle: literal
-
-Style/RedundantAssignment:
-  Enabled: true
-
-Style/RedundantFetchBlock:
-  Enabled: true
-
-Style/RedundantRegexpCharacterClass:
-  Enabled: true
-
-Style/RedundantRegexpEscape:
-  Enabled: true
-
-Style/SlicingWithRange:
-  Enabled: true
 
 Style/StringLiterals:
   EnforcedStyle: double_quotes
