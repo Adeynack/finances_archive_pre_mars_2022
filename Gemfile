@@ -75,6 +75,7 @@ group :test do
   gem "simplecov", require: false
   gem "simplecov-json", require: false
   gem "fuubar"
+  gem "n_plus_one_control"
 end
 
 group :development do

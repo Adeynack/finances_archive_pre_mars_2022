@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "factory_bot"
+require "n_plus_one_control/rspec"
 
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 RSpec.configure do |config|

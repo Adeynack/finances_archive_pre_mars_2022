@@ -190,6 +190,7 @@ GEM
       money (~> 6.13.2)
       railties (>= 3.0)
     msgpack (1.3.3)
+    n_plus_one_control (0.5.0)
     nenv (0.3.0)
     nio4r (2.5.4)
     nokogiri (1.10.10)
@@ -400,6 +401,7 @@ DEPENDENCIES
   listen
   money (~> 6.13.7)
   money-rails (~> 1.13.3)
+  n_plus_one_control
   oink
   oj
   pg

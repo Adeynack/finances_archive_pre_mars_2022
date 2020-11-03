@@ -10,6 +10,7 @@ AllCops:
     - 'node_modules/**/*'
 
 require:
+  - rubocop/rspec
   - rubocop/rspec/focused
   - rubocop-faker
   - rubocop-rails
@@ -33,9 +34,14 @@ Layout/MultilineMethodCallIndentation:
 # Layout/ParameterAlignment:
 #   EnforcedStyle: with_fixed_indentation
 
+Metrics/AbcSize:
+  Max: 30
+
 Metrics/BlockLength:
+  Exclude:
+    - Guardfile
+    - spec/**/*.rb
   ExcludedMethods:
-    - guard
     - refine
     - class_methods
 
