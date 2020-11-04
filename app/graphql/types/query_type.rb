@@ -11,7 +11,7 @@ module Types
       argument :id, ID, required: true
     end
     def book(id:)
-      Book.find(id)
+      RecordLoader.for(Book).load(id)
     end
   end
 end

@@ -22,6 +22,9 @@ Bundler/OrderedGems:
 Faker/DeprecatedArguments:
   Enabled: true
 
+Layout/HeredocArgumentClosingParenthesis:
+  Enabled: true
+
 Layout/LineLength:
   Enabled: false
 

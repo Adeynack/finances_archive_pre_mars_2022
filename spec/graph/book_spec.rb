@@ -7,24 +7,35 @@ RSpec.describe Book, type: :graph do
 
   describe "getting books" do
     let(:books_query) do
-      <<-GQL.squish
-      query {
-        books {
-          id
-          name
-          owner {
+      <<~GQL
+        {
+          books {
             id
-            email
-            displayName
+            name
+            owner {
+              id
+              email
+              displayName
+            }
+            roles {
+              role
+              effectiveRoles
+              user {
+                id
+                email
+                displayName
+              }
+            }
           }
         }
-      }
       GQL
     end
 
     context "N+1", :n_plus_one do
       populate do |n|
-        create_list :book, n, owner: create(:user)
+        users = create_list :user, n
+        books = Array.new(n) { |i| create :book, owner: users[i % n] }
+        n.times { |i| create :book_role, book: books[i % n], user: users[(n + 1) % n] }
       end
       specify do
         expect { gql books_query }.to perform_constant_number_of_queries

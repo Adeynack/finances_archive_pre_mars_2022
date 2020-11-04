@@ -10,4 +10,7 @@ class FinancesSchema < GraphQL::Schema
 
   # Add built-in connections for pagination
   use GraphQL::Pagination::Connections
+
+  # Use graphql-batch
+  use GraphQL::Batch
 end
