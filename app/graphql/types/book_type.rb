@@ -8,9 +8,5 @@ module Types
     field :roles, [BookRoleType], null: false, load_association: :book_roles
     # field :accounts, [AccountType], null: false
     # field :categories, [CategoryType], null: false
-
-    def kapoueeeee
-      puts "kapoue"
-    end
   end
 end
