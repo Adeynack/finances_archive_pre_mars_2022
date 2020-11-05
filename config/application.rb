@@ -27,9 +27,9 @@ module Finances
     config.time_zone = "Europe/Berlin"
 
     config.middleware.use ActionDispatch::Cookies
-    config.middleware.use ActionDispatch::Session::CookieStore, key: "_flink", expire_after: 14.days
+    config.middleware.use ActionDispatch::Session::CookieStore, key: "_finances", expire_after: 14.days
 
+    config.autoload_paths += Dir[Rails.root.join("app", "graphql", "concerns", "**/")]
     config.autoload_paths += Dir[Rails.root.join("app", "graphql", "loaders", "**/")]
-    config.autoload_paths += Dir[Rails.root.join("app", "refinements", "**/")]
   end
 end

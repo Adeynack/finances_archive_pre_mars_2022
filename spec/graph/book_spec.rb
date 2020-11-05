@@ -42,7 +42,7 @@ RSpec.describe Book, type: :graph do
       end
     end
 
-    it "lists books and their owners" do
+    fit "lists books and their owners" do
       gql books_query
 
       joes_book_id = books(:joe).id
