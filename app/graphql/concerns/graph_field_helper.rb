@@ -33,29 +33,26 @@ module GraphFieldHelper
       end
     end
 
-    # Additional automation over the existing `field` method.
-    def field(*args, **options, &block)
-      load_association = options.delete :load_association
-      unless load_association.nil?
-        field_name = args.first.to_sym
-        case load_association
-        when true
-          model_class = model
-          association = field_name
-        when Symbol || String
-          model_class = model
-          association = load_association.to_sym
-        when Hash
-          model_class = load_association.delete(:model) || model
-          association = load_association.delete(:association).to_sym || field_name
-          raise ArgumentError, "Unexpected keys #{load_association.keys} in 'load_association' hash." if load_association.present?
-        end
-        define_method field_name do
-          AssociationLoader.for(model_class, association).load(object)
-        end
+    # Creates an array field resolved by an AssociationLoader.
+    # The field is not null, unless the `null` option is provided.
+    # By default, loads the association with the same name than the field, unless 3rd parameter (`association`) is provided.
+    def has_many(name, element_type, association = name, **options, &block) # rubocop:disable Naming/PredicateName
+      define_method name do
+        AssociationLoader.for(self.class.model, association).load(object)
       end
+      options[:null] = false unless options.key?(:null)
+      field name, [element_type], **options, &block
+    end
 
-      super(*args, **options, &block)
+    # Creates a field resolved by an AssociationLoader.
+    # The field is as null as the association is optional, unless the `null` option is provided.
+    # Loads the association with the same name than the field, unless 3rd parameter (`association`) is provided.
+    def belongs_to(name, element_type, association = name, **options, &block)
+      define_method name do
+        AssociationLoader.for(self.class.model, association).load(object)
+      end
+      options[:null] = model.reflect_on_association(name).options[:optional] || false unless options.key?(:null)
+      field name, element_type, **options, &block
     end
   end
 end
