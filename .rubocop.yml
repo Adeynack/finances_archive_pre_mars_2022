@@ -91,5 +91,9 @@ Style/StringLiterals:
 Style/SymbolArray:
   EnforcedStyle: brackets
 
+Style/TrailingCommaInArrayLiteral:
+  Enabled: true
+  EnforcedStyleForMultiline: consistent_comma
+
 Style/WordArray:
   EnforcedStyle: brackets

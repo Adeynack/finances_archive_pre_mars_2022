@@ -13,12 +13,14 @@ joe:
   name: Joe's Book
   owner: joe
   default_currency_iso_code: EUR
-
+foo:
+  name: Foo Inc.
+  owner: joe
+  default_currency_iso_code: USD
 mary:
   name: Book of the Holy Mother
   owner: mary
   default_currency_iso_code: EUR
-
 vlad:
   name: "The Financial Book of Vlad the Impaler"
   owner: vlad

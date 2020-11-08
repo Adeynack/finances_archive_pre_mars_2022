@@ -210,6 +210,9 @@ GEM
     pry (0.13.1)
       coderay (~> 1.1)
       method_source (~> 1.0)
+    pry-byebug (3.9.0)
+      byebug (~> 11.0)
+      pry (~> 0.13.0)
     pry-doc (1.1.0)
       pry (~> 0.11)
       yard (~> 0.9.11)
@@ -382,7 +385,6 @@ DEPENDENCIES
   bcrypt
   bootsnap
   bullet
-  byebug
   countries
   dotenv-rails
   erd
@@ -405,6 +407,7 @@ DEPENDENCIES
   oink
   oj
   pg
+  pry-byebug
   pry-doc
   pry-rails
   pry-stack_explorer

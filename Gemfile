@@ -60,7 +60,7 @@ group :development, :test do
   gem "guard"
   gem "guard-rspec", require: false
 
-  gem "byebug"
+  gem "pry-byebug"
   gem "pry-doc"
   gem "pry-stack_explorer"
 

@@ -24,7 +24,11 @@ module GraphFieldHelper
     #
     def model(model_class = nil)
       if model_class.nil?
-        @model ||= name.split("::").last.delete_suffix("Type").constantize
+        begin
+          @model ||= name.split("::").last.delete_suffix("Type").constantize
+        rescue NameError => e
+          raise NameError, "#{e.message}\nThis name is inferred from the name of the GraphQL object class '#{name}'. You probably need to call 'model MyModel' at the beginning of your GraphQL object class to specify the model this GraphQL object is representing."
+        end
       else
         raise ArgumentError, "Cannot set the model once it has been set once." unless @model.nil?
         raise ArgumentError, "Expecting the model class." unless model_class.is_a?(Class)

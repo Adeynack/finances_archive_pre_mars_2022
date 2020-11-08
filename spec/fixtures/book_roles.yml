@@ -13,6 +13,14 @@ joe_owns_joes_book:
   book: joe
   user: joe
   role: owner
+joe_owns_foo_book:
+  book: foo
+  user: joe
+  role: owner
+joe_writes_marys_book:
+  book: mary
+  user: joe
+  role: writer
 mary_owns_marys_book:
   book: mary
   user: mary
