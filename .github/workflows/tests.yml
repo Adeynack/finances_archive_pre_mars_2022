@@ -1,0 +1,45 @@
+name: Tests
+
+on: [push]
+
+jobs:
+  server:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:12.3
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: finances
+        ports:
+          - 5432:5432
+      redis:
+        image: redis:latest
+        ports:
+          - 6379:6379
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.7.2 # sync with Gemfile
+          bundler-cache: true
+      - name: Install Dependencies
+        run: bundle install
+      - name: Lint
+        run: bundle exec rubocop
+      - name: Tests
+        env:
+          DATABASE_URL: postgres://postgres:postgres@127.0.0.1/finances
+          RAILS_ENV: test
+        run: |
+          bundle exec rails db:create db:migrate
+          bundle exec rspec --format documentation
+      - name: Check Model Annotation
+        env:
+          DATABASE_URL: postgres://postgres:postgres@127.0.0.1/finances
+          RAILS_ENV: test
+        run: |
+          bundle exec annotate --models
+          bin/check_modifications

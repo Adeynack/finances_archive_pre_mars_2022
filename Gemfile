@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 source "https://rubygems.org"
-ruby "2.7.2"
+ruby "2.7.2" # sync with .github/workflows/tests.yml
 
 # Core
 gem "rails", "~> 6.0.3"
