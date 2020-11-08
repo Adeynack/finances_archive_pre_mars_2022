@@ -31,7 +31,7 @@ jobs:
           DATABASE_URL: postgres://postgres:postgres@127.0.0.1/finances
           RAILS_ENV: test
         run: |
-          bundle exec annotate --models
+          bundle exec annotate --models --routes --force
           bin/check_modifications
       - name: Lint
         run: bundle exec rubocop
