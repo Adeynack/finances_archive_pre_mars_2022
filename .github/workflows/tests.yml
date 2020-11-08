@@ -25,8 +25,13 @@ jobs:
         with:
           ruby-version: 2.7.2 # sync with Gemfile
           bundler-cache: true
-      - name: Install Dependencies
-        run: bundle install
+      - name: Check Model Annotation
+        env:
+          DATABASE_URL: postgres://postgres:postgres@127.0.0.1/finances
+          RAILS_ENV: test
+        run: |
+          bundle exec annotate --models
+          bin/check_modifications
       - name: Lint
         run: bundle exec rubocop
       - name: Tests
@@ -36,10 +41,3 @@ jobs:
         run: |
           bundle exec rails db:create db:migrate
           bundle exec rspec --format documentation
-      - name: Check Model Annotation
-        env:
-          DATABASE_URL: postgres://postgres:postgres@127.0.0.1/finances
-          RAILS_ENV: test
-        run: |
-          bundle exec annotate --models
-          bin/check_modifications
