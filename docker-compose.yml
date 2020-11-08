@@ -2,7 +2,7 @@ version: '2'
 
 services:
   postgres:
-    image: 'postgres:12.3'
+    image: 'postgres:12.3' # sync with .github/workflows/tests.yml
     ports:
       - '5432:5432'
     volumes:
@@ -10,6 +10,6 @@ services:
     environment:
       POSTGRES_HOST_AUTH_METHOD: trust
   redis:
-    image: redis
+    image: 'redis' # sync with .github/workflows/tests.yml
     ports:
       - '6379:6379'

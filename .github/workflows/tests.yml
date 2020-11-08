@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     services:
       postgres:
-        image: postgres:12.3
+        image: 'postgres:12.3' # sync with docker-compose.yml
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
@@ -15,7 +15,7 @@ jobs:
         ports:
           - 5432:5432
       redis:
-        image: redis:latest
+        image: 'redis:latest' # sync with docker-compose.yml
         ports:
           - 6379:6379
     steps:
