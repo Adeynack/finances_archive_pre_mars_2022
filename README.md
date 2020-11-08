@@ -29,7 +29,7 @@ bin/update
 ## Run the tests
 
 ```bash
-bin/rails test
+bundle exec rspec
 ```
 
 ## Load development data from fixtures
