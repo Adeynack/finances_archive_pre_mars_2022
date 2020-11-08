@@ -29,9 +29,8 @@ jobs:
       - name: Check Model Annotation
         env:
           DATABASE_URL: postgres://postgres:postgres@127.0.0.1/finances
-          RAILS_ENV: test
         run: |
-          bundle exec annotate --models --routes --force
+          RAILS_ENV=development bundle exec annotate --models --routes --force
           bin/check_modifications
       - name: Lint
         run: bundle exec rubocop
