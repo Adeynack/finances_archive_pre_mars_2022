@@ -6,7 +6,21 @@ module Currencyable
   KNOWN_CURRENCY_ISO_CODES = Money::Currency.all.map(&:iso_code)
 
   class_methods do
-    def ensure_the_currency_is_known(model_attribute)
+    def has_currency(attribute_name, optional: true) # rubocop:disable Naming/PredicateName
+      raise ArgumentError, "has_currency needs the symbol of the attribute representing the ISO code of a currency" unless attribute_name.is_a?(Symbol)
+
+      model_attribute = :"#{attribute_name}_iso_code"
+      money_instance_variable = :"@#{attribute_name}"
+
+      validate_currency_is_known(model_attribute)
+      define_iso_code_setter(model_attribute)
+      define_money_object_getter(attribute_name, model_attribute, money_instance_variable)
+      define_money_object_setter(attribute_name, optional, model_attribute, money_instance_variable)
+    end
+
+    private
+
+    def validate_currency_is_known(model_attribute)
       validates model_attribute,
                 inclusion: {
                   in: KNOWN_CURRENCY_ISO_CODES,
@@ -41,18 +55,6 @@ module Currencyable
         instance_variable_set(money_instance_variable, new_value)
         public_send :"#{model_attribute}=", new_value.iso_code
       end
-    end
-
-    def has_currency(attribute_name, optional: true) # rubocop:disable Naming/PredicateName
-      raise ArgumentError, "has_currency needs the symbol of the attribute representing the ISO code of a currency" unless attribute_name.is_a?(Symbol)
-
-      model_attribute = :"#{attribute_name}_iso_code"
-      money_instance_variable = :"@#{attribute_name}"
-
-      ensure_the_currency_is_known(model_attribute)
-      define_iso_code_setter(model_attribute)
-      define_money_object_getter(attribute_name, model_attribute, money_instance_variable)
-      define_money_object_setter(attribute_name, optional, model_attribute, money_instance_variable)
     end
   end
 end
