@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Taken and adapted from https://github.com/Shopify/graphql-batch/blob/master/examples/association_loader.rb
 class AssociationLoader < GraphQL::Batch::Loader
   class << self
     def validate(model, association_name)
