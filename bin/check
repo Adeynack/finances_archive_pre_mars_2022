@@ -3,23 +3,7 @@ echo "" && \
 
 echo "🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸" && \
 echo "▶️   Ensuring schema.rb is up to date" && \
-echo "" && \
-echo "➖ Drop database" && \
-bundle exec rails db:drop && \
-echo "" && \
-echo "➖ Delete db/schema.rb and db/structure.sql" && \
-rm -f -v db/schema.rb && 
-rm -f -v db/structure.sql && 
-echo "" && \
-echo "➖ Create database" && \
-bundle exec rails db:create && \
-echo "" && \
-echo "➖ Migrate database" && \
-bundle exec rails db:migrate && \
-echo "" && \
-echo "➖ Loading fixture data in development database" && \
-bundle exec rails db:fixtures:load && \
-echo "" \
+bundle exec rails db:full_reset && \
 
 echo "🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸" && \
 echo "▶️   Annotating Models and Routes" && \
@@ -28,7 +12,7 @@ echo "" && \
 
 echo "🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸" && \
 echo "▶️   Linting & Repairing Ruby Code" && \
-bundle exec rubocop -a && \
+bundle exec rubocop -A && \
 echo "" && \
 
 echo "🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸" && \

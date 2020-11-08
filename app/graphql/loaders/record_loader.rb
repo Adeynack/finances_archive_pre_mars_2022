@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Taken and adapted from https://github.com/Shopify/graphql-batch/blob/master/examples/record_loader.rb
+# Taken and adapted from https://github.com/Shopify/graphql-batch/blob/master/examples/record_loader.rb
 class RecordLoader < GraphQL::Batch::Loader
   def initialize(model, column: model.primary_key, where: nil)
     super
