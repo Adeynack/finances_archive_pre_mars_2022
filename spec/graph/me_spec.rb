@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe Book, type: :graph do
+RSpec.describe "Me", type: :graph do
   fixtures :users, :books, :book_roles
 
   describe "getting books" do
@@ -10,6 +10,9 @@ RSpec.describe Book, type: :graph do
       <<~GQL
         {
           me {
+            id
+            email
+            displayName
             books {
               id
               name
@@ -56,6 +59,17 @@ RSpec.describe Book, type: :graph do
         end.to perform_constant_number_of_queries
       end
 
+      it "lists the basic user information" do
+        joe = users(:joe)
+        login joe
+
+        gql books_query
+
+        expect(data.me.id).to eq joe.id
+        expect(data.me.email).to eq joe.email
+        expect(data.me.displayName).to eq joe.display_name
+      end
+
       it "lists books and their owners" do
         login :joe
         gql books_query
@@ -77,6 +91,11 @@ RSpec.describe Book, type: :graph do
         expect(book_foo.roles.map { |r| [r.role, r.user.email] }).to match_array [
           ["OWNER", users(:joe).email],
         ]
+      end
+
+      it "lists the permissions the current user has on books" do
+        login :joe
+        gql books_query
 
         expect(data.me.bookRoles.map { |r| [r.book.name, r.role, r.effectiveRoles] }).to match_array [
           [books(:joe).name, "OWNER", ["READER", "WRITER", "ADMIN", "OWNER"]],
