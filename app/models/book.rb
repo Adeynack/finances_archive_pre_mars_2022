@@ -19,7 +19,6 @@ class Book < ApplicationRecord
   has_currency :default_currency
 
   has_many :book_roles, dependent: :destroy
-  has_many :registers, dependent: :destroy
 
   validates :name, presence: true
   validates :owner, presence: true
