@@ -1,0 +1,39 @@
+# == Schema Information
+#
+# Table name: book_roles
+#
+#  id         :uuid             not null, primary key
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  book_id    :uuid             not null
+#  user_id    :uuid             not null
+#  role       :string           not null
+#
+joe_owns_joes_book:
+  book: joe
+  user: joe
+  role: owner
+joe_owns_foo_book:
+  book: foo
+  user: joe
+  role: owner
+joe_writes_marys_book:
+  book: mary
+  user: joe
+  role: writer
+mary_owns_marys_book:
+  book: mary
+  user: mary
+  role: owner
+mary_writes_to_joes_book:
+  book: joe
+  user: mary
+  role: writer
+vlad_owns_vlads_book:
+  book: vlad
+  user: vlad
+  role: owner
+vlad_reads_joes_book:
+  book: joe
+  user: vlad
+  role: reader

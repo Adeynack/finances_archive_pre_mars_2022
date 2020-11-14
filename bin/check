@@ -1,0 +1,25 @@
+#!/bin/bash
+echo "" && \
+
+echo "🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸" && \
+echo "▶️   Ensuring schema.rb is up to date" && \
+bundle exec rails db:full_reset && \
+
+echo "🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸" && \
+echo "▶️   Annotating Models and Routes" && \
+bundle exec annotate --force --models --routes && \
+echo "" && \
+
+echo "🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸" && \
+echo "▶️   Linting & Repairing Ruby Code" && \
+bundle exec rubocop -A && \
+echo "" && \
+
+echo "🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸" && \
+echo "▶️   Running RSpec Tests" && \
+bundle exec rspec --format Fuubar && \
+echo "" && \
+
+echo "🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸" && \
+echo "️✅   Done" && \
+echo ""
