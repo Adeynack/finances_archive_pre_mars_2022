@@ -17,10 +17,14 @@
     "web-vitals": "^0.2.4"
   },
   "scripts": {
+    "clean": "rimraf ../build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lint": "yarn lint:types && yarn lint:style",
+    "lint:types": "tsc --noEmit",
+    "lint:style": "eslint './src/**/*.{tsx,ts}' --max-warnings 0"
   },
   "eslintConfig": {
     "extends": [
@@ -39,5 +43,13 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "eslint-config-prettier": "^6.15.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "eslint-plugin-react": "^7.21.5",
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "prettier": "^2.1.2",
+    "rimraf": "^3.0.2"
   }
 }
