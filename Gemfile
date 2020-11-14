@@ -40,7 +40,7 @@ gem "faker"
 
 # Debugging
 gem "pry-rails"
-gem "awesome_print"
+gem "amazing_print"
 
 # Geography & Money
 gem "countries"
