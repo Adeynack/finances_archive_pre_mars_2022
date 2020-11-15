@@ -1,23 +1,38 @@
 import React from "react";
-import logo from "./logo.svg";
 import "./App.css";
+import { useDatabase, writeDB } from "./store";
 
 function App(): JSX.Element {
+  const buttonEnabled = useDatabase((db) => db.get("counterButtonEnabled"));
+  const counter = useDatabase(
+    (db) => db.table("counters").find("buttonClicks")?.value ?? 0
+  );
+
+  function incrementCounter(): void {
+    writeDB
+      .table("counters")
+      .upsert({ id: "buttonClicks", value: counter + 1 });
+  }
+
+  function toggleButtonEnabled(): void {
+    writeDB.set("counterButtonEnabled", !buttonEnabled);
+  }
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
         <p>
-          Edit <code>src/App.tsx</code> and save to reload.
+          You clicked {counter} time{counter > 1 ? "s" : ""} on this button:{" "}
+          <button disabled={!buttonEnabled} onClick={incrementCounter}>
+            The Button
+          </button>
+          .
         </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <button onClick={toggleButtonEnabled}>
+          {buttonEnabled
+            ? "Disable increment button"
+            : "Enable increment button"}
+        </button>
       </header>
     </div>
   );
