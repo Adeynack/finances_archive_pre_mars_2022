@@ -14,7 +14,13 @@ module.exports = {
     ecmaVersion: 2018,
     sourceType: "module",
   },
-  plugins: ["react", "@typescript-eslint", "react-hooks"],
+  plugins: [
+    "react",
+    "@typescript-eslint",
+    "react-hooks",
+    "graphql",
+    "prettier",
+  ],
   rules: {
     "no-console": 2,
     "@typescript-eslint/explicit-function-return-type": [
@@ -27,6 +33,13 @@ module.exports = {
     "react/prop-types": 0,
     "react/no-unescaped-entities": 0,
     "react-hooks/rules-of-hooks": "error", // Checks rules of Hooks
+    "graphql/template-strings": [
+      "error",
+      {
+        env: "apollo",
+        schemaJson: require("./schema.json"),
+      },
+    ],
   },
   settings: {
     react: {
