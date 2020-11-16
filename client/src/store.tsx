@@ -1,3 +1,4 @@
+import { ApolloClient, InMemoryCache } from "@apollo/client";
 import { useEffect, useRef, useState } from "react";
 import { createStore } from "redux";
 import {
@@ -64,3 +65,8 @@ export function useDatabase<T>(query: (db: DB<State>) => T): T {
   }, []);
   return subscriptionRef.current.current;
 }
+
+export const apollo = new ApolloClient({
+  cache: new InMemoryCache(),
+  connectToDevTools: true,
+});

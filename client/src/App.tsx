@@ -1,5 +1,6 @@
 import React from "react";
 import "./App.css";
+import { Login } from "./components/Login";
 import { useDatabase, writeDB } from "./store";
 
 function App(): JSX.Element {
@@ -21,6 +22,7 @@ function App(): JSX.Element {
   return (
     <div className="App">
       <header className="App-header">
+        <Login />
         <p>
           You clicked {counter} time{counter > 1 ? "s" : ""} on this button:{" "}
           <button disabled={!buttonEnabled} onClick={incrementCounter}>
