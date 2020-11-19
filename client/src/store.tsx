@@ -9,27 +9,31 @@ import {
   reducer,
   Subscription,
 } from "redux-database";
-
-export interface NamedCounter {
-  id: string;
-  value: number;
-}
+import { Alert } from "./models/error";
+import { AccessibleBook } from "./models/book";
+import { User } from "./models/user";
+import { difference } from "lodash";
+import { RowKeyOf, RowType } from "redux-database/dist/db";
+import { MutableTable } from "redux-database/dist/mutable_table";
+import { InsertRecord } from "redux-database/dist/util";
 
 interface State {
   settings: {
-    counterButtonEnabled: boolean;
+    currentUser?: User;
   };
   data: {
-    counters: DataTable<NamedCounter>;
+    books: DataTable<AccessibleBook>;
+    alerts: DataTable<Alert>;
   };
 }
 
 const initialState: State = {
   settings: {
-    counterButtonEnabled: true,
+    currentUser: null,
   },
   data: {
-    counters: emptyTable,
+    books: emptyTable,
+    alerts: emptyTable,
   },
 };
 
@@ -46,7 +50,7 @@ export const writeDB = new MutableDB(initialState, { store });
 export function useForceUpdate(): () => void {
   const [, updateState] = useState(true);
   return () => {
-    updateState((state) => !state);
+    updateState(state => !state);
   };
 }
 
@@ -67,6 +71,18 @@ export function useDatabase<T>(query: (db: DB<State>) => T): T {
 }
 
 export const apollo = new ApolloClient({
+  uri: "/graphql",
   cache: new InMemoryCache(),
   connectToDevTools: true,
 });
+
+// keep until redux-database supports an upsert-and-delete-absent method.
+export function deleteAbsentsFromDatabase<K extends RowKeyOf<State>>(
+  table: MutableTable<RowType<State, K>>,
+  values: Array<InsertRecord<RowType<State, K>>>
+): void {
+  const currentIds = table.all.map(row => row.id);
+  const remainingIds = values.map(row => row.id);
+  const idsToDelete = difference(currentIds, remainingIds);
+  table.delete(idsToDelete);
+}

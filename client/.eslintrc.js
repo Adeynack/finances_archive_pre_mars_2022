@@ -22,7 +22,8 @@ module.exports = {
     "prettier",
   ],
   rules: {
-    "no-console": 2,
+    "no-console": "warn",
+    "arrow-parens": ["error", "as-needed"],
     "@typescript-eslint/explicit-function-return-type": [
       "error",
       {

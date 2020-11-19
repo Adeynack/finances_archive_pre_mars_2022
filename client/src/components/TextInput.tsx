@@ -16,7 +16,7 @@ export function TextInput({ id, label, value, onChange }: Props): JSX.Element {
       <Label htmlFor={fieldId}>{label}</Label>
       <Input
         value={value ?? ""}
-        onChange={(event) => {
+        onChange={event => {
           onChange?.(event.currentTarget.value);
         }}
       />

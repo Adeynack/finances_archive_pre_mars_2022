@@ -26,7 +26,7 @@
     "strictNullChecks": true,
     "sourceMap": true,
     "suppressImplicitAnyIndexErrors": true,
-    "target": "esnext"
+    "target": "esnext",
   },
   "include": [
     "typings.d.ts"
