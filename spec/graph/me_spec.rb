@@ -43,7 +43,7 @@ RSpec.describe "Me", type: :graph do
     GQL
   end
 
-  context "querying for current user info, owned books, and accessible books (book_roles)", :n_plus_one do
+  context "when querying for current user info, owned books, and accessible books (book_roles)", :n_plus_one do
     populate do |n|
       users = create_list :user, n
       books = Array.new(n) { |i| create :book, owner: users[i % n] }
