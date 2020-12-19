@@ -11,14 +11,9 @@ import {
   useDatabase,
 } from "../store";
 import { AccessibleBook, Book, BookRoleType } from "./book";
+import { User } from "./user";
 
-export interface CurrentUser {
-  id: string;
-  email: string;
-  displayName: string;
-}
-
-export interface Me extends CurrentUser {
+export interface CurrentUser extends User {
   bookRoles: {
     book: Book;
     role: BookRoleType;
@@ -26,17 +21,16 @@ export interface Me extends CurrentUser {
   }[];
 }
 
-function processMeInformation(me: Me): void {
-  if (!me) {
+function processCurrentUserInformation(currentUser: CurrentUser): void {
+  if (!currentUser) {
     writeDB.set("currentUser", null);
     writeDB.table("books").truncate();
     return;
   }
 
-  const currentUser: CurrentUser = me;
   writeDB.set("currentUser", currentUser);
 
-  const accessibleBooks: AccessibleBook[] = me.bookRoles.map(b => ({
+  const accessibleBooks: AccessibleBook[] = currentUser.bookRoles.map(b => ({
     ...b.book,
     role: b.role.toLowerCase() as BookRoleType,
     effectiveRoles: b.effectiveRoles.map(r => r.toLowerCase() as BookRoleType),
@@ -50,9 +44,9 @@ export async function login(email: string, password: string): Promise<void> {
     mutation: LOGIN_MUTATION,
     variables: { email, password },
   });
-  const me: Me | null = result.data.login.me;
-  if (me) {
-    processMeInformation(me);
+  const currentUser: CurrentUser | null = result.data.login.me;
+  if (currentUser) {
+    processCurrentUserInformation(currentUser);
   } else {
     throw Error("Login failed");
   }
@@ -64,27 +58,26 @@ export async function logout(): Promise<void> {
   writeDB.table("books").truncate();
 }
 
-export async function refreshMe(): Promise<Me | null> {
+export async function refreshCurrentUser(): Promise<CurrentUser | null> {
   const result = await apollo.query({ query: ME_QUERY });
-  const me: Me | null = result.data.me;
-  if (me) {
-    processMeInformation(me);
+  const currentUser: CurrentUser | null = result.data.me;
+  if (currentUser) {
+    processCurrentUserInformation(currentUser);
   }
-  return me;
+  return currentUser;
 }
 
 export function useCurrentUser(
   { fetch }: { fetch: boolean } = { fetch: false }
-): { currentUser: Me | undefined; fetchingCurrentUser: boolean } {
+): { currentUser: CurrentUser | undefined; fetchingCurrentUser: boolean } {
   const [fetchingCurrentUser, setFetchingCurrentUser] = useState(fetch);
   const currentUser = useDatabase(db => db.get("currentUser"));
   useEffect(() => {
     const fetchMe = async (): Promise<void> => {
       if (fetch) {
-        await refreshMe(); // .then(() => {
-        setFetchingCurrentUser(false);
-        // });
+        await refreshCurrentUser();
       }
+      setFetchingCurrentUser(false);
     };
     fetchMe();
   }, []);
