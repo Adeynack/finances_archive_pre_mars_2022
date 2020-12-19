@@ -1,5 +1,15 @@
-import { LOGIN_MUTATION, LOGOUT_MUTATION } from "../queries/sessionQueries";
-import { apollo, writeDB, deleteAbsentsFromDatabase } from "../store";
+import { useEffect, useState } from "react";
+import {
+  LOGIN_MUTATION,
+  LOGOUT_MUTATION,
+  ME_QUERY,
+} from "../queries/sessionQueries";
+import {
+  apollo,
+  writeDB,
+  deleteAbsentsFromDatabase,
+  useDatabase,
+} from "../store";
 import { AccessibleBook, Book, BookRoleType } from "./book";
 
 export interface CurrentUser {
@@ -52,4 +62,31 @@ export async function logout(): Promise<void> {
   await apollo.mutate({ mutation: LOGOUT_MUTATION });
   writeDB.set("currentUser", null);
   writeDB.table("books").truncate();
+}
+
+export async function refreshMe(): Promise<Me | null> {
+  const result = await apollo.query({ query: ME_QUERY });
+  const me: Me | null = result.data.me;
+  if (me) {
+    processMeInformation(me);
+  }
+  return me;
+}
+
+export function useCurrentUser(
+  { fetch }: { fetch: boolean } = { fetch: false }
+): { currentUser: Me | undefined; fetchingCurrentUser: boolean } {
+  const [fetchingCurrentUser, setFetchingCurrentUser] = useState(fetch);
+  const currentUser = useDatabase(db => db.get("currentUser"));
+  useEffect(() => {
+    const fetchMe = async (): Promise<void> => {
+      if (fetch) {
+        await refreshMe(); // .then(() => {
+        setFetchingCurrentUser(false);
+        // });
+      }
+    };
+    fetchMe();
+  }, []);
+  return { currentUser, fetchingCurrentUser };
 }

@@ -11,15 +11,15 @@ import {
 } from "redux-database";
 import { Alert } from "./models/error";
 import { AccessibleBook } from "./models/book";
-import { User } from "./models/user";
 import { difference } from "lodash";
 import { RowKeyOf, RowType } from "redux-database/dist/db";
 import { MutableTable } from "redux-database/dist/mutable_table";
 import { InsertRecord } from "redux-database/dist/util";
+import { Me } from "./models/currentUser";
 
 interface State {
   settings: {
-    currentUser?: User;
+    currentUser?: Me;
   };
   data: {
     books: DataTable<AccessibleBook>;

@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client";
 
-export const ME_FIELDS = gql`
+export const ME_FRAGMENT = gql`
   fragment MeFields on CurrentUser {
     displayName
     email
@@ -27,7 +27,7 @@ export const ME_QUERY = gql`
       ...MeFields
     }
   }
-  ${ME_FIELDS}
+  ${ME_FRAGMENT}
 `;
 
 export const LOGIN_MUTATION = gql`
@@ -38,7 +38,7 @@ export const LOGIN_MUTATION = gql`
       }
     }
   }
-  ${ME_FIELDS}
+  ${ME_FRAGMENT}
 `;
 
 export const LOGOUT_MUTATION = gql`
