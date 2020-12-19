@@ -8,17 +8,17 @@ module.exports = {
         "/graphql": {
           target: api,
           secure: false,
-          changeOrigine: true,
+          changeOrigin: true,
         },
         "/graphiql": {
           target: api,
           secure: false,
-          changeOrigine: true,
+          changeOrigin: true,
         },
         "/assets": {
           target: api,
           secure: false,
-          changeOrigine: true,
+          changeOrigin: true,
         },
       });
 
