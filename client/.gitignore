@@ -1,7 +1,10 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # generated with: yarn graphql:schema
-/schema.json
+# Not ignore because did not find a way yet to
+# run Rails server and regenerate the file on GitHub CI.
+# /schema.json
+
 # generated with: yarn graphql:types
 /src/generated
 
