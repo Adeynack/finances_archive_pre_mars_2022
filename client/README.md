@@ -9,13 +9,6 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 - Make sure the _Rails_ backend is up and running (`rails serve` from root directory).
 - Call, from `client/`, `yarn gen` to generate all of the needed code.
 
-### VSCode
-
-#### Suggested Extensions
-
-- prettier-eslint (`prettier-eslint`)
-- Apollo GraphQL (`apollographql.vscode-apollo`)
-
 ## Available Scripts
 
 In the project directory, you can run:
