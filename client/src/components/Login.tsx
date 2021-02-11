@@ -40,12 +40,16 @@ export function Login(): JSX.Element {
         <TextInput label="E-Mail" {...fields.email} />
         <TextInput label="Password" {...fields.password} />
       </form>
-      <Button
-        title="Login"
-        disabled={!valid || !!currentUser}
-        onClick={onSubmit}
-      />
-      <Button title="Logout" disabled={!currentUser} onClick={() => logout()} />
+      {!currentUser && (
+        <Button title="Login" disabled={!valid} onClick={onSubmit} />
+      )}
+      {currentUser && (
+        <Button
+          title="Logout"
+          disabled={!currentUser}
+          onClick={() => logout()}
+        />
+      )}
     </>
   );
 }
