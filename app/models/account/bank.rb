@@ -14,7 +14,7 @@
 #  info              :jsonb
 #  notes             :text
 #  currency_iso_code :string
-#  initial_balance   :integer          not null
+#  initial_balance   :integer          default(0), not null
 #  active            :boolean          default(TRUE), not null
 #
 class Account::Bank < Account

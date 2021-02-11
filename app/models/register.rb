@@ -14,7 +14,7 @@
 #  info              :jsonb
 #  notes             :text
 #  currency_iso_code :string
-#  initial_balance   :integer          not null
+#  initial_balance   :integer          default(0), not null
 #  active            :boolean          default(TRUE), not null
 #
 class Register < ApplicationRecord
@@ -23,16 +23,12 @@ class Register < ApplicationRecord
   belongs_to :book
   belongs_to :parent, class_name: "Register", optional: true
 
-  has_many :child, dependent: :destroy, foreign_key: "parent_id", inverse_of: "parent"
+  has_many :child, class_name: "Register", dependent: :destroy, foreign_key: "parent_id", inverse_of: "parent"
 
   has_currency :currency, optional: true
 
   validates :name, presence: true
   validate :validate_parent_not_itself
-
-  before_save do
-    self.initial_balance ||= 0
-  end
 
   class << self
     def list_register_classes(type)

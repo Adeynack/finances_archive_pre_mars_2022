@@ -48,7 +48,7 @@ ActiveRecord::Schema.define(version: 2020071200000008) do
     t.jsonb "info", comment: "A JSON structure containing details about the register. Different register type have different fields."
     t.text "notes"
     t.string "currency_iso_code", comment: "ISO Code of the currency in which this register operates."
-    t.integer "initial_balance", null: false, comment: "Balance when this register is entered in the system."
+    t.integer "initial_balance", default: 0, null: false, comment: "Balance when this register is entered in the system."
     t.boolean "active", default: true, null: false, comment: "Inactive registers stay in the system for historical purposes but are not displayed to the user by default."
     t.index ["active"], name: "index_registers_on_active"
     t.index ["book_id", "parent_id", "name"], name: "index_registers_on_book_id_and_parent_id_and_name", unique: true

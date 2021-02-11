@@ -13,7 +13,7 @@ class CreateRegisters < ActiveRecord::Migration[6.0]
       t.text :notes
 
       t.string :currency_iso_code, comment: "ISO Code of the currency in which this register operates."
-      t.integer :initial_balance, null: false, comment: "Balance when this register is entered in the system."
+      t.integer :initial_balance, null: false, default: 0, comment: "Balance when this register is entered in the system."
 
       t.boolean :active, null: false, default: true, comment: "Inactive registers stay in the system for historical purposes but are not displayed to the user by default."
 
