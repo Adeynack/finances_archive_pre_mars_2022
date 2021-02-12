@@ -40,6 +40,7 @@ package "Register (STI)" {
     Account::Liability
     Account::Loan
     Account::Other
+    Account::Person
     Category::Expense
     Category::Income
   }
@@ -56,7 +57,7 @@ package "Register (STI)" {
   Register "parent" --o Register
   Register "type" --* RegisterType
 
-  class Category < STI > {
+  class Category < class > {
   }
   Category --|> Register
 
@@ -68,7 +69,7 @@ package "Register (STI)" {
     Income --|> Category
   }
 
-  class Account < STI > {}
+  class Account < class > {}
   Account --|> Register
 
   package Account:: {
@@ -130,46 +131,48 @@ package "Register (Delegated Type)" {
   }
   Category_ --* Register_
 
-  class Asset_ {
+  package Account_:: {
+    class Asset_ {
+    }
+    Asset_ --* Register_
+
+    class Bank_ {
+      iban
+      bic
+      bank_name
+      account_number
+    }
+    Bank_ --* Register_
+
+    class Card_ {
+      card_number
+      bank_name
+      limit
+    }
+    Card_ --* Register_
+
+    class Investment_ {}
+    Investment_ --* Register_
+
+    class Liability_ {}
+    Liability_ --* Register_
+
+    class Loan_ {
+      begins_at
+      payment_periods
+      total_amount
+      interest_rate
+    }
+    Loan_ --* Register_
+
+    class OtherAccount_ {}
+    OtherAccount_ --* Register_
+
+    class Person_ {
+    }
+    Person_ --* Register_
+    Person_ --o Contact
   }
-  Asset_ --* Register_
-
-  class Bank_ {
-    iban
-    bic
-    bank_name
-    account_number
-  }
-  Bank_ --* Register_
-
-  class Card_ {
-    card_number
-    bank_name
-    limit
-  }
-  Card_ --* Register_
-
-  class Investment_ {}
-  Investment_ --* Register_
-
-  class Liability_ {}
-  Liability_ --* Register_
-
-  class Loan_ {
-    begins_at
-    payment_periods
-    total_amount
-    interest_rate
-  }
-  Loan_ --* Register_
-
-  class OtherAccount_ {}
-  OtherAccount_ --* Register_
-
-  class Person_ {
-  }
-  Person_ --* Register_
-  Person_ --o Contact
 }
 
 package Transaction {
