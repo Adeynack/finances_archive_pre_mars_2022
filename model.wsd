@@ -8,7 +8,7 @@ package Organisation {
     name
     default_currency_iso_code: string{3}
   }
-  Book --* User
+  Book "owner" --* User
 
   class User {
     email
