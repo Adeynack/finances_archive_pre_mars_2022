@@ -24,3 +24,5 @@
 
 # NodeJS & NPM
 node_modules
+
+/out
