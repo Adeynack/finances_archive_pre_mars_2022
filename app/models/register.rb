@@ -65,3 +65,5 @@ class Register < ApplicationRecord
     errors.add :parent, "cannot be itself" if parent_id.present? && parent_id == id
   end
 end
+
+# TODO: Consider `document-serializable` (nerdgeschoss GitHub) for `meta` field.
