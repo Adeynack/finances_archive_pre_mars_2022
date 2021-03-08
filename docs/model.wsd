@@ -1,0 +1,192 @@
+@startuml Model
+
+hide empty methods
+hide circle
+
+package Organisation {
+  class Book {
+    name
+    default_currency_iso_code: string{3}
+  }
+  Book "owner" --* User
+
+  class User {
+    email
+    display_name
+    password_digest
+  }
+
+  class BookRole {
+    role: owner | admin | writer | reader
+  }
+  BookRole --* Book
+  BookRole --* User
+
+  class Contact < name TBD > {
+    company: boolean = false
+    name
+    email
+    address
+    ...
+  }
+}
+
+package "Register (STI)" {
+  enum RegisterType < PG Enum > {
+    Account::Asset
+    Account::Bank
+    Account::Card
+    Account::Investment
+    Account::Liability
+    Account::Loan
+    Account::Other
+    Account::Person
+    Category::Expense
+    Category::Income
+  }
+
+  class Register {
+    name
+    info: JSON
+    notes: text
+    currency_iso_code: string{3}
+    initial_balance: integer = 0
+    active: boolean = true
+  }
+  Register --* Book
+  Register "parent" --o Register
+  Register "type" --* RegisterType
+
+  class Category < class > {
+  }
+  Category --|> Register
+
+  package Category:: {
+    class Expense < STI > {}
+    Expense --|> Category
+
+    class Income < STI > {}
+    Income --|> Category
+  }
+
+  class Account < class > {}
+  Account --|> Register
+
+  package Account:: {
+    class Asset < STI > {}
+    Asset --|> Account
+
+    class Bank < STI > {}
+    Bank --|> Account
+
+    class Card < STI > {}
+    Card --|> Account
+
+    class Investment < STI > {}
+    Investment --|> Account
+
+    class Liability < STI > {}
+    Liability --|> Account
+
+    class Loan < STI > {}
+    Loan --|> Account
+
+    class Other < STI > {}
+    Other --|> Account
+
+    class Person < STI > {}
+    Person --|> Account
+  }
+}
+
+package "Register (Delegated Type)" {
+  class Register_ {
+    name
+    registerable_type
+    registerable_id
+    notes
+    currency_iso_code: string{3}
+    initial_balance: integer = 0
+    active: boolean = true
+  }
+  Register_ "0..n" --* "1" Book
+  Register_ "parent" --o Register_
+  Register_ "registerable_type" --* RegisterType_
+
+  enum RegisterType_ < PG Enum > {
+    Asset
+    Bank
+    Card
+    Category
+    Investment
+    Liability
+    Loan
+    OtherAccount
+  }
+
+  class Category_ {
+    name
+    direction: Expense | Income
+  }
+  Category_ --* Register_
+
+  package Account_:: {
+    class Asset_ {
+    }
+    Asset_ --* Register_
+
+    class Bank_ {
+      iban
+      bic
+      bank_name
+      account_number
+    }
+    Bank_ --* Register_
+
+    class Card_ {
+      card_number
+      bank_name
+      limit
+    }
+    Card_ --* Register_
+
+    class Investment_ {}
+    Investment_ --* Register_
+
+    class Liability_ {}
+    Liability_ --* Register_
+
+    class Loan_ {
+      begins_at
+      payment_periods
+      total_amount
+      interest_rate
+    }
+    Loan_ --* Register_
+
+    class OtherAccount_ {}
+    OtherAccount_ --* Register_
+
+    class Person_ {
+    }
+    Person_ --* Register_
+    Person_ --o Contact
+  }
+}
+
+package Transaction {
+  class Transaction {
+
+  }
+  Transaction "origin" --* Register
+  Transaction "origin" --* Register_
+
+  class TransactionSplit {
+    amount: integer
+  }
+  TransactionSplit "1..n" --* Transaction
+  TransactionSplit "destination" --* Register
+  TransactionSplit "destination" --* Register_
+}
+
+@enduml
