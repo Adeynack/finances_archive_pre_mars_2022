@@ -10,12 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020071200000008) do
+ActiveRecord::Schema.define(version: 2021_03_08_110332) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"
+
+  create_table "bank_accounts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "bank_name"
+    t.string "account_number"
+  end
 
   create_table "book_roles", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", precision: 6, null: false
@@ -38,6 +45,25 @@ ActiveRecord::Schema.define(version: 2020071200000008) do
     t.index ["owner_id"], name: "index_books_on_owner_id"
   end
 
+  create_table "credit_cards", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "card_number"
+    t.datetime "expires_at"
+    t.integer "limit"
+  end
+
+  create_table "registers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.uuid "book_id", null: false
+    t.string "name"
+    t.integer "initial_balance"
+    t.string "registerable_type"
+    t.uuid "registerable_id"
+    t.index ["book_id"], name: "index_registers_on_book_id"
+  end
+
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -51,4 +77,5 @@ ActiveRecord::Schema.define(version: 2020071200000008) do
   add_foreign_key "book_roles", "books"
   add_foreign_key "book_roles", "users"
   add_foreign_key "books", "users", column: "owner_id"
+  add_foreign_key "registers", "books"
 end

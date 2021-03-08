@@ -24,3 +24,6 @@
 
 # NodeJS & NPM
 node_modules
+
+# Misc
+/out

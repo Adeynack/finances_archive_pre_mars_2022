@@ -4,7 +4,7 @@ source "https://rubygems.org"
 ruby "2.7.2" # sync with .github/workflows/tests.yml
 
 # Core
-gem "rails", "~> 6.0.3"
+gem "rails", "~> 6.1"
 gem "puma"
 
 # Database
