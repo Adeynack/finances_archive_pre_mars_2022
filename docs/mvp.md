@@ -77,28 +77,28 @@ immediate drop in replacement for entering data.
 | Parent Account          | opt    |      | x       | x           |            | x     | x         | x         |
 | Initial...              | `0`    |      | Balance | Debt        | Balance    | Value | Liability | Principal |
 | Active                  | `true` |      | x       | x           | x          | x     | x         | x         |
-| Comments                | opt    |      | x       | x           | x          | x     | x         | x         |
+| Comments (Notes)        | opt    |      | x       | x           | x          | x     | x         | x         |
 | Website                 | opt    |      | x       | x           | x          |       |           |           |
-| Bank Name               |        | x    | x       | x           | x          |       |           |           |
+| Bank Name (Group)       | opt    |      | x       | x           | x          |       |           |           |
 | Account Number          |        | x    | x       |             | x          |       |           |           |
-| Routing Number          |        | x    | x       |             |            |       |           |           |
-| Check Numbers           |        | x    | x       | x           | x          | x     | x         |           |
+| Routing Number          |        | x    | -       |             |            |       |           |           |
+| Check Numbers           |        | x    | -       | -           | -          | -     | -         |           |
 | Card Number             |        | x    |         | x           |            |       |           |           |
-| APR                     |        | x    |         | x           |            |       |           | x         |
-| ... until               |        | x    |         | x           |            |       |           |           |
-| ... then                |        | x    |         | x           |            |       |           |           |
+| APR                     |        | x    |         | x           |            |       |           | -         |
+| ... until               |        | x    |         | -           |            |       |           |           |
+| ... then                |        | x    |         | -           |            |       |           |           |
 | Credit Limit            |        | x    |         | x           |            |       |           |           |
-| Payment Plan (type)     |        | x    |         | x           |            |       |           |           |
-| Payment Plan (amount)   |        | x    |         | x           |            |       |           |           |
+| Payment Plan (type)     |        | x    |         | -           |            |       |           |           |
+| Payment Plan (amount)   |        | x    |         | -           |            |       |           |           |
 | Expires at              |        | x    |         | x           |            |       |           |           |
-| Loan Points             |        | x    |         |             |            |       |           | x         |
-| Payments per Year       |        | x    |         |             |            |       |           | x         |
-| Number of Payments      |        | x    |         |             |            |       |           | x         |
-| Interest Category       |        | x    |         |             |            |       |           | x         |
-| Escrow Payment          |        | x    |         |             |            |       |           | x         |
-| Escrow Account          |        | x    |         |             |            |       |           | x         |
-| Specify Payment (or...) |        | x    |         |             |            |       |           | x         |
-| Calculate Payment       |        | x    |         |             |            |       |           | x         |
+| Loan Points             |        | x    |         |             |            |       |           | -         |
+| Payments per Year       |        | x    |         |             |            |       |           | -         |
+| Number of Payments      |        | x    |         |             |            |       |           | -         |
+| Interest Category       |        | x    |         |             |            |       |           | -         |
+| Escrow Payment          |        | x    |         |             |            |       |           | -         |
+| Escrow Account          |        | x    |         |             |            |       |           | -         |
+| Specify Payment (or...) |        | x    |         |             |            |       |           | -         |
+| Calculate Payment       |        | x    |         |             |            |       |           | -         |
 
 ### Categories
 
@@ -107,7 +107,7 @@ immediate drop in replacement for entering data.
 | Name             | req     | x       | x      |
 | Currency         | req     | x       | x      |
 | Parent Category  | opt     | x       | x      |
-| Tax Related      | `false` | x       | x      |
+| Tax Related      | `false` | -       | -      |
 | Active           | `true`  | x       | x      |
 | Comments         | opt     | x       | x      |
 
@@ -121,7 +121,7 @@ of _Moneydance_.
 | Description                        | req  |
 | From                               | req  |
 | To                                 | opt  |
-| Period (TBD)                       | req  |
+| Period / Recurrence (TBD)          | req  |
 | Auto-Commit (days before schedule) | opt  |
 | Transaction Template               | req  |
 

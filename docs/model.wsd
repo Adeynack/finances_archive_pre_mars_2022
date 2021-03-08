@@ -21,172 +21,168 @@ package Organisation {
   }
   BookRole --* Book
   BookRole --* User
-
-  class Contact < name TBD > {
-    company: boolean = false
-    name
-    email
-    address
-    ...
-  }
 }
 
-package "Register (STI)" {
+package "Register" {
   enum RegisterType < PG Enum > {
-    Account::Asset
-    Account::Bank
-    Account::Card
-    Account::Investment
-    Account::Liability
-    Account::Loan
-    Account::Other
-    Account::Person
-    Category::Expense
-    Category::Income
+    Bank
+    Card
+    Investment
+    Asset
+    Liability
+    Loan
+    Other
+    Person
+    Expense
+    Income
   }
 
   class Register {
-    name
+    * name
+    * starts_at
+    * currency_iso_code: string{3}
+    * initial_balance: integer = 0
+    * active: boolean = true
+    group: string
     info: JSON
     notes: text
-    currency_iso_code: string{3}
-    initial_balance: integer = 0
-    active: boolean = true
   }
   Register --* Book
   Register "parent" --o Register
-  Register "type" --* RegisterType
+  Register "default category" --o Register
+  Register "* type" --* RegisterType
 
-  class Category < class > {
-  }
-  Category --|> Register
-
-  package Category:: {
+  package Categories {
     class Expense < STI > {}
-    Expense --|> Category
+    Expense --|> Register
 
     class Income < STI > {}
-    Income --|> Category
+    Income --|> Register
   }
 
-  class Account < class > {}
-  Account --|> Register
-
-  package Account:: {
+  package Accounts {
     class Asset < STI > {}
-    Asset --|> Account
+    Asset --|> Register
 
     class Bank < STI > {}
-    Bank --|> Account
+    Bank --|> Register
+
+    class BankInfo < Store > {
+      account_number: String
+      iban: String
+    }
+    BankInfo o-- Bank
 
     class Card < STI > {}
-    Card --|> Account
+    Card --|> Register
+
+    class CardInfo < Store > {
+      account_number: String
+      iban: String
+      interest_rate: Float
+      credit_limit: Integer
+      card_number: String
+      expires_at: DateTime 
+    }
+    CardInfo o-- Card
 
     class Investment < STI > {}
-    Investment --|> Account
+    Investment --|> Register
+
+    class InvestmentInfo < Store > {
+      account_number: String
+    }
+    InvestmentInfo o-- Investment
 
     class Liability < STI > {}
-    Liability --|> Account
+    Liability --|> Register
 
     class Loan < STI > {}
-    Loan --|> Account
+    Loan --|> Register
 
     class Other < STI > {}
-    Other --|> Account
+    Other --|> Register
 
     class Person < STI > {}
-    Person --|> Account
-  }
-}
+    Person --|> Register
 
-package "Register (Delegated Type)" {
-  class Register_ {
-    name
-    registerable_type
-    registerable_id
-    notes
-    currency_iso_code: string{3}
-    initial_balance: integer = 0
-    active: boolean = true
-  }
-  Register_ "0..n" --* "1" Book
-  Register_ "parent" --o Register_
-  Register_ "registerable_type" --* RegisterType_
-
-  enum RegisterType_ < PG Enum > {
-    Asset
-    Bank
-    Card
-    Category
-    Investment
-    Liability
-    Loan
-    OtherAccount
-  }
-
-  class Category_ {
-    name
-    direction: Expense | Income
-  }
-  Category_ --* Register_
-
-  package Account_:: {
-    class Asset_ {
+    class PersonInfo < Store > {
+      name: String
+      iban: String
     }
-    Asset_ --* Register_
-
-    class Bank_ {
-      iban
-      bic
-      bank_name
-      account_number
-    }
-    Bank_ --* Register_
-
-    class Card_ {
-      card_number
-      bank_name
-      limit
-    }
-    Card_ --* Register_
-
-    class Investment_ {}
-    Investment_ --* Register_
-
-    class Liability_ {}
-    Liability_ --* Register_
-
-    class Loan_ {
-      begins_at
-      payment_periods
-      total_amount
-      interest_rate
-    }
-    Loan_ --* Register_
-
-    class OtherAccount_ {}
-    OtherAccount_ --* Register_
-
-    class Person_ {
-    }
-    Person_ --* Register_
-    Person_ --o Contact
+    PersonInfo o-- Person
   }
 }
 
 package Transaction {
+  enum TransactionStatus < PG Enum > {
+    Uncleared
+    Reconciling
+    Cleared
+  }
+
   class Transaction {
-
+    * date: DateTime
+    cheque: String
+    * description
+    memo
   }
-  Transaction "origin" --* Register
-  Transaction "origin" --* Register_
+  Transaction "* origin" --|> Register
 
-  class TransactionSplit {
-    amount: integer
+  class Split {
+    * amount: Integer
+    memo
   }
-  TransactionSplit "1..n" --* Transaction
-  TransactionSplit "destination" --* Register
-  TransactionSplit "destination" --* Register_
+  Transaction "1..n" --* Split
+  Split "* destination" --* Register
+  Split "* status" --* TransactionStatus
+}
+
+package Reminders {
+  enum ReminderNature < PG Enum > {
+    Reminder
+    AutoCommit
+    AutoCancel
+  }
+
+  class Reminder {
+    * title
+    description
+    * from: DateTime
+    until: DateTime
+    recurrence: String < Montrose >
+    transaction_description
+    
+  }
+  Reminder "* nature" *-- ReminderNature
+  Reminder "* origin" --* Register
+
+  class ReminderSplit {
+    * amount: Integer
+    memo
+  }
+  Reminder "1..n" --* ReminderSplit
+  ReminderSplit "* destination" --* Register
+  ReminderSplit "* status" --* TransactionStatus
+}
+
+package "Applicable to all elements" {
+  class Tag {
+    * name 
+  }
+
+  class Tagging {
+    * subject_type
+    * subject_id
+  }
+  Tagging --* Tag
+
+  class ImportOrigin {
+    * subject_id
+    * subject_type
+    * external_system
+    * external_id
+  }
 }
 
 @enduml
