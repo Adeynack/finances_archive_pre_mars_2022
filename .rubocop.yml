@@ -10,17 +10,11 @@ AllCops:
     - 'node_modules/**/*'
 
 require:
-  # - rubocop/rspec
-  # - rubocop/rspec/focused
-  - rubocop-faker
   - rubocop-rails
   - rubocop-performance
 
 Bundler/OrderedGems:
   Enabled: false
-
-Faker/DeprecatedArguments:
-  Enabled: true
 
 Layout/HeredocArgumentClosingParenthesis:
   Enabled: true
