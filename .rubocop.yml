@@ -38,7 +38,7 @@ Metrics/BlockLength:
   Exclude:
     - Guardfile
     - spec/**/*.rb
-  ExcludedMethods:
+  IgnoredMethods:
     - refine
     - class_methods
 
