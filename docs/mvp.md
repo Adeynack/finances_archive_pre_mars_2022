@@ -129,26 +129,26 @@ of _Moneydance_.
 
 #### Transactions
 
-| Attribute   | BASE                                |
-| ----------- | ----------------------------------- |
-| Account     | req fk                              |
-| Date        | req                                 |
-| Cheque      | opt                                 |
-| Description | req                                 |
-| Status      | uncleared<br>reconciling<br>cleared |
-| Memo        | opt                                 |
-|             |                                     |
+| Attribute        | BASE   |
+| ---------------- | ------ |
+| Account (Origin) | req fk |
+| Date             | req    |
+| Cheque           | opt    |
+| Description      | req    |
+| Memo             | opt    |
+|                  |        |
 
 #### Splits (Transaction Splits)
 
-| Attribute   | BASE     |
-| ----------- | -------- |
-| Transaction | req fk   |
-| Category    | req fk   |
-| Amount      | req      |
-| Memo        | opt      |
-| Tags        | has_many |
-|             |          |
+| Attribute   | BASE                                |
+| ----------- | ----------------------------------- |
+| Transaction | req fk                              |
+| Category    | req fk                              |
+| Amount      | req                                 |
+| Status      | uncleared<br>reconciling<br>cleared |
+| Memo        | opt                                 |
+| Tags        | has_many                            |
+|             |                                     |
 
 #### Tags (Transaction Split Tags)
 
