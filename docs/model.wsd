@@ -131,6 +131,7 @@ package Transaction {
 
   class Split {
     * amount: Integer
+    * counterpart_amount: Integer
     memo
   }
   Transaction "1..n" --* Split

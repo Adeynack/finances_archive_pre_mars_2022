@@ -140,15 +140,16 @@ of _Moneydance_.
 
 #### Splits (Transaction Splits)
 
-| Attribute   | BASE                                |
-| ----------- | ----------------------------------- |
-| Transaction | req fk                              |
-| Category    | req fk                              |
-| Amount      | req                                 |
-| Status      | uncleared<br>reconciling<br>cleared |
-| Memo        | opt                                 |
-| Tags        | has_many                            |
-|             |                                     |
+| Attribute                     | BASE                                | Example (single currency) | Example (multi curr.) |
+| ----------------------------- | ----------------------------------- | ------------------------- | --------------------- |
+| Transaction                   | req fk                              |                           |                       |
+| Category                      | req fk                              |                           |                       |
+| Amount (`0.samt`)             | req                                 | 120                       | 120                   |
+| Counterpart Amount (`0.pamt`) | req                                 | -120                      | -95                   |
+| Status                        | uncleared<br>reconciling<br>cleared |                           |                       |
+| Memo                          | opt                                 |                           |                       |
+| Tags                          | has_many                            |                           |                       |
+|                               |                                     |                           |                       |
 
 #### Tags (Transaction Split Tags)
 
