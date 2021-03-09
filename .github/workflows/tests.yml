@@ -30,7 +30,7 @@ jobs:
         env:
           DATABASE_URL: postgres://postgres:postgres@127.0.0.1/finances
           RAILS_ENV: test
-        run: bundle rails db:setup
+        run: bundle exec rails db:setup
       - name: Model Annotation
         env:
           ANNOTATE_FROZEN: true
