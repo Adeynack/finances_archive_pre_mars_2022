@@ -26,10 +26,13 @@ jobs:
         with:
           ruby-version: 3.0.0 # <--> Gemfile
           bundler-cache: true
-      - name: Model Annotation
+      - name: Setup Database
         env:
           DATABASE_URL: postgres://postgres:postgres@127.0.0.1/finances
           RAILS_ENV: test
+        run: bundle rails db:setup
+      - name: Model Annotation
+        env:
           ANNOTATE_FROZEN: true
         run: bundle exec rake annotate_models
       - name: Controllers Annotation
@@ -37,9 +40,4 @@ jobs:
       - name: Lint
         run: bundle exec rubocop
       - name: Tests
-        env:
-          DATABASE_URL: postgres://postgres:postgres@127.0.0.1/finances
-          RAILS_ENV: test
-        run: |
-          bundle exec rails db:create db:migrate
-          bundle exec rails test
+        run: bundle exec rails test
