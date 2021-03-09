@@ -106,6 +106,8 @@ GEM
       regexp_parser (>= 1.5, < 3.0)
       xpath (~> 3.2)
     childprocess (3.0.0)
+    chusaku (0.4.0)
+      rails (> 2.0)
     coderay (1.1.3)
     concurrent-ruby (1.1.8)
     connection_pool (2.2.3)
@@ -395,6 +397,7 @@ DEPENDENCIES
   bootsnap (>= 1.4.4)
   bullet
   capybara (>= 3.26)
+  chusaku
   countries
   devise
   friendly_id

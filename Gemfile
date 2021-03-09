@@ -55,6 +55,7 @@ group :development, :test do
   gem "rubocop-rails", require: false
   gem "rubocop-performance", require: false
   gem "annotate", require: false
+  gem "chusaku", require: false
   gem "i18n-tasks"
   gem "ruby_jard", git: "https://github.com/nguyenquangminh0711/ruby_jard"
   gem "guard"
