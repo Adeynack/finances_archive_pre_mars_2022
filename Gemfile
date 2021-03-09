@@ -58,8 +58,6 @@ group :development, :test do
   gem "chusaku", require: false
   gem "i18n-tasks"
   gem "ruby_jard", git: "https://github.com/nguyenquangminh0711/ruby_jard"
-  gem "guard"
-  gem "guard-minitest"
   gem "bullet"
 end
 
@@ -68,6 +66,8 @@ group :development do
   gem "rack-mini-profiler", "~> 2.0"
   gem "listen", "~> 3.3"
   gem "spring"
+  gem "guard"
+  gem "guard-minitest"
 end
 
 group :test do
