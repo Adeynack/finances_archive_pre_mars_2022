@@ -16,4 +16,6 @@
 #
 class User < ApplicationRecord
   devise :database_authenticatable, :recoverable, :rememberable, :registerable, :validatable # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
+
+  has_many :books, dependent: :destroy, foreign_key: :owner_id, inverse_of: :owner
 end

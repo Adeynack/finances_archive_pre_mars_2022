@@ -5,15 +5,15 @@ hide circle
 
 package Organisation {
   class Book {
-    name
-    default_currency_iso_code: string{3}
+    * name
+    * default_currency_iso_code: string{3}
   }
-  Book "owner" --* User
+  Book "* owner" --* User
 
   class User {
-    email
-    display_name
-    password_digest
+    * email
+    * display_name
+    * password_digest
   }
 
   class BookRole {
@@ -82,7 +82,7 @@ package "Register" {
       interest_rate: Float
       credit_limit: Integer
       card_number: String
-      expires_at: DateTime 
+      expires_at: DateTime
     }
     CardInfo o-- Card
 
@@ -152,7 +152,7 @@ package Reminders {
     until: DateTime
     recurrence: String < Montrose >
     transaction_description
-    
+
   }
   Reminder "* nature" *-- ReminderNature
   Reminder "* origin" --* Register
@@ -168,7 +168,7 @@ package Reminders {
 
 package "Applicable to all elements" {
   class Tag {
-    * name 
+    * name
   }
 
   class Tagging {
