@@ -1,0 +1,7 @@
+{
+    "eslint.workingDirectories": [
+        "client"
+    ],
+    "typescript.tsdk": "client/node_modules/typescript/lib",
+    "editor.formatOnSave": true,
+}

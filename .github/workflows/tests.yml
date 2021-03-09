@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     services:
       postgres:
-        image: 'postgres:12.3' # sync with docker-compose.yml
+        image: "postgres:12.3" # sync with docker-compose.yml
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
@@ -15,7 +15,7 @@ jobs:
         ports:
           - 5432:5432
       redis:
-        image: 'redis:latest' # sync with docker-compose.yml
+        image: "redis:latest" # sync with docker-compose.yml
         ports:
           - 6379:6379
     steps:
@@ -41,3 +41,18 @@ jobs:
         run: |
           bundle exec rails db:create db:migrate
           bundle exec rspec --format documentation
+  client:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup NodeJS
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14.x # sync with .nvmrc
+      - name: Install Dependencies
+        run: cd client && yarn install --frozen-lockfile
+      - name: Generate GraphQL Schema & Types
+        run: cd client && yarn graphql:types
+      - name: Lint
+        run: cd client && yarn lint

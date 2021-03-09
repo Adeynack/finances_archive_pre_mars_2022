@@ -4,14 +4,13 @@ AllCops:
   DisplayStyleGuide: true
   NewCops: enable
   Exclude:
-    - 'vendor/bundle/**/*'
-    - 'bin/**/*'
-    - 'db/schema.rb'
-    - 'node_modules/**/*'
+    - "vendor/bundle/**/*"
+    - "bin/**/*"
+    - "db/schema.rb"
+    - "node_modules/**/*"
 
 require:
-  - rubocop/rspec
-  - rubocop/rspec/focused
+  - rubocop-rspec
   - rubocop-faker
   - rubocop-rails
   - rubocop-performance
@@ -44,7 +43,7 @@ Metrics/BlockLength:
   Exclude:
     - Guardfile
     - spec/**/*.rb
-  ExcludedMethods:
+  IgnoredMethods:
     - refine
     - class_methods
 
@@ -69,6 +68,12 @@ Rails/FilePath:
 
 # Rails/SkipsModelValidations:
 #   Enabled: false
+
+RSpec/ExampleLength:
+  Enabled: false
+
+RSpec/MultipleExpectations:
+  Enabled: false # this project asserts multiple values per example
 
 Style/AccessorGrouping:
   Enabled: false
