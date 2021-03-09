@@ -19,7 +19,11 @@ gem "active_record_extended"
 gem "friendly_id"
 gem "pundit"
 
+# Auth & Administration
+gem "devise"
+
 # Extensions
+gem "slim"
 gem "rails-i18n"
 gem "bootsnap", ">= 1.4.4", require: false
 gem "turbolinks", "~> 5"
