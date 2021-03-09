@@ -15,7 +15,7 @@ gem "redis", "~> 4.0"
 
 # Model & ORM
 gem "activerecord-pg_enum"
-gem "active_record_extended"
+# gem "active_record_extended"
 gem "friendly_id"
 gem "pundit"
 
@@ -48,7 +48,7 @@ group :development, :test do
   # gem "byebug", platforms: [:mri, :mingw, :x64_mingw]
   gem "pry-rails"
   gem "pry-byebug"
-  gem "pry-doc"
+  # gem "pry-doc" # ruby/3.0.0 isn't supported by this pry-doc version
   gem "pry-rescue"
   gem "pry-stack_explorer"
   gem "rubocop", require: false

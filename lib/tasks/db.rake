@@ -12,7 +12,7 @@ namespace :db do
       ["Test Database Setup", :sh, "RAILS_ENV=test rake db:setup"],
       ["Seed Database", :rake, "db:seed"],
       ["Load Fixtures into Database", :rake, "db:fixtures:load"],
-      ["Annotate Models", :sh, "annotate --models"]
+      ["Annotate Models", :sh, "annotate --models"],
     ].each do |title, type, command|
       puts title.blue
       case type
