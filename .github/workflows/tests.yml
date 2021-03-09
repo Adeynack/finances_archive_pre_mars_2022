@@ -1,0 +1,45 @@
+name: Tests
+
+on: [push]
+
+jobs:
+  server:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:13.2 # <--> docker-compose.yml
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: finances
+        ports:
+          - 5432:5432
+      redis:
+        image: redis:latest
+        ports:
+          - 6379:6379
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.0.0 # <--> Gemfile
+          bundler-cache: true
+      - name: Model Annotation
+        env:
+          DATABASE_URL: postgres://postgres:postgres@127.0.0.1/finances
+          RAILS_ENV: test
+          ANNOTATE_FROZEN: true
+        run: bundle exec rake annotate_models
+      - name: Controllers Annotation
+        run: bundle exec chusaku --dry-run --exit-with-error-on-annotation
+      - name: Lint
+        run: bundle exec rubocop
+      - name: Tests
+        env:
+          DATABASE_URL: postgres://postgres:postgres@127.0.0.1/finances
+          RAILS_ENV: test
+        run: |
+          bundle exec rails db:create db:migrate
+          bundle exec rails test
