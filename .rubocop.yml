@@ -37,11 +37,11 @@ Metrics/AbcSize:
 Metrics/BlockLength:
   Exclude:
     - Guardfile
-    - lib/tasks/**/*.rake
-    - spec/**/*.rb
   IgnoredMethods:
     - refine
     - class_methods
+    - namespace
+    - task
 
 Metrics/CyclomaticComplexity:
   Max: 10 # default: 7
