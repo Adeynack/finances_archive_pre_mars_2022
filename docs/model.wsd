@@ -16,11 +16,18 @@ package Organisation {
     * password_digest
   }
 
-  class BookRole {
-    role: owner | admin | writer | reader
+  enum BookRoleType < PG Enum > {
+    owner
+    admin
+    writer
+    reader
   }
-  BookRole --* Book
+
+  class BookRole {
+  }
   BookRole --* User
+  BookRole --* Book
+  BookRole "role" --* BookRoleType
 }
 
 package "Register" {

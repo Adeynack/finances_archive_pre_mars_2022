@@ -10,10 +10,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_09_001228) do
+ActiveRecord::Schema.define(version: 2021_03_09_235119) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  # These are custom enum types that must be created before they can be used in the schema definition
+  create_enum "book_role_name", ["owner", "admin", "writer", "reader"]
+
+  create_table "book_roles", force: :cascade do |t|
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.bigint "book_id", null: false
+    t.bigint "user_id", null: false
+    t.enum "role", null: false, as: "book_role_name"
+    t.index ["book_id", "user_id", "role"], name: "index_book_roles_on_book_id_and_user_id_and_role"
+    t.index ["book_id"], name: "index_book_roles_on_book_id"
+    t.index ["user_id"], name: "index_book_roles_on_user_id"
+  end
 
   create_table "books", force: :cascade do |t|
     t.datetime "created_at", precision: 6, null: false
@@ -37,5 +51,7 @@ ActiveRecord::Schema.define(version: 2021_03_09_001228) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "book_roles", "books"
+  add_foreign_key "book_roles", "users"
   add_foreign_key "books", "users", column: "owner_id"
 end
