@@ -15,7 +15,5 @@ class BookRole < ApplicationRecord
   belongs_to :book
   belongs_to :user
 
-  def effective_roles
-    BookRoleDefinition.find_by(name: role).effective_roles
-  end
+  enum role: [:admin, :writer, :reader].index_with(&:to_s)
 end

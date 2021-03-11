@@ -4,25 +4,28 @@ hide empty methods
 hide circle
 
 package Organisation {
+  ' Model created.
   class Book {
     * name
     * default_currency_iso_code: string{3}
   }
   Book "* owner" --* User
 
+  ' Model created.
   class User {
     * email
     * display_name
     * password_digest
   }
 
+  ' Enum created.
   enum BookRoleType < PG Enum > {
-    owner
     admin
     writer
     reader
   }
 
+  ' Model created.
   class BookRole {
   }
   BookRole --* User
