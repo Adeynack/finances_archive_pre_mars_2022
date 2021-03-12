@@ -18,5 +18,5 @@
 #  default_category_id :bigint           indexed
 #  info                :jsonb            not null
 #
-class Register::Investment < Register
+class Registers::Loan < Register
 end

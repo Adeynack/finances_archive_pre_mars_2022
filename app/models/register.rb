@@ -39,25 +39,25 @@ class Register < ApplicationRecord
 
   class << self
     def store_full_sti_class
-      false # uses "Bank" instead of "Register::Bank"
+      false # ex: uses "Bank" instead of "Registers::Bank"
     end
 
     def account_types
       @account_types ||= [
-        Register::Asset,
-        Register::Bank,
-        Register::Card,
-        Register::Institution,
-        Register::Investment,
-        Register::Liability,
-        Register::Loan,
+        Registers::Asset,
+        Registers::Bank,
+        Registers::Card,
+        Registers::Institution,
+        Registers::Investment,
+        Registers::Liability,
+        Registers::Loan,
       ]
     end
 
     def category_types
       @category_types ||= [
-        Register::Expense,
-        Register::Income,
+        Registers::Expense,
+        Registers::Income,
       ]
     end
   end

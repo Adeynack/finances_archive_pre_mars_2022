@@ -62,29 +62,36 @@ package "Register" {
   Register "* type" --* RegisterType
 
   package Categories {
+    ' TODO: Create Rails model
     class Expense < STI > {}
     Expense --|> Register
 
+    ' TODO: Create Rails model
     class Income < STI > {}
     Income --|> Register
   }
 
   package Accounts {
+    ' TODO: Create Rails model
     class Asset < STI > {}
     Asset --|> Register
 
+    ' Model created
     class Bank < STI > {}
     Bank --|> Register
 
+    ' Model created
     class BankInfo < Store > {
       account_number: String
       iban: String
     }
     BankInfo o-- Bank
 
+    ' TODO: Create Rails model
     class Card < STI > {}
     Card --|> Register
 
+    ' TODO: Create Rails model
     class CardInfo < Store > {
       account_number: String
       iban: String
@@ -95,26 +102,33 @@ package "Register" {
     }
     CardInfo o-- Card
 
+    ' TODO: Create Rails model
     class Investment < STI > {}
     Investment --|> Register
 
+    ' TODO: Create Rails model
     class InvestmentInfo < Store > {
       account_number: String
     }
     InvestmentInfo o-- Investment
 
+    ' TODO: Create Rails model
     class Liability < STI > {}
     Liability --|> Register
 
+    ' TODO: Create Rails model
     class Loan < STI > {}
     Loan --|> Register
 
+    ' TODO: Create Rails model
     class Other < STI > {}
     Other --|> Register
 
+    ' TODO: Create Rails model
     class Person < STI > {}
     Person --|> Register
 
+    ' TODO: Create Rails model
     class PersonInfo < Store > {
       name: String
       iban: String
@@ -124,12 +138,14 @@ package "Register" {
 }
 
 package Transaction {
+    ' TODO: Create PSQL enum
   enum TransactionStatus < PG Enum > {
     Uncleared
     Reconciling
     Cleared
   }
 
+  ' TODO: Create Rails model
   class Transaction {
     * date: DateTime
     cheque: String
@@ -138,6 +154,7 @@ package Transaction {
   }
   Transaction "* origin" --|> Register
 
+  ' TODO: Create Rails model
   class Split {
     * amount: Integer
     * counterpart_amount: Integer
@@ -149,12 +166,14 @@ package Transaction {
 }
 
 package Reminders {
+  ' TODO: Create PSQL enum
   enum ReminderNature < PG Enum > {
     Reminder
     AutoCommit
     AutoCancel
   }
 
+  ' TODO: Create Rails model
   class Reminder {
     * title
     description
@@ -167,6 +186,7 @@ package Reminders {
   Reminder "* nature" *-- ReminderNature
   Reminder "* origin" --* Register
 
+  ' TODO: Create Rails model
   class ReminderSplit {
     * amount: Integer
     memo
@@ -177,16 +197,19 @@ package Reminders {
 }
 
 package "Applicable to all elements" {
+  ' TODO: Create Rails model
   class Tag {
     * name
   }
 
+  ' TODO: Create Rails model
   class Tagging {
     * subject_type
     * subject_id
   }
   Tagging --* Tag
 
+' TODO: Create Rails model
   class ImportOrigin {
     * subject_id
     * subject_type

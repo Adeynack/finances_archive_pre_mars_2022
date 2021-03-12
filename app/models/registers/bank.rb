@@ -18,5 +18,6 @@
 #  default_category_id :bigint           indexed
 #  info                :jsonb            not null
 #
-class Register::Card < Register
+class Registers::Bank < Register
+  attribute :info, Registers::BankInfo
 end

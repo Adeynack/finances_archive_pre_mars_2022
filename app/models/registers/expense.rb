@@ -18,5 +18,5 @@
 #  default_category_id :bigint           indexed
 #  info                :jsonb            not null
 #
-class Register::Asset < Register
+class Registers::Expense < Register
 end
