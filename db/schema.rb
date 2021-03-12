@@ -10,13 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_09_235119) do
+ActiveRecord::Schema.define(version: 2021_03_11_220014) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   # These are custom enum types that must be created before they can be used in the schema definition
-  create_enum "book_role_name", ["owner", "admin", "writer", "reader"]
+  create_enum "book_role_name", ["admin", "writer", "reader"]
+  create_enum "register_type", ["Bank", "Card", "Investment", "Asset", "Liability", "Loan", "Institution", "Expense", "Income"]
 
   create_table "book_roles", force: :cascade do |t|
     t.datetime "created_at", precision: 6, null: false
@@ -38,6 +39,24 @@ ActiveRecord::Schema.define(version: 2021_03_09_235119) do
     t.index ["owner_id"], name: "index_books_on_owner_id"
   end
 
+  create_table "registers", force: :cascade do |t|
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "name", null: false
+    t.enum "type", null: false, as: "register_type"
+    t.bigint "book_id", null: false
+    t.bigint "parent_id", comment: "A null parent means it is a root register."
+    t.date "starts_at", null: false
+    t.string "currency_iso_code", limit: 3, null: false
+    t.integer "initial_balance", default: 0, null: false
+    t.boolean "active", default: true, null: false
+    t.bigint "default_category_id", comment: "The category automatically selected when entering a new transaction from this register."
+    t.jsonb "info", default: {}, null: false
+    t.index ["book_id"], name: "index_registers_on_book_id"
+    t.index ["default_category_id"], name: "index_registers_on_default_category_id"
+    t.index ["parent_id"], name: "index_registers_on_parent_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -54,4 +73,7 @@ ActiveRecord::Schema.define(version: 2021_03_09_235119) do
   add_foreign_key "book_roles", "books"
   add_foreign_key "book_roles", "users"
   add_foreign_key "books", "users", column: "owner_id"
+  add_foreign_key "registers", "books"
+  add_foreign_key "registers", "registers", column: "default_category_id"
+  add_foreign_key "registers", "registers", column: "parent_id"
 end

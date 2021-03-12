@@ -41,19 +41,18 @@ package "Register" {
     Asset
     Liability
     Loan
-    Other
-    Person
+    Institution
     Expense
     Income
   }
 
+  ' Model created
   class Register {
     * name
     * starts_at
     * currency_iso_code: string{3}
     * initial_balance: integer = 0
     * active: boolean = true
-    group: string
     info: JSON
     notes: text
   }

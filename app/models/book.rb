@@ -15,6 +15,10 @@ class Book < ApplicationRecord
   include Currencyable
 
   belongs_to :owner, class_name: "User"
+
   has_many :book_roles, dependent: :destroy
+  # To get root register: book.registers.root
+  has_many :registers, dependent: :destroy
+
   has_currency :default_currency
 end

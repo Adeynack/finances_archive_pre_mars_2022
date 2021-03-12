@@ -53,7 +53,7 @@ if Rails.env.development? || Rails.env.test?
       # "trace" => "false",
       # "wrapper_open" => nil,
       # "wrapper_close" => nil,
-      "with_comment" => "true"
+      "with_comment" => "false" # disabled until `annotate` allows for putting comment in the last column instead of with the name (maybe submit a PR to `annotate` with that option).
     )
   end
 
