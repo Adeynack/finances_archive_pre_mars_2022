@@ -16,9 +16,11 @@ module JSONAttributable
       @attribute_names ||= []
     end
 
-    def attribute(name)
+    def attribute(name, **validations)
       attribute_names.push(name)
       attr_accessor(name)
+
+      validates name, validations if validations.present?
     end
 
     def binary?
@@ -28,7 +30,15 @@ module JSONAttributable
     def cast(value)
       return value if value.is_a?(self)
 
-      new(value.to_h)
+      value = value.to_h unless value.is_a?(Hash)
+      object = new({})
+      value.each do |k, v|
+        object.send "#{k}=", v
+      rescue NoMethodError
+        # ignores unknown attributes instead of failing
+      end
+
+      object
     end
 
     def changed?(*_args)
@@ -46,7 +56,7 @@ module JSONAttributable
     end
 
     def serialize(value)
-      serialized = value.as_json.except(:errors, :validation_context)
+      serialized = value.as_json.except("errors", "validation_context")
       serialized.minimize_presence!.presence if @minimize_presence
       serialized&.to_json
     end
@@ -75,12 +85,18 @@ module JSONAttributable
       instance_variable_set("@#{key}", value)
     end
 
+    def attributes
+      self.class.attribute_names.map { |name| [name.to_s, send(name)] }.to_h
+    end
+
+    def read_attribute_for_serialization(attribute)
+      public_send(attribute)
+    end
+
     def to_h
       self.class.attribute_names.index_with { |a| send(a) }
     end
 
-    def attributes
-      self.class.attribute_names.map { |name| [name.to_s, send(name)] }.to_h
-    end
+    alias_method :to_hash, :to_h # called by `as_json`, otherwise all `insatnce_values` as considered for JSON serialization
   end
 end
