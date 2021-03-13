@@ -19,6 +19,8 @@
 #  info                :jsonb
 #
 class Registers::Card < Register
+
+  # TODO: Transform that into a JSONAttributable
   store :info, accessors: [
     :account_number,
     :iban,

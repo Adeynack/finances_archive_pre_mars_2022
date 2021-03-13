@@ -4,6 +4,7 @@ module Registers
   class BankInfo
     include JSONAttributable
 
+    # TODO: Allow validations to be provided as options to `attribute`.
     attribute :account_number
     attribute :iban
 
