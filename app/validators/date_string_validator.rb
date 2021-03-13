@@ -4,9 +4,8 @@ class DateStringValidator < ActiveModel::EachValidator
   def validate_each(record, attribute, value)
     return if value.is_a?(Date)
 
-    allow_nil = options[:allow_nil]
     if value.blank?
-      record.errors.add(attribute, :cannot_be_empty) unless allow_nil
+      record.errors.add(attribute, :cannot_be_empty) unless options[:allow_nil]
       return
     end
 

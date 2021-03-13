@@ -6,5 +6,7 @@ module Registers
 
     attribute :account_number
     attribute :iban
+
+    validates :iban, iban: { allow_nil: true }
   end
 end

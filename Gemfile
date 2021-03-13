@@ -44,6 +44,7 @@ gem "webpacker", "~> 5.0"
 gem "countries"
 gem "money", "~> 6.13.7"
 gem "money-rails", "~> 1.13.3"
+gem "iban-tools"
 
 group :development, :test do
   # gem "byebug", platforms: [:mri, :mingw, :x64_mingw]

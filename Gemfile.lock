@@ -161,6 +161,7 @@ GEM
       rainbow (>= 2.2.2, < 4.0)
       terminal-table (>= 1.5.1)
     i18n_data (0.10.0)
+    iban-tools (1.1.0)
     interception (0.5)
     kaminari (1.2.1)
       activesupport (>= 4.1.0)
@@ -407,6 +408,7 @@ DEPENDENCIES
   guard
   guard-minitest
   i18n-tasks
+  iban-tools
   kaminari
   listen (~> 3.3)
   minitest-focus

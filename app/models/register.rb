@@ -33,9 +33,7 @@ class Register < ApplicationRecord
 
   scope :root, -> { where(parent: nil) }
 
-  before_validation do
-    info.minimize_presence!
-  end
+  validates :info, bubble_up: true
 
   before_create do
     self.starts_at ||= DateTime.now
