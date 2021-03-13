@@ -16,7 +16,7 @@
 #  initial_balance     :integer          default(0), not null
 #  active              :boolean          default(TRUE), not null
 #  default_category_id :bigint           indexed
-#  info                :jsonb            not null
+#  info                :jsonb
 #
 class Registers::Bank < Register
   attribute :info, Registers::BankInfo

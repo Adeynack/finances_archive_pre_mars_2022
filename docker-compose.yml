@@ -4,7 +4,7 @@ services:
   postgres:
     image: 'postgres:13.2' # <--> .github/workflows/tests.yml
     ports:
-      - '5432:5432'
+      - '${PG_PORT}:5432'
     volumes:
       - ./tmp/volumes/postgres:/var/lib/postgresql/data
     environment:
@@ -12,4 +12,4 @@ services:
   redis:
     image: redis
     ports:
-      - '6379:6379'
+      - '${REDIS_PORT}:6379'

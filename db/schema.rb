@@ -51,7 +51,7 @@ ActiveRecord::Schema.define(version: 2021_03_11_220014) do
     t.integer "initial_balance", default: 0, null: false
     t.boolean "active", default: true, null: false
     t.bigint "default_category_id", comment: "The category automatically selected when entering a new transaction from this register."
-    t.jsonb "info", default: {}, null: false
+    t.jsonb "info"
     t.index ["book_id"], name: "index_registers_on_book_id"
     t.index ["default_category_id"], name: "index_registers_on_default_category_id"
     t.index ["parent_id"], name: "index_registers_on_parent_id"

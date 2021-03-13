@@ -1,24 +1,20 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Develop
 
-Things you may want to cover:
+### Initial Setup
 
-* Ruby version
+```bash
+bundle # installs ruby gems
+yarn install # installs the JavaScript packages
+rails db:create db:migrate # creates the database and loads the schema
+rails db:fixtures:load # (optional) creates demo data within the app
+```
 
-* System dependencies
+### Start a development session
 
-* Configuration
+Keep this open in a terminal tab.
 
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+```bash
+docker-compose up --env-file .env # starts the dependencies (ex: Redis, PostgreSQL)
+```

@@ -16,10 +16,11 @@
 #  initial_balance     :integer          default(0), not null
 #  active              :boolean          default(TRUE), not null
 #  default_category_id :bigint           indexed
-#  info                :jsonb            not null
+#  info                :jsonb
 #
 class Register < ApplicationRecord
   include Currencyable
+  using HashRefinements
 
   belongs_to :book
   belongs_to :parent, class_name: "Register", optional: true, inverse_of: :children
@@ -32,6 +33,10 @@ class Register < ApplicationRecord
 
   scope :root, -> { where(parent: nil) }
 
+  before_validation do
+    info.minimize_presence!
+  end
+
   before_create do
     self.starts_at ||= DateTime.now
     self.currency_iso_code ||= book.default_currency_iso_code
@@ -39,7 +44,11 @@ class Register < ApplicationRecord
 
   class << self
     def store_full_sti_class
-      false # ex: uses "Bank" instead of "Registers::Bank"
+      false
+    end
+
+    def find_sti_class(type_name)
+      super("Registers::#{type_name}")
     end
 
     def account_types

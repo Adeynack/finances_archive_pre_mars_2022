@@ -72,7 +72,7 @@ package "Register" {
   }
 
   package Accounts {
-    ' TODO: Create Rails model
+    ' Model create
     class Asset < STI > {}
     Asset --|> Register
 
@@ -87,7 +87,7 @@ package "Register" {
     }
     BankInfo o-- Bank
 
-    ' TODO: Create Rails model
+    ' Model created
     class Card < STI > {}
     Card --|> Register
 
