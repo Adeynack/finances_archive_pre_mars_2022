@@ -20,7 +20,6 @@
 #
 class Register < ApplicationRecord
   include Currencyable
-  using HashRefinements
 
   belongs_to :book
   belongs_to :parent, class_name: "Register", optional: true, inverse_of: :children

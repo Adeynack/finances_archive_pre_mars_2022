@@ -80,9 +80,9 @@ module JSONAttributable
 
     def serialize(value)
       serialized = value.as_json.except("errors", "validation_context")
-      serialized.minimize_presence!.presence if @minimize_presence
+      serialized.minimize_presence! if @minimize_presence
       coerce_to_json_types(serialized)
-      serialized&.to_json
+      serialized.presence&.to_json
     end
 
     def coerce_to_json_types(value)
