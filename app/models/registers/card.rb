@@ -19,18 +19,5 @@
 #  info                :jsonb
 #
 class Registers::Card < Register
-
-  # TODO: Transform that into a JSONAttributable
-  store :info, accessors: [
-    :account_number,
-    :iban,
-    :interest_rate,
-    :credit_limit,
-    :card_number,
-    :expires_at,
-  ], coder: JSON
-
-  validates :interest_rate, numericality: { allow_nil: true, greater_than_or_equal_to: 0 }
-  validates :credit_limit, numericality: { allow_nil: true, only_integer: true, greater_than_or_equal_to: 0 }
-  validates :expires_at, date_string: { allow_nil: true }
+  attribute :info, Registers::CardInfo
 end

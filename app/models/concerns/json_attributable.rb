@@ -16,11 +16,34 @@ module JSONAttributable
       @attribute_names ||= []
     end
 
+    def attribute_coercions
+      @attribute_coercions ||= {}
+    end
+
+    # Define an attribute of the JSON model, with the possibility
+    # of inligning its validations.
+    #
+    #   attribute :last_name, string: true
+    #   attribute :firts_name, string: { allow_nil: true }
+    #   attribute :age, numericality: true
+    #
     def attribute(name, **validations)
       attribute_names.push(name)
       attr_accessor(name)
 
-      validates name, validations if validations.present?
+      return if validations.blank?
+
+      # Apply validations
+      validates name, validations
+
+      # Infer JSON type coercion
+      coercion = validations.lazy.map do |k, v|
+        case k
+        when :numericality
+          v.is_a?(Hash) && v[:only_integer] == true ? :integer : :float
+        end
+      end.detect(&:itself)
+      attribute_coercions[name] = coercion unless coercion.nil?
     end
 
     def binary?
@@ -58,7 +81,23 @@ module JSONAttributable
     def serialize(value)
       serialized = value.as_json.except("errors", "validation_context")
       serialized.minimize_presence!.presence if @minimize_presence
+      coerce_to_json_types(serialized)
       serialized&.to_json
+    end
+
+    def coerce_to_json_types(value)
+      attribute_coercions.each do |attribute, coercion|
+        attr_value = value[attribute.to_s]
+        next if attr_value.nil?
+
+        coerced =
+          case coercion
+          when :integer then attr_value.to_i
+          when :float then attr_value.to_f
+          else attr_value # unmodified
+          end
+        value[attribute] = coerced
+      end
     end
 
     def type
@@ -93,10 +132,14 @@ module JSONAttributable
       public_send(attribute)
     end
 
+    def serialize
+      self.class.serialize(self)
+    end
+
     def to_h
       self.class.attribute_names.index_with { |a| send(a) }
     end
 
-    alias_method :to_hash, :to_h # called by `as_json`, otherwise all `insatnce_values` as considered for JSON serialization
+    alias_method :to_hash, :to_h # called by `as_json`, otherwise all `instance_values` as considered for JSON serialization
   end
 end

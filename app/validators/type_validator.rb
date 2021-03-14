@@ -1,10 +1,13 @@
 # frozen_string_literal: true
 
-# Validates that the value, if present, if of one of the specified types.
+# Validates that the value if of one of the specified types.
 class TypeValidator < ActiveModel::EachValidator
   def validate_each(record, attribute, value)
     # ap { attribute: attribute, value: value, options: options }
-    return if value.nil?
+    unless value.nil? || value.is_a?(FalseClass)
+      record.errors.add(attribute, :cannot_be_empty) unless options[:allow_nil] == true
+      return
+    end
 
     type_options = Array.wrap(options[:with] || options[:in])
     return if allowed_types(type_options).include?(value.class)
@@ -23,7 +26,7 @@ class TypeValidator < ActiveModel::EachValidator
   end
 
   def error_message(type_options)
-    types_part = type_options.map { |type| SYMBOL_MESSAGE_PART[type] || type.name }.join(' or ')
+    types_part = type_options.map { |type| SYMBOL_MESSAGE_PART[type] || type.name }.join(" or ")
     "must be #{types_part}"
   end
 
