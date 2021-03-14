@@ -163,22 +163,23 @@ package Reminders {
   class Reminder {
     * title
     description
-    * from: Date
-    until: Date
+    * during: tsrange
     recurrence: String < Montrose >
+    last_applied_at: DateTime
     transaction_description
-
+    transaction_memo
   }
   Reminder "* nature" *-- ReminderNature
-  Reminder "* origin" --* Register
+  Reminder "* register" --* Register
 
   ' TODO: Create Rails model
   class ReminderSplit {
     * amount: Integer
+    counterpart_amount: Integer
     memo
   }
   Reminder "1..n" --* ReminderSplit
-  ReminderSplit "* destination" --* Register
+  ReminderSplit "* register" --* Register
   ReminderSplit "* status" --* TransactionStatus
 }
 
