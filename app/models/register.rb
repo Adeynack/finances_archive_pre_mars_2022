@@ -28,6 +28,14 @@ class Register < ApplicationRecord
 
   has_many :children, class_name: "Register", foreign_key: "parent_id", inverse_of: :parent, dependent: :destroy
 
+  # Transactions originating from this register.
+  # THIS REGISTER --> Transaction --> Splits --> Other Registers
+  has_many :transactions, dependent: :destroy
+
+  # Splits pointing to this register. NOT splits of this register's transactions.
+  # Other Register --> Transaction --> Split --> THIS REGISTER
+  has_many :split, dependent: false
+
   has_currency :currency
 
   scope :root, -> { where(parent: nil) }

@@ -123,14 +123,14 @@ package "Register" {
 }
 
 package Transaction {
-    ' TODO: Create PSQL enum
+  ' Enum created
   enum TransactionStatus < PG Enum > {
     Uncleared
     Reconciling
     Cleared
   }
 
-  ' TODO: Create Rails model
+  ' Model created
   class Transaction {
     * date: Date
     cheque: String
@@ -138,8 +138,9 @@ package Transaction {
     memo
   }
   Transaction "* origin" --|> Register
+  Transaction "* status" --* TransactionStatus
 
-  ' TODO: Create Rails model
+  ' Model created
   class Split {
     * amount: Integer
     * counterpart_amount: Integer

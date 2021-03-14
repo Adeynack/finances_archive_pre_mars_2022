@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_11_220014) do
+ActiveRecord::Schema.define(version: 2021_03_14_172733) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -18,6 +18,7 @@ ActiveRecord::Schema.define(version: 2021_03_11_220014) do
   # These are custom enum types that must be created before they can be used in the schema definition
   create_enum "book_role_name", ["admin", "writer", "reader"]
   create_enum "register_type", ["Bank", "Card", "Investment", "Asset", "Liability", "Loan", "Institution", "Expense", "Income"]
+  create_enum "transaction_status", ["uncleared", "reconciling", "cleared"]
 
   create_table "book_roles", force: :cascade do |t|
     t.datetime "created_at", precision: 6, null: false
@@ -25,7 +26,7 @@ ActiveRecord::Schema.define(version: 2021_03_11_220014) do
     t.bigint "book_id", null: false
     t.bigint "user_id", null: false
     t.enum "role", null: false, as: "book_role_name"
-    t.index ["book_id", "user_id", "role"], name: "index_book_roles_on_book_id_and_user_id_and_role"
+    t.index ["book_id", "user_id", "role"], name: "index_book_roles_on_book_id_and_user_id_and_role", unique: true
     t.index ["book_id"], name: "index_book_roles_on_book_id"
     t.index ["user_id"], name: "index_book_roles_on_user_id"
   end
@@ -57,6 +58,32 @@ ActiveRecord::Schema.define(version: 2021_03_11_220014) do
     t.index ["parent_id"], name: "index_registers_on_parent_id"
   end
 
+  create_table "splits", force: :cascade do |t|
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.bigint "transaction_id", null: false
+    t.bigint "register_id", null: false, comment: "To which register is the money going to for this split."
+    t.integer "amount", null: false
+    t.integer "counterpart_amount", comment: "Amount in the destination register, if it differs from 'amount' (ex: an exchange rate applies)."
+    t.text "memo", comment: "Detail about the transaction, to show in the destination register."
+    t.enum "status", default: "uncleared", null: false, as: "transaction_status"
+    t.index ["register_id"], name: "index_splits_on_register_id"
+    t.index ["transaction_id"], name: "index_splits_on_transaction_id"
+  end
+
+  create_table "transactions", force: :cascade do |t|
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.date "date", null: false, comment: "Date the transaction appears in the book."
+    t.bigint "register_id", null: false, comment: "From which register does the money come from."
+    t.string "cheque", comment: "Cheque information."
+    t.string "description", null: false, comment: "Label of the transaction."
+    t.text "memo", comment: "Detail about the transaction."
+    t.enum "status", default: "uncleared", null: false, as: "transaction_status"
+    t.index ["date"], name: "index_transactions_on_date"
+    t.index ["register_id"], name: "index_transactions_on_register_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -76,4 +103,7 @@ ActiveRecord::Schema.define(version: 2021_03_11_220014) do
   add_foreign_key "registers", "books"
   add_foreign_key "registers", "registers", column: "default_category_id"
   add_foreign_key "registers", "registers", column: "parent_id"
+  add_foreign_key "splits", "registers"
+  add_foreign_key "splits", "transactions"
+  add_foreign_key "transactions", "registers"
 end
