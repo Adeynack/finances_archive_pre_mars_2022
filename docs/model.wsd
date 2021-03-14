@@ -91,22 +91,22 @@ package "Register" {
     class Card < STI > {}
     Card --|> Register
 
-    ' TODO: Create Rails model
+    ' Model created
     class CardInfo < Store > {
       account_number: String
       iban: String
       interest_rate: Float
       credit_limit: Integer
       card_number: String
-      expires_at: DateTime
+      expires_at: Date
     }
     CardInfo o-- Card
 
-    ' TODO: Create Rails model
+    ' Model create
     class Investment < STI > {}
     Investment --|> Register
 
-    ' TODO: Create Rails model
+    ' Model created
     class InvestmentInfo < Store > {
       account_number: String
     }
@@ -119,21 +119,6 @@ package "Register" {
     ' TODO: Create Rails model
     class Loan < STI > {}
     Loan --|> Register
-
-    ' TODO: Create Rails model
-    class Other < STI > {}
-    Other --|> Register
-
-    ' TODO: Create Rails model
-    class Person < STI > {}
-    Person --|> Register
-
-    ' TODO: Create Rails model
-    class PersonInfo < Store > {
-      name: String
-      iban: String
-    }
-    PersonInfo o-- Person
   }
 }
 
@@ -147,7 +132,7 @@ package Transaction {
 
   ' TODO: Create Rails model
   class Transaction {
-    * date: DateTime
+    * date: Date
     cheque: String
     * description
     memo
@@ -177,8 +162,8 @@ package Reminders {
   class Reminder {
     * title
     description
-    * from: DateTime
-    until: DateTime
+    * from: Date
+    until: Date
     recurrence: String < Montrose >
     transaction_description
 

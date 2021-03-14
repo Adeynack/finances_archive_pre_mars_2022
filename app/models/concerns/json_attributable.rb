@@ -111,7 +111,7 @@ module JSONAttributable
     attr_accessor :errors
     attr_accessor :validation_context
 
-    def initialize(value)
+    def initialize(value = {})
       super(value)
       @errors = ActiveModel::Errors.new(self)
     end

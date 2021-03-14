@@ -19,4 +19,5 @@
 #  info                :jsonb
 #
 class Registers::Investment < Register
+  attribute :info, Registers::InvestmentInfo
 end
