@@ -62,11 +62,11 @@ package "Register" {
   Register "* type" --* RegisterType
 
   package Categories {
-    ' TODO: Create Rails model
+    ' Model created
     class Expense < STI > {}
     Expense --|> Register
 
-    ' TODO: Create Rails model
+    ' Model created
     class Income < STI > {}
     Income --|> Register
   }
@@ -112,11 +112,11 @@ package "Register" {
     }
     InvestmentInfo o-- Investment
 
-    ' TODO: Create Rails model
+    ' Model created
     class Liability < STI > {}
     Liability --|> Register
 
-    ' TODO: Create Rails model
+    ' Model created
     class Loan < STI > {}
     Loan --|> Register
   }

@@ -36,7 +36,7 @@ class Register < ApplicationRecord
   validates :info, bubble_up: true
 
   before_create do
-    self.starts_at ||= DateTime.now
+    self.starts_at ||= Time.zone.today
     self.currency_iso_code ||= book.default_currency_iso_code
   end
 
