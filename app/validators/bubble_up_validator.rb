@@ -5,6 +5,7 @@
 # Inspired from this post: https://stackoverflow.com/a/7387710/1435116
 class BubbleUpValidator < ActiveModel::EachValidator
   def validate_each(record, attribute, value)
+    return if value.nil?
     return if value.valid?
 
     value.errors.full_messages.each do |msg|

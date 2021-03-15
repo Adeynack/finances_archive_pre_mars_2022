@@ -5,18 +5,18 @@ hide circle
 
 package Organisation {
   ' Model created.
-  class Book {
-    * name
-    * default_currency_iso_code: string{3}
-  }
-  Book "* owner" --* User
-
-  ' Model created.
   class User {
     * email
     * display_name
     * password_digest
   }
+
+  ' Model created.
+  class Book {
+    * name
+    * default_currency_iso_code: string{3}
+  }
+  Book "* owner" --* User
 
   ' Enum created.
   enum BookRoleType < PG Enum > {
@@ -35,6 +35,7 @@ package Organisation {
 
 package "Register" {
   enum RegisterType < PG Enum > {
+    ' Accounts
     Bank
     Card
     Investment
@@ -42,8 +43,11 @@ package "Register" {
     Liability
     Loan
     Institution
+    ' Categories
     Expense
     Income
+    ' Other
+    Reminder
   }
 
   ' Model created
@@ -152,35 +156,29 @@ package Transaction {
 }
 
 package Reminders {
-  ' TODO: Create PSQL enum
-  enum ReminderNature < PG Enum > {
-    Reminder
-    AutoCommit
-    AutoCancel
+  ' Enum created
+  enum ReminderMode < PG Enum > {
+    manual
+    auto_commit
+    auto_cancel
   }
 
-  ' TODO: Create Rails model
+  ' Model created
+  class ReminderRegister < STI > {}
+  ReminderRegister --|> Register
+  Book "* reminder_register" --* ReminderRegister
+
+  ' Model created
   class Reminder {
     * title
     description
     * during: tsrange
     recurrence: String < Montrose >
     last_applied_at: DateTime
-    transaction_description
-    transaction_memo
   }
-  Reminder "* nature" *-- ReminderNature
-  Reminder "* register" --* Register
-
-  ' TODO: Create Rails model
-  class ReminderSplit {
-    * amount: Integer
-    counterpart_amount: Integer
-    memo
-  }
-  Reminder "1..n" --* ReminderSplit
-  ReminderSplit "* register" --* Register
-  ReminderSplit "* status" --* TransactionStatus
+  Reminder "* mode" --* ReminderMode
+  Book "* book" --* Reminder
+  Reminder "* transaction" --* Transaction
 }
 
 package "Applicable to all elements" {

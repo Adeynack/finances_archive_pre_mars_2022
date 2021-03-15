@@ -39,6 +39,8 @@ class Register < ApplicationRecord
   has_currency :currency
 
   scope :root, -> { where(parent: nil) }
+  scope :accounts, -> { where(type: Register.account_types) }
+  scope :categories, -> { where(type: Register.category_types) }
 
   validates :info, bubble_up: true
 

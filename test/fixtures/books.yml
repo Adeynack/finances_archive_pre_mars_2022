@@ -8,6 +8,7 @@
 #  name                      :string           not null
 #  owner_id                  :bigint           not null, indexed
 #  default_currency_iso_code :string(3)        not null
+#  reminder_register_id      :bigint           indexed
 #
 joe:
   name: Joe's Book
