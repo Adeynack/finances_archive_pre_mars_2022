@@ -28,7 +28,7 @@ gem "rails-i18n"
 gem "bootsnap", ">= 1.4.4", require: false
 gem "turbolinks", "~> 5"
 gem "bcrypt", "~> 3.1.7" # Use Active Model has_secure_password
-gem "amazing_print"
+gem "awesome_print"
 gem "kaminari"
 gem "dotenv-rails"
 
