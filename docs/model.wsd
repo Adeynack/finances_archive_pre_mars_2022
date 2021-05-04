@@ -4,28 +4,24 @@ hide empty methods
 hide circle
 
 package Organisation {
-  ' Model created.
   class User {
     * email
     * display_name
     * password_digest
   }
 
-  ' Model created.
   class Book {
     * name
     * default_currency_iso_code: string{3}
   }
   Book "* owner" --* User
 
-  ' Enum created.
   enum BookRoleType < PG Enum > {
     admin
     writer
     reader
   }
 
-  ' Model created.
   class BookRole {
   }
   BookRole --* User
@@ -46,11 +42,8 @@ package "Register" {
     ' Categories
     Expense
     Income
-    ' Other
-    Reminder
   }
 
-  ' Model created
   class Register {
     * name
     * starts_at
@@ -66,36 +59,29 @@ package "Register" {
   Register "* type" --* RegisterType
 
   package Categories {
-    ' Model created
     class Expense < STI > {}
     Expense --|> Register
 
-    ' Model created
     class Income < STI > {}
     Income --|> Register
   }
 
   package Accounts {
-    ' Model create
     class Asset < STI > {}
     Asset --|> Register
 
-    ' Model created
     class Bank < STI > {}
     Bank --|> Register
 
-    ' Model created
     class BankInfo < Store > {
       account_number: String
       iban: String
     }
     BankInfo o-- Bank
 
-    ' Model created
     class Card < STI > {}
     Card --|> Register
 
-    ' Model created
     class CardInfo < Store > {
       account_number: String
       iban: String
@@ -106,45 +92,38 @@ package "Register" {
     }
     CardInfo o-- Card
 
-    ' Model create
     class Investment < STI > {}
     Investment --|> Register
 
-    ' Model created
     class InvestmentInfo < Store > {
       account_number: String
     }
     InvestmentInfo o-- Investment
 
-    ' Model created
     class Liability < STI > {}
     Liability --|> Register
 
-    ' Model created
     class Loan < STI > {}
     Loan --|> Register
   }
 }
 
 package Transaction {
-  ' Enum created
   enum TransactionStatus < PG Enum > {
     Uncleared
     Reconciling
     Cleared
   }
 
-  ' Model created
   class Transaction {
     * date: Date
     cheque: String
-    * description
-    memo
+    * description: String
+    memo: Text
   }
-  Transaction "* origin" --|> Register
+  Transaction "* (origin)" --|> Register
   Transaction "* status" --* TransactionStatus
 
-  ' Model created
   class Split {
     * amount: Integer
     * counterpart_amount: Integer
@@ -156,29 +135,34 @@ package Transaction {
 }
 
 package Reminders {
-  ' Enum created
   enum ReminderMode < PG Enum > {
     manual
     auto_commit
     auto_cancel
   }
 
-  ' Model created
-  class ReminderRegister < STI > {}
-  ReminderRegister --|> Register
-  Book "* reminder_register" --* ReminderRegister
-
-  ' Model created
   class Reminder {
     * title
-    description
-    * during: tsrange
-    recurrence: String < Montrose >
+    title
+    * first_date: Date
+    last_date: Date
+    * recurrence: String < Montrose >
     last_applied_at: DateTime
+    * transaction_description: String
+    transaction_memo: Text
   }
   Reminder "* mode" --* ReminderMode
-  Book "* book" --* Reminder
-  Reminder "* transaction" --* Transaction
+  Reminder "* transaction_register" --|> Register
+  Reminder "* transaction_status" --* TransactionStatus
+
+  class ReminderSplit {
+    * amount: Integer
+    * counterpart_amount: Integer
+    memo
+  }
+  Reminder "1..n" --* ReminderSplit
+  ReminderSplit "* destination" --* Register
+  ReminderSplit "* status" --* TransactionStatus
 }
 
 package "Applicable to all elements" {

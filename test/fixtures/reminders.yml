@@ -2,15 +2,19 @@
 #
 # Table name: reminders
 #
-#  id             :bigint           not null, primary key
-#  created_at     :datetime         not null
-#  updated_at     :datetime         not null
-#  book_id        :bigint           not null, indexed
-#  title          :string           not null
-#  description    :text
-#  mode           :enum             default("manual"), not null
-#  during         :tsrange          not null
-#  recurrence     :string
-#  last_commit_at :string
-#  transaction_id :bigint           not null, indexed
+#  id                      :bigint           not null, primary key
+#  created_at              :datetime         not null
+#  updated_at              :datetime         not null
+#  book_id                 :bigint           not null, indexed
+#  title                   :string           not null
+#  description             :text
+#  mode                    :enum             default("manual"), not null
+#  first_date              :date             not null
+#  last_date               :date
+#  recurrence              :string
+#  last_commit_at          :string
+#  transaction_register_id :bigint           not null, indexed
+#  transaction_description :string           not null
+#  transaction_memo        :text
+#  transaction_status      :enum             default("uncleared"), not null
 #

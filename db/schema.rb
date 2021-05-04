@@ -17,7 +17,7 @@ ActiveRecord::Schema.define(version: 2021_03_14_223849) do
 
   # These are custom enum types that must be created before they can be used in the schema definition
   create_enum "book_role_name", ["admin", "writer", "reader"]
-  create_enum "register_type", ["Bank", "Card", "Investment", "Asset", "Liability", "Loan", "Institution", "Expense", "Income", "Reminder"]
+  create_enum "register_type", ["Bank", "Card", "Investment", "Asset", "Liability", "Loan", "Institution", "Expense", "Income"]
   create_enum "reminder_mode", ["manual", "auto_commit", "auto_cancel"]
   create_enum "transaction_status", ["uncleared", "reconciling", "cleared"]
 
@@ -38,9 +38,7 @@ ActiveRecord::Schema.define(version: 2021_03_14_223849) do
     t.string "name", null: false
     t.bigint "owner_id", null: false
     t.string "default_currency_iso_code", limit: 3, null: false
-    t.bigint "reminder_register_id"
     t.index ["owner_id"], name: "index_books_on_owner_id"
-    t.index ["reminder_register_id"], name: "index_books_on_reminder_register_id"
   end
 
   create_table "registers", force: :cascade do |t|
@@ -61,6 +59,19 @@ ActiveRecord::Schema.define(version: 2021_03_14_223849) do
     t.index ["parent_id"], name: "index_registers_on_parent_id"
   end
 
+  create_table "reminder_splits", force: :cascade do |t|
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.bigint "reminder_id", null: false
+    t.bigint "register_id", null: false, comment: "To which register is the money going to for this split."
+    t.integer "amount", null: false
+    t.integer "counterpart_amount", comment: "Amount in the destination register, if it differs from 'amount' (ex: an exchange rate applies)."
+    t.text "memo", comment: "Detail about the transaction, to show in the destination register."
+    t.enum "status", default: "uncleared", null: false, as: "transaction_status"
+    t.index ["register_id"], name: "index_reminder_splits_on_register_id"
+    t.index ["reminder_id"], name: "index_reminder_splits_on_reminder_id"
+  end
+
   create_table "reminders", force: :cascade do |t|
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -68,12 +79,16 @@ ActiveRecord::Schema.define(version: 2021_03_14_223849) do
     t.string "title", null: false
     t.text "description"
     t.enum "mode", default: "manual", null: false, as: "reminder_mode"
-    t.tsrange "during", null: false, comment: "Can be open end, but must have a start date."
-    t.string "recurrence", comment: "For one-shot reminders, nil, happening only on beginning of `during`."
+    t.date "first_date", null: false, comment: "From when to apply the reminder."
+    t.date "last_date", comment: "Until when to apply the reminder (optional)."
+    t.string "recurrence", comment: "Expressed as a 'Montrose' string. For one-shot reminders, nil, happening only on beginning of `during`."
     t.string "last_commit_at", comment: "Last time this reminder was committed. `nil` means it never was."
-    t.bigint "transaction_id", null: false
+    t.bigint "transaction_register_id", null: false, comment: "From which register does the money come from."
+    t.string "transaction_description", null: false, comment: "Label of the transaction."
+    t.text "transaction_memo", comment: "Detail about the transaction."
+    t.enum "transaction_status", default: "uncleared", null: false, as: "transaction_status"
     t.index ["book_id"], name: "index_reminders_on_book_id"
-    t.index ["transaction_id"], name: "index_reminders_on_transaction_id"
+    t.index ["transaction_register_id"], name: "index_reminders_on_transaction_register_id"
   end
 
   create_table "splits", force: :cascade do |t|
@@ -117,13 +132,14 @@ ActiveRecord::Schema.define(version: 2021_03_14_223849) do
 
   add_foreign_key "book_roles", "books"
   add_foreign_key "book_roles", "users"
-  add_foreign_key "books", "registers", column: "reminder_register_id"
   add_foreign_key "books", "users", column: "owner_id"
   add_foreign_key "registers", "books"
   add_foreign_key "registers", "registers", column: "default_category_id"
   add_foreign_key "registers", "registers", column: "parent_id"
+  add_foreign_key "reminder_splits", "registers"
+  add_foreign_key "reminder_splits", "reminders"
   add_foreign_key "reminders", "books"
-  add_foreign_key "reminders", "transactions"
+  add_foreign_key "reminders", "registers", column: "transaction_register_id"
   add_foreign_key "splits", "registers"
   add_foreign_key "splits", "transactions"
   add_foreign_key "transactions", "registers"

@@ -2,19 +2,19 @@
 
 # == Schema Information
 #
-# Table name: splits
+# Table name: reminder_splits
 #
 #  id                 :bigint           not null, primary key
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
-#  transaction_id     :bigint           not null, indexed
+#  reminder_id        :bigint           not null, indexed
 #  register_id        :bigint           not null, indexed
 #  amount             :integer          not null
 #  counterpart_amount :integer
 #  memo               :text
 #  status             :enum             default("uncleared"), not null
 #
-class Split < ApplicationRecord
-  belongs_to :txn, class_name: "Transaction", foreign_key: "transaction_id", inverse_of: :splits # `transaction` is an ActiveRecord method and cannot be used for relation name.
-  belongs_to :register # destination of the transaction's split
+class ReminderSplit < ApplicationRecord
+  belongs_to :reminder, inverse_of: :splits
+  belongs_to :register
 end

@@ -4,37 +4,49 @@
 #
 # Table name: reminders
 #
-#  id             :bigint           not null, primary key
-#  created_at     :datetime         not null
-#  updated_at     :datetime         not null
-#  book_id        :bigint           not null, indexed
-#  title          :string           not null
-#  description    :text
-#  mode           :enum             default("manual"), not null
-#  during         :tsrange          not null
-#  recurrence     :string
-#  last_commit_at :string
-#  transaction_id :bigint           not null, indexed
+#  id                      :bigint           not null, primary key
+#  created_at              :datetime         not null
+#  updated_at              :datetime         not null
+#  book_id                 :bigint           not null, indexed
+#  title                   :string           not null
+#  description             :text
+#  mode                    :enum             default("manual"), not null
+#  first_date              :date             not null
+#  last_date               :date
+#  recurrence              :string
+#  last_commit_at          :string
+#  transaction_register_id :bigint           not null, indexed
+#  transaction_description :string           not null
+#  transaction_memo        :text
+#  transaction_status      :enum             default("uncleared"), not null
 #
 class Reminder < ApplicationRecord
   belongs_to :book
-  belongs_to :tnx, class_name: "Transaction", foreign_key: "transaction_id", dependent: :destroy, inverse_of: false
+  belongs_to :transaction_register, class_name: "Register"
+
+  has_many :reminder_splits, dependent: :destroy
 
   enum mode: [:manual, :auto_commit, :auto_cancel].index_with(&:to_s)
 
   validates :title, presence: true
-  validate :validate_reminder_register
+  validates :first_date, presence: true
+  validate :validate_last_date_after_first_date
+  validate :validate_transaction_register
+  validates :transaction_description, presence: true
 
   before_validation do
-    if tnx.present?
-      reminder_register_id = book.ensure_reminder_register_id!
-      tnx.register_id ||= reminder_register_id
-    end
+    self.first_date = Time.zone.today if first_date.blank?
   end
 
   private
 
-  def validate_reminder_register
-    errors.add(:transaction, "transaction's register has to be the book's reminder_register") unless transaction_id.nil? || tnx.register.book_id == book_id # TODO: i18n message
+  def validate_last_date_after_first_date
+    errors[:last_date].add "must be after first date" if last_date.present? && first_date >= last_date
+  end
+
+  def validate_transaction_register
+    return errors.add :transaction_register, "must be present" if transaction_register_id.blank?
+
+    errors.add :transaction_register, "must belong to the same book as the reminder" if transaction_register.book_id != book_id
   end
 end

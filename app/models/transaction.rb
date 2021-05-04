@@ -21,10 +21,6 @@ class Transaction < ApplicationRecord
 
   enum status: [:uncleared, :reconciling, :cleared].index_with(:to_s)
 
-  before_validation do
-    self.date ||= Time.zone.today
-  end
-
   validates :description, presence: true
   validates :date, presence: true
 end
