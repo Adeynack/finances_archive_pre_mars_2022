@@ -15,6 +15,8 @@
 #  status      :enum             default(NULL), not null
 #
 class Exchange < ApplicationRecord
+  include Taggable
+
   belongs_to :register # origin of the exchange
 
   has_many :splits, dependent: :destroy

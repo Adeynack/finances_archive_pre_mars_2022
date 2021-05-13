@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_14_223849) do
+ActiveRecord::Schema.define(version: 2021_05_13_203614) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -117,6 +117,24 @@ ActiveRecord::Schema.define(version: 2021_03_14_223849) do
     t.index ["register_id"], name: "index_splits_on_register_id"
   end
 
+  create_table "taggings", force: :cascade do |t|
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.bigint "tag_id", null: false
+    t.string "subject_type", null: false
+    t.bigint "subject_id", null: false
+    t.index ["subject_type", "subject_id"], name: "index_taggings_on_subject_type_and_subject_id"
+    t.index ["tag_id", "subject_type", "subject_id"], name: "index_taggings_on_tag_id_and_subject_type_and_subject_id", unique: true
+    t.index ["tag_id"], name: "index_taggings_on_tag_id"
+  end
+
+  create_table "tags", force: :cascade do |t|
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "name", null: false
+    t.index ["name"], name: "index_tags_on_name", unique: true
+  end
+
   create_table "users", force: :cascade do |t|
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -143,4 +161,5 @@ ActiveRecord::Schema.define(version: 2021_03_14_223849) do
   add_foreign_key "reminders", "registers", column: "exchange_register_id"
   add_foreign_key "splits", "exchanges"
   add_foreign_key "splits", "registers"
+  add_foreign_key "taggings", "tags"
 end
