@@ -15,6 +15,6 @@
 #  status             :enum             default("uncleared"), not null
 #
 class ReminderSplit < ApplicationRecord
-  belongs_to :reminder, inverse_of: :splits
+  belongs_to :reminder
   belongs_to :register
 end

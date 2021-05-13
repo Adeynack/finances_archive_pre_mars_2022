@@ -24,8 +24,8 @@ require "test_helper"
 
 class ReminderTest < ActiveSupport::TestCase
   test "create a reminder" do
-    book = Book.create! name: "Test Book", owner: User.first, default_currency_iso_code: "eur"
-    first_bank = book.registers.create! name: "First Bank", type: "Bank"
+    book = books(:joe)
+    first_bank = registers(:first_bank)
     reminder = book.reminders.create!(
       title: "Test 1",
       last_date: nil,
@@ -37,8 +37,8 @@ class ReminderTest < ActiveSupport::TestCase
   end
 
   test "create a reminder passing IDs for register and book" do
-    book = Book.create! name: "Test Book", owner: User.first, default_currency_iso_code: "eur"
-    first_bank = book.registers.create! name: "First Bank", type: "Bank"
+    book = books(:joe)
+    first_bank = registers(:first_bank)
     Reminder.create!(
       book_id: book.id,
       transaction_register_id: first_bank.id,
@@ -48,14 +48,13 @@ class ReminderTest < ActiveSupport::TestCase
   end
 
   test "fails if the register does not belong to the same book" do
-    book = Book.create! name: "Test Book", owner: User.first, default_currency_iso_code: "eur"
-    other_book = Book.create! name: "Other Book", owner: User.first, default_currency_iso_code: "eur"
-    first_bank = other_book.registers.create! name: "First Bank", type: "Bank"
+    book = books(:joe)
+    other_register = registers(:blood_bank)
     error = assert_raise(ActiveRecord::RecordInvalid) do
       book.reminders.create!(
         title: "Test 1",
         transaction_description: "Reminder Transaction Template",
-        transaction_register: first_bank
+        transaction_register: other_register
       )
     end
     assert_equal "Validation failed: Transaction register must belong to the same book as the reminder", error.message

@@ -31,7 +31,8 @@ class Reminder < ApplicationRecord
   validates :title, presence: true
   validates :first_date, presence: true
   validate :validate_last_date_after_first_date
-  validate :validate_transaction_register
+  validates :transaction_register, presence: true
+  validate :validate_transaction_register_on_same_book_as_reminder
   validates :transaction_description, presence: true
 
   before_validation do
@@ -41,12 +42,10 @@ class Reminder < ApplicationRecord
   private
 
   def validate_last_date_after_first_date
-    errors[:last_date].add "must be after first date" if last_date.present? && first_date >= last_date
+    errors.add :last_date, "must be after first date" if last_date.present? && first_date >= last_date
   end
 
-  def validate_transaction_register
-    return errors.add :transaction_register, "must be present" if transaction_register_id.blank?
-
+  def validate_transaction_register_on_same_book_as_reminder
     errors.add :transaction_register, "must belong to the same book as the reminder" if transaction_register.book_id != book_id
   end
 end
