@@ -1,5 +1,11 @@
 # Finances MVP (Most Valuable Product)
 
+## Wording
+
+The word _transaction_ got replaced by _exchange_, since _transaction_ is a reserved
+word in _Rails_ and clashed with already generated methods. The word _transaction_ is
+still used in this document.
+
 ## Goal
 
 - [ ] Import, without any loss, the data from _Moneydance_ (actual finances application

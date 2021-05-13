@@ -4,21 +4,21 @@
 #
 # Table name: reminders
 #
-#  id                      :bigint           not null, primary key
-#  created_at              :datetime         not null
-#  updated_at              :datetime         not null
-#  book_id                 :bigint           not null, indexed
-#  title                   :string           not null
-#  description             :text
-#  mode                    :enum             default("manual"), not null
-#  first_date              :date             not null
-#  last_date               :date
-#  recurrence              :string
-#  last_commit_at          :string
-#  transaction_register_id :bigint           not null, indexed
-#  transaction_description :string           not null
-#  transaction_memo        :text
-#  transaction_status      :enum             default("uncleared"), not null
+#  id                   :bigint           not null, primary key
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
+#  book_id              :bigint           not null, indexed
+#  title                :string           not null
+#  description          :text
+#  mode                 :enum             default("manual"), not null
+#  first_date           :date             not null
+#  last_date            :date
+#  recurrence           :string
+#  last_commit_at       :string
+#  exchange_register_id :bigint           not null, indexed
+#  exchange_description :string           not null
+#  exchange_memo        :text
+#  exchange_status      :enum             default("uncleared"), not null
 #
 require "test_helper"
 
@@ -29,8 +29,8 @@ class ReminderTest < ActiveSupport::TestCase
     reminder = book.reminders.create!(
       title: "Test 1",
       last_date: nil,
-      transaction_description: "Reminder Transaction Template",
-      transaction_register: first_bank
+      exchange_description: "Reminder Exchange Template",
+      exchange_register: first_bank
     )
     # first_date defaults to today when not specified
     assert_equal Time.zone.today, reminder.first_date
@@ -41,9 +41,9 @@ class ReminderTest < ActiveSupport::TestCase
     first_bank = registers(:first_bank)
     Reminder.create!(
       book_id: book.id,
-      transaction_register_id: first_bank.id,
+      exchange_register_id: first_bank.id,
       title: "Bleh",
-      transaction_description: "Foo"
+      exchange_description: "Foo"
     )
   end
 
@@ -53,10 +53,10 @@ class ReminderTest < ActiveSupport::TestCase
     error = assert_raise(ActiveRecord::RecordInvalid) do
       book.reminders.create!(
         title: "Test 1",
-        transaction_description: "Reminder Transaction Template",
-        transaction_register: other_register
+        exchange_description: "Reminder Exchange Template",
+        exchange_register: other_register
       )
     end
-    assert_equal "Validation failed: Transaction register must belong to the same book as the reminder", error.message
+    assert_equal "Validation failed: Exchange register must belong to the same book as the reminder", error.message
   end
 end

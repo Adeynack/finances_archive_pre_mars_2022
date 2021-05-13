@@ -23,7 +23,7 @@ class CreateRegisters < ActiveRecord::Migration[6.1]
       t.string :currency_iso_code, limit: 3, null: false
       t.integer :initial_balance, null: false, default: 0
       t.boolean :active, null: false, default: true
-      t.references :default_category, foreign_key: { to_table: :registers }, comment: "The category automatically selected when entering a new transaction from this register."
+      t.references :default_category, foreign_key: { to_table: :registers }, comment: "The category automatically selected when entering a new exchange from this register."
       t.jsonb :info
     end
   end

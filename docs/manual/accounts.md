@@ -23,5 +23,5 @@ A "fallback" type of account, basically tracking anything else that is part of y
 net worth.
 
 ### Institution
-A grouping type of account, not made for actual transactions. Typically a bank, to group accounts
-for better visibility.
+A grouping type of account, not made for actual transactions (exchanges). Typically a bank, to group
+accounts for better visibility.

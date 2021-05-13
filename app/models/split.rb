@@ -7,7 +7,7 @@
 #  id                 :bigint           not null, primary key
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
-#  transaction_id     :bigint           not null, indexed
+#  exchange_id        :bigint           not null, indexed
 #  register_id        :bigint           not null, indexed
 #  amount             :integer          not null
 #  counterpart_amount :integer
@@ -15,6 +15,6 @@
 #  status             :enum             default("uncleared"), not null
 #
 class Split < ApplicationRecord
-  belongs_to :txn, class_name: "Transaction", foreign_key: "transaction_id", inverse_of: :splits # `transaction` is an ActiveRecord method and cannot be used for relation name.
-  belongs_to :register # destination of the transaction's split
+  belongs_to :exchange
+  belongs_to :register # destination of the exchange's split
 end

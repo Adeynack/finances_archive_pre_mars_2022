@@ -108,30 +108,30 @@ package "Register" {
   }
 }
 
-package Transaction {
-  enum TransactionStatus < PG Enum > {
+package Exchange {
+  enum ExchangeStatus < PG Enum > {
     Uncleared
     Reconciling
     Cleared
   }
 
-  class Transaction {
+  class Exchange {
     * date: Date
     cheque: String
     * description: String
     memo: Text
   }
-  Transaction "* (origin)" --|> Register
-  Transaction "* status" --* TransactionStatus
+  Exchange "* (origin)" --|> Register
+  Exchange "* status" --* ExchangeStatus
 
   class Split {
     * amount: Integer
     * counterpart_amount: Integer
     memo
   }
-  Transaction "1..n" --* Split
+  Exchange "1..n" --* Split
   Split "* destination" --* Register
-  Split "* status" --* TransactionStatus
+  Split "* status" --* ExchangeStatus
 }
 
 package Reminders {
@@ -148,12 +148,12 @@ package Reminders {
     last_date: Date
     * recurrence: String < Montrose >
     last_applied_at: DateTime
-    * transaction_description: String
-    transaction_memo: Text
+    * exchange_description: String
+    exchange_memo: Text
   }
   Reminder "* mode" --* ReminderMode
-  Reminder "* transaction_register" --|> Register
-  Reminder "* transaction_status" --* TransactionStatus
+  Reminder "* exchange_register" --|> Register
+  Reminder "* exchange_status" --* ExchangeStatus
 
   class ReminderSplit {
     * amount: Integer
@@ -162,7 +162,7 @@ package Reminders {
   }
   Reminder "1..n" --* ReminderSplit
   ReminderSplit "* destination" --* Register
-  ReminderSplit "* status" --* TransactionStatus
+  ReminderSplit "* status" --* ExchangeStatus
 }
 
 package "Applicable to all elements" {

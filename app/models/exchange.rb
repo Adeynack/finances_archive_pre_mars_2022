@@ -2,7 +2,7 @@
 
 # == Schema Information
 #
-# Table name: transactions
+# Table name: exchanges
 #
 #  id          :bigint           not null, primary key
 #  created_at  :datetime         not null
@@ -14,8 +14,8 @@
 #  memo        :text
 #  status      :enum             default(NULL), not null
 #
-class Transaction < ApplicationRecord
-  belongs_to :register # origin of the transaction
+class Exchange < ApplicationRecord
+  belongs_to :register # origin of the exchange
 
   has_many :splits, dependent: :destroy
 
