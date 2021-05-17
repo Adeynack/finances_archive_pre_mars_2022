@@ -9,7 +9,6 @@ module JSONAttributable
 
   class_methods do
     def assert_valid_value(_value)
-      # puts "--> assert_valid_value(#{_value})"
     end
 
     def attribute_names
@@ -65,12 +64,10 @@ module JSONAttributable
     end
 
     def changed?(*_args)
-      # puts "--> changed?(#{_args})"
       false
     end
 
     def changed_in_place?(raw_old_value, new_value)
-      # puts "--> changed_in_place?(#{raw_old_value}, #{new_value})"
       new_value.as_json != deserialize(raw_old_value).as_json
     end
 
