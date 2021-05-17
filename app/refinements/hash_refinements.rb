@@ -8,7 +8,7 @@ module HashRefinements
       each_key do |key|
         value = self[key]
         value.minimize_presence! if value.is_a?(Hash)
-        delete(key) unless value.is_a?(TrueClass) || value.is_a?(FalseClass) || value.present?
+        delete(key) unless value.present? || value.is_a?(FalseClass)
       end
       self
     end
