@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_13_203614) do
+ActiveRecord::Schema.define(version: 2021_05_17_213101) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -52,6 +52,18 @@ ActiveRecord::Schema.define(version: 2021_05_13_203614) do
     t.enum "status", default: "uncleared", null: false, as: "exchange_status"
     t.index ["date"], name: "index_exchanges_on_date"
     t.index ["register_id"], name: "index_exchanges_on_register_id"
+  end
+
+  create_table "import_origins", force: :cascade do |t|
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "subject_type", null: false
+    t.bigint "subject_id", null: false
+    t.string "external_system", null: false
+    t.string "external_id", null: false
+    t.index ["subject_type", "subject_id", "external_system", "external_id"], name: "index_import_origins_unique", unique: true
+    t.index ["subject_type", "subject_id"], name: "index_import_origins_on_subject"
+    t.index ["subject_type", "subject_id"], name: "index_import_origins_on_subject_type_and_subject_id"
   end
 
   create_table "registers", force: :cascade do |t|
@@ -123,6 +135,7 @@ ActiveRecord::Schema.define(version: 2021_05_13_203614) do
     t.bigint "tag_id", null: false
     t.string "subject_type", null: false
     t.bigint "subject_id", null: false
+    t.index ["subject_type", "subject_id"], name: "index_taggings_on_subject"
     t.index ["subject_type", "subject_id"], name: "index_taggings_on_subject_type_and_subject_id"
     t.index ["tag_id", "subject_type", "subject_id"], name: "index_taggings_on_tag_id_and_subject_type_and_subject_id", unique: true
     t.index ["tag_id"], name: "index_taggings_on_tag_id"

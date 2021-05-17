@@ -10,7 +10,6 @@ module Taggable
     def tag(tag)
       tag_record = tag.is_a?(Tag) ? tag : Tag.find_or_create_by(name: tag)
       tags << tag_record unless tags.exists?(name: tag_record.name)
-      # Tagging.find_or_create_by(tag: tag_record, subject: self)
     end
 
     def untag(tag)

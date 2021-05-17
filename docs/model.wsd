@@ -166,19 +166,16 @@ package Reminders {
 }
 
 package "Applicable to all elements" {
-  ' TODO: Create Rails model
   class Tag {
     * name
   }
 
-  ' TODO: Create Rails model
   class Tagging {
     * subject_type
     * subject_id
   }
   Tagging --* Tag
 
-' TODO: Create Rails model
   class ImportOrigin {
     * subject_id
     * subject_type

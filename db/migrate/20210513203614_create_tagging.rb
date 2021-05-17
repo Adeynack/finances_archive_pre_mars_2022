@@ -10,8 +10,7 @@ class CreateTagging < ActiveRecord::Migration[6.1]
     create_table :taggings do |t|
       t.timestamps
       t.references :tag, foreign_key: true, null: false
-      t.string :subject_type, null: false
-      t.bigint :subject_id, null: false
+      t.references :subject, polymorphic: true, null: false
 
       t.index [:subject_type, :subject_id]
       t.index [:tag_id, :subject_type, :subject_id], unique: true
