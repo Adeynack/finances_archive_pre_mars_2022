@@ -3,8 +3,7 @@
 # Validates that the value if of one of the specified types.
 class TypeValidator < ActiveModel::EachValidator
   def validate_each(record, attribute, value)
-    # ap { attribute: attribute, value: value, options: options }
-    unless value.nil? || value.is_a?(FalseClass)
+    if value.nil?
       record.errors.add(attribute, :cannot_be_empty) unless options[:allow_nil] == true
       return
     end
