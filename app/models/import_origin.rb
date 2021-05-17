@@ -14,4 +14,8 @@
 #
 class ImportOrigin < ApplicationRecord
   belongs_to :subject, polymorphic: true
+
+  validates :subject, presence: true
+  validates :external_system, presence: true
+  validates :external_id, presence: true
 end

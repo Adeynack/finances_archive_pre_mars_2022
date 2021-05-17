@@ -21,6 +21,9 @@
 #  exchange_status      :enum             default("uncleared"), not null
 #
 class Reminder < ApplicationRecord
+  include Taggable
+  include Importable
+
   belongs_to :book
   belongs_to :exchange_register, class_name: "Register"
 

@@ -16,6 +16,7 @@
 #
 class Exchange < ApplicationRecord
   include Taggable
+  include Importable
 
   belongs_to :register # origin of the exchange
 

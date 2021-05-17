@@ -13,6 +13,7 @@
 #
 class Book < ApplicationRecord
   include Currencyable
+  include Importable
 
   belongs_to :owner, class_name: "User"
 

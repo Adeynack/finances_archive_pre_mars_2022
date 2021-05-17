@@ -60,15 +60,10 @@ still used in this document.
   - [ ] Import Categories
   - [ ] Import Transactions and their splits
   - [ ] Import Reminders
-
-## Features that can wait
-
-Those are features currently used in _Moneydance_, but that are not needed for an
-immediate drop in replacement for entering data.
-
 - [ ] Reminders
   - [ ] CRUD
-  - [ ] ...
+  - [ ] Apply `auto_commit` reminders
+
 
 ## Model Requirements Brainstorm
 

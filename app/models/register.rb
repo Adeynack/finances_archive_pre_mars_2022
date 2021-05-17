@@ -21,6 +21,7 @@
 class Register < ApplicationRecord
   include Currencyable
   include Taggable
+  include Importable
 
   belongs_to :book
   belongs_to :parent, class_name: "Register", optional: true, inverse_of: :children
@@ -36,7 +37,7 @@ class Register < ApplicationRecord
 
   # Splits pointing to this register. NOT splits of this register's exchanges.
   # Other Register --> Exchange --> Split --> THIS REGISTER
-  has_many :split, dependent: false
+  has_many :splits, dependent: false
 
   has_currency :currency
 

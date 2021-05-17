@@ -15,6 +15,9 @@
 #  status             :enum             default("uncleared"), not null
 #
 class Split < ApplicationRecord
+  include Taggable
+  include Importable
+
   belongs_to :exchange
   belongs_to :register # destination of the exchange's split
 end
