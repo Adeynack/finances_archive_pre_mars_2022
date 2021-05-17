@@ -11,6 +11,10 @@ rails db:create db:migrate # creates the database and loads the schema
 rails db:fixtures:load # (optional) creates demo data within the app
 ```
 
+Look in [`test/fixtures/users.yml`](test/fixtures/users.yml) for a list
+of development accounts loaded with the fixtures, to log in the application
+in development mode.
+
 ### Start a development session
 
 #### Dependencies
