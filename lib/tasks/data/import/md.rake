@@ -12,7 +12,7 @@ namespace :data do
       auto_delete_book = ["true", "1"].include? ENV.fetch("AUTO_DELETE_BOOK", "false").downcase
 
       importer = Import::Moneydance::MoneydanceImport.new
-      importer.import json_content: json_content, book_owner_email: book_owner_email, default_currency: default_currency, auto_delete_book: auto_delete_book
+      importer.import logger: Logger.new($stdout), json_content: json_content, book_owner_email: book_owner_email, default_currency: default_currency, auto_delete_book: auto_delete_book
     end
   end
 end
