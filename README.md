@@ -47,3 +47,9 @@ Keep this open in a terminal tab.
 ```bash
 bin/webpack-dev-server
 ```
+
+## Development Notes
+
+### GEMS & Libs to consider
+
+https://viewcomponent.org/motivation.html
