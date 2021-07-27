@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_17_213101) do
+ActiveRecord::Schema.define(version: 2021_07_27_222022) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -79,6 +79,7 @@ ActiveRecord::Schema.define(version: 2021_05_17_213101) do
     t.boolean "active", default: true, null: false
     t.bigint "default_category_id", comment: "The category automatically selected when entering a new exchange from this register."
     t.jsonb "info"
+    t.text "notes"
     t.index ["book_id"], name: "index_registers_on_book_id"
     t.index ["default_category_id"], name: "index_registers_on_default_category_id"
     t.index ["parent_id"], name: "index_registers_on_parent_id"

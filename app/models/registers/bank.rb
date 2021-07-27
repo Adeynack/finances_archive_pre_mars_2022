@@ -17,6 +17,7 @@
 #  active              :boolean          default(TRUE), not null
 #  default_category_id :bigint           indexed
 #  info                :jsonb
+#  notes               :text
 #
 class Registers::Bank < Register
   attribute :info, Registers::BankInfo

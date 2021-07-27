@@ -17,6 +17,7 @@
 #  active              :boolean          default(TRUE), not null
 #  default_category_id :bigint           indexed
 #  info                :jsonb
+#  notes               :text
 #
 class Register < ApplicationRecord
   include Currencyable
@@ -29,7 +30,7 @@ class Register < ApplicationRecord
   has_one :default_category, class_name: "Register", required: false, dependent: false
 
   has_many :children, class_name: "Register", foreign_key: "parent_id", inverse_of: :parent, dependent: :destroy
-  has_many :reminders, dependent: :restrict_with_error
+  has_many :reminders, dependent: :restrict_with_error, foreign_key: "exchange_register_id", inverse_of: :exchange_register
 
   # Exchanges originating from this register.
   # THIS REGISTER --> Exchange --> Splits --> Other Registers
