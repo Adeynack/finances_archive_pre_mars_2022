@@ -23,4 +23,19 @@ class Book < ApplicationRecord
   has_many :reminders, dependent: :destroy
 
   has_currency :default_currency
+
+  def debug_registers_tree
+    registers_per_parent_id = registers.group_by(&:parent_id)
+
+    logger.info "Book '#{name}'"
+    output_register = ->(level:, parent_id:) do
+      registers_per_parent_id[parent_id]&.each do |r|
+        logger.info "#{'|   ' * (level - 1)}|- #{r.type} '#{r.name}'#{' ⛔️' unless r.active}"
+        output_register.call(level: level + 1, parent_id: r.id)
+      end
+    end
+    output_register.call(level: 1, parent_id: nil)
+
+    nil
+  end
 end
