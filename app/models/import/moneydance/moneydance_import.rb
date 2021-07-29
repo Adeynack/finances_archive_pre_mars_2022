@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class Import::Moneydance::MoneydanceImport
+  include Import::Moneydance::Utils
   include Import::Moneydance::RegisterImport
 
   attr_reader :logger
@@ -19,21 +20,6 @@ class Import::Moneydance::MoneydanceImport
   end
 
   private
-
-  def from_md_unix_date(md_date)
-    return nil if md_date.blank?
-
-    DateTime.strptime(md_date, "%Q")
-  end
-
-  def from_md_int_date(md_date)
-    return nil if md_date.blank?
-
-    md_date = md_date.to_s
-    raise ArgumentError, "expecting a 8 digits number" unless md_date.length == 8
-
-    DateTime.parse(md_date)
-  end
 
   def set_book(book_owner_email:, default_currency:, auto_delete_book:)
     raise StandardError, "Book is already initialized" if book.present?
@@ -72,13 +58,5 @@ class Import::Moneydance::MoneydanceImport
 
   def md_accounts_by_old_id
     @md_accounts_by_old_id ||= md_items_by_type["acct"].index_by { |a| a["old_id"] }
-  end
-
-  def expiry_date(exp_year, exp_month)
-    return nil if exp_year.blank?
-
-    year = exp_year.to_i
-    month = exp_month.presence&.to_i || 1
-    Date.new(year, month, 1)
   end
 end
