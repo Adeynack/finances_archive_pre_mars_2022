@@ -30,7 +30,7 @@ class Book < ApplicationRecord
     logger.info "Book '#{name}'"
     output_register = ->(level:, parent_id:) do
       registers_per_parent_id[parent_id]&.each do |r|
-        logger.info "#{'|   ' * (level - 1)}|- #{r.type} '#{r.name}'#{' ⛔️' unless r.active}"
+        logger.info "#{'|   ' * (level - 1)}|- #{r.type} '#{r.name}' (#{r.currency_iso_code})#{' ⛔️' unless r.active}"
         output_register.call(level: level + 1, parent_id: r.id)
       end
     end

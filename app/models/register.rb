@@ -55,11 +55,21 @@ class Register < ApplicationRecord
 
   class << self
     def store_full_sti_class
+      # save 'Asset' to the DB instead of 'Registers::Asset'
       false
     end
 
     def find_sti_class(type_name)
-      super("Registers::#{type_name}")
+      # avoiding string building and regex computation by bypassing it here by a direct hash lookup
+      type_name_to_sti_class[type_name]
+    end
+
+    def type_name_to_sti_class
+      @type_name_to_sti_class ||= all_types.index_by { |t| t.name.demodulize }
+    end
+
+    def all_types
+      @all_types ||= account_types + category_types
     end
 
     def account_types

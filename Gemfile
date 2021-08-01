@@ -3,10 +3,10 @@
 source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby "2.7.2" # <--> .github/workflows/tests.yml
+ruby "2.7.4" # <--> .github/workflows/tests.yml
 
 # Core
-gem "rails", "~> 6.1.3"
+gem "rails", "~> 6.1.4"
 gem "puma", "~> 5.0"
 
 # Database
