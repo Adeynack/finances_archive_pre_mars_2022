@@ -3,20 +3,24 @@
 class Import::Moneydance::MoneydanceImport
   include Import::Moneydance::Utils
   include Import::Moneydance::RegisterImport
+  include Import::Moneydance::ExchangeImport
 
   attr_reader :logger
   attr_reader :md_json
   attr_reader :book
-  attr_reader :register_by_md_old_id
+  attr_reader :register_id_by_md_old_id
+  attr_reader :register_id_by_md_acctid
 
   def import(logger:, json_content:, book_owner_email:, default_currency:, auto_delete_book: false)
     @logger = logger
 
-    @register_by_md_old_id = {}
+    @register_id_by_md_old_id = {}
+    @register_id_by_md_acctid = {}
     @md_json = JSON.parse(json_content)
 
     set_book book_owner_email: book_owner_email, default_currency: default_currency, auto_delete_book: auto_delete_book
     import_accounts
+    import_exchanges
   end
 
   private

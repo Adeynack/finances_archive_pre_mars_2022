@@ -410,6 +410,7 @@ DEPENDENCIES
   minitest-focus
   money (~> 6.13.7)
   money-rails (~> 1.13.3)
+  parallel
   pg (~> 1.1)
   pry-byebug
   pry-doc

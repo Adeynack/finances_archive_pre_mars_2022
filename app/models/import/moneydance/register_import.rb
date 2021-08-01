@@ -47,11 +47,10 @@ module Import::Moneydance::RegisterImport
 
   def import_account_recursively(parent_register:, md_account:, md_accounts_by_parent_id:)
     logger.info "Importing MD '#{md_account['type']}' type account \"#{md_account['name']}\" (ID \"#{md_account['id']}\")"
-
     register = create_register(md_account, parent_register)
-    md_account["old_id"].presence&.tap { |old_id| register_by_md_old_id[old_id] = register }
+    register_id_by_md_acctid[md_account["id"]] = register.id
+    register_id_by_md_old_id[md_account["old_id"]] = register.id
     register.import_origins.create! external_system: "moneydance", external_id: md_account["id"]
-
     import_child_accounts(md_account, register, md_accounts_by_parent_id)
   end
 
@@ -77,7 +76,7 @@ module Import::Moneydance::RegisterImport
   end
 
   def extract_default_category_id(md_account)
-    md_account["default_category"].presence&.then { |c| register_by_md_old_id[c] }
+    md_account["default_category"].presence&.then { |c| register_id_by_md_old_id[c] }
   end
 
   def import_child_accounts(md_account, parent_register, md_accounts_by_parent_id)
