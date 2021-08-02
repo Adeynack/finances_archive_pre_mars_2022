@@ -44,7 +44,7 @@ module Import::Moneydance::ExchangeImport
       md_split = md_splits_per_index[md_split_index]
       import_split(md_split, exchange)
     rescue StandardError
-      logger.error "Error importing split #{md_transaction['id']}"
+      logger.error "Error importing split #{md_split['id']}"
       raise
     end
   end

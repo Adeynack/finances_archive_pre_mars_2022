@@ -34,7 +34,6 @@ class Reminder < ApplicationRecord
   validates :title, presence: true
   validates :first_date, presence: true
   validate :validate_last_date_after_first_date
-  validates :exchange_register, presence: true
   validate :validate_exchange_register_on_same_book_as_reminder
   validates :exchange_description, presence: true
 
@@ -49,6 +48,9 @@ class Reminder < ApplicationRecord
   end
 
   def validate_exchange_register_on_same_book_as_reminder
-    errors.add :exchange_register, "must belong to the same book as the reminder" if exchange_register.book_id != book_id
+    return if exchange_register_id.blank?
+
+    register = exchange_register || Register.find(exchange_register_id)
+    errors.add :exchange_register, "must belong to the same book as the reminder" if register.present? && register.book_id != book_id
   end
 end
