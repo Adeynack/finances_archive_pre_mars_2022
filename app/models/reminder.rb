@@ -13,8 +13,9 @@
 #  mode                 :enum             default("manual"), not null
 #  first_date           :date             not null
 #  last_date            :date
-#  recurrence           :string
-#  last_commit_at       :string
+#  schedule             :jsonb
+#  last_commit_at       :datetime
+#  next_occurence_at    :datetime
 #  exchange_register_id :bigint           not null, indexed
 #  exchange_description :string           not null
 #  exchange_memo        :text
@@ -30,6 +31,7 @@ class Reminder < ApplicationRecord
   has_many :reminder_splits, dependent: :destroy
 
   enum mode: [:manual, :auto_commit, :auto_cancel].index_with(&:to_s)
+  serialize :recurrence, Montrose::Schedule
 
   validates :title, presence: true
   validates :first_date, presence: true

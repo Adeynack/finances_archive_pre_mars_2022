@@ -21,6 +21,7 @@ class CreateRegisters < ActiveRecord::Migration[6.1]
       t.references :parent, foreign_key: { to_table: :registers }, comment: "A null parent means it is a root register."
       t.date :starts_at, null: false
       t.string :currency_iso_code, limit: 3, null: false
+      t.text :notes
       t.integer :initial_balance, null: false, default: 0
       t.boolean :active, null: false, default: true
       t.references :default_category, foreign_key: { to_table: :registers }, comment: "The category automatically selected when entering a new exchange from this register."

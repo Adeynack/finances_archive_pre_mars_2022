@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_27_222022) do
+ActiveRecord::Schema.define(version: 2021_05_17_213101) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -75,11 +75,11 @@ ActiveRecord::Schema.define(version: 2021_07_27_222022) do
     t.bigint "parent_id", comment: "A null parent means it is a root register."
     t.date "starts_at", null: false
     t.string "currency_iso_code", limit: 3, null: false
+    t.text "notes"
     t.integer "initial_balance", default: 0, null: false
     t.boolean "active", default: true, null: false
     t.bigint "default_category_id", comment: "The category automatically selected when entering a new exchange from this register."
     t.jsonb "info"
-    t.text "notes"
     t.index ["book_id"], name: "index_registers_on_book_id"
     t.index ["default_category_id"], name: "index_registers_on_default_category_id"
     t.index ["parent_id"], name: "index_registers_on_parent_id"
@@ -107,8 +107,9 @@ ActiveRecord::Schema.define(version: 2021_07_27_222022) do
     t.enum "mode", default: "manual", null: false, as: "reminder_mode"
     t.date "first_date", null: false, comment: "From when to apply the reminder."
     t.date "last_date", comment: "Until when to apply the reminder (optional)."
-    t.string "recurrence", comment: "Expressed as a 'Montrose' string. For one-shot reminders, nil, happening only on beginning of `during`."
-    t.string "last_commit_at", comment: "Last time this reminder was committed. `nil` means it never was."
+    t.jsonb "schedule", comment: "Expressed as a 'Montrose' JSON. For one-shot reminders, `nil`, happening only on `first_date`."
+    t.datetime "last_commit_at", comment: "Last time this reminder was committed. `nil` means it never was."
+    t.datetime "next_occurence_at", comment: "Next time this reminder is scheduled for. Serves as a cache to quickly obtain all reminders that are due."
     t.bigint "exchange_register_id", null: false, comment: "From which register does the money come from."
     t.string "exchange_description", null: false, comment: "Label of the exchange."
     t.text "exchange_memo", comment: "Detail about the exchange."

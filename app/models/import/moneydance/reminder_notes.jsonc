@@ -1,22 +1,23 @@
 {
   "id": "7bfdb855-a2f3-4287-97f5-292282feeb3f",
   "obj_type": "reminder",
+  "desc": "Appart - Électricité",
   "sdt": "20190801",        // first_date
-  "ackdt": "20210801",      // last_date
+  "ackdt": "20210801",      // last_date entered (?)
   "ldt": "0",               // last_date | 0 (none)
   "ts": "1627853939930",    // last_commit_at (?)
-  "desc": "Appart - Électricité",
-  "weeklydays": "0",
+  "weeklymod": "0",   // weeks to skip (0 = every week, 1 = every 2nd week, 2 = every 3rd week)
+  "weeklydays": "0",  // every week on this day (unless 0). 1 = Sunday. 7 = Saturday. Comma separated.
+  "monthlydays": "1", // every month on this day (unless 0)
+  "monthlymod": "0",  // months to skip (0 = every month, 1 = every 2nd month, 2 = every 3rd month)
+  "daily": "0",       // every n day(s)
+  "yearly": "0",      // every n year(s)
+
+  "acdays": "0",      // auto-commit n days before (positive number). 0 or -1 = disabled.
   "memo": "",
-  "monthlydays": "1",
   "type": "1",
-  "daily": "0",
-  "yearly": "0",
   "is_loan_reminder": "0",
   "oldid": "-1",
-  "acdays": "0",
-  "weeklymod": "0",
-  "monthlymod": "0",
 
   "txn.id": "65e03827-0134-43d6-8899-0c3488096a00",
   "txn.oldid": "-1",

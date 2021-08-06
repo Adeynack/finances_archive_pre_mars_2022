@@ -7,6 +7,13 @@ GIT
       pry (~> 0.13.0)
       tty-screen (~> 0.8.1)
 
+GIT
+  remote: https://github.com/rossta/montrose.git
+  revision: 1c52ff3497eaa9d4f6b3a4f8342e59867d90fd07
+  specs:
+    montrose (0.12.0)
+      activesupport (>= 5.2, <= 7.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -410,6 +417,7 @@ DEPENDENCIES
   minitest-focus
   money (~> 6.13.7)
   money-rails (~> 1.13.3)
+  montrose!
   parallel
   pg (~> 1.1)
   pry-byebug

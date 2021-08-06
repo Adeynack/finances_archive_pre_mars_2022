@@ -13,8 +13,9 @@
 #  mode                 :enum             default("manual"), not null
 #  first_date           :date             not null
 #  last_date            :date
-#  recurrence           :string
-#  last_commit_at       :string
+#  schedule             :jsonb
+#  last_commit_at       :datetime
+#  next_occurence_at    :datetime
 #  exchange_register_id :bigint           not null, indexed
 #  exchange_description :string           not null
 #  exchange_memo        :text
