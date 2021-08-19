@@ -12,8 +12,8 @@ class CreateReminders < ActiveRecord::Migration[6.1]
       t.date :first_date, null: false, comment: "From when to apply the reminder."
       t.date :last_date, comment: "Until when to apply the reminder (optional)."
       t.jsonb :schedule, comment: "Expressed as a 'Montrose' JSON. For one-shot reminders, `nil`, happening only on `first_date`."
-      t.datetime :last_commit_at, comment: "Last time this reminder was committed. `nil` means it never was."
-      t.datetime :next_occurence_at, comment: "Next time this reminder is scheduled for. Serves as a cache to quickly obtain all reminders that are due."
+      t.date :last_commit_at, comment: "Last time for which this reminder was committed. `nil` means it never was."
+      t.date :next_occurence_at, comment: "Next time this reminder is scheduled for. Serves as a cache to quickly obtain all reminders that are due."
       # Exchange Template
       t.references :exchange_register, foreign_key: { to_table: :registers }, null: false, comment: "From which register does the money come from."
       t.string :exchange_description, null: false, comment: "Label of the exchange."

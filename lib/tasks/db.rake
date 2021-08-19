@@ -25,15 +25,4 @@ namespace :db do
       end
     end
   end
-
-  task :pull, [:app] => :drop do |_t, args|
-    args.with_defaults(app: "copa-coupona-staging")
-    sh "PGUSER=postgres PGHOST=127.0.0.1 heroku pg:pull DATABASE_URL copa_coupona_development --app #{args[:app]}"
-    sh "rake db:environment:set"
-    sh "RAILS_ENV=test rake db:setup"
-  end
-
-  task :pullprod, [:app] => :drop do |_t, _args|
-    Rake::Task["db:pull"].invoke("copa-coupona")
-  end
 end

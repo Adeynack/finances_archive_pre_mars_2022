@@ -31,7 +31,7 @@ class Reminder < ApplicationRecord
   has_many :reminder_splits, dependent: :destroy
 
   enum mode: [:manual, :auto_commit, :auto_cancel].index_with(&:to_s)
-  serialize :recurrence, Montrose::Schedule
+  serialize :recurrence, Montrose::Recurrence
 
   validates :title, presence: true
   validates :first_date, presence: true
@@ -41,6 +41,16 @@ class Reminder < ApplicationRecord
 
   before_validation do
     self.first_date = Time.zone.today if first_date.blank?
+    self.next_occurence_at = calculate_next_occurence_at
+  end
+
+  def calculate_next_occurence_at
+    return nil if last_date&.past?
+    return first_date unless schedule
+
+    starting_at = [last_commit_at, first_date].max if last_commit_at
+    starting_at ||= [Time.zone.today, starting_at].max
+    recurrence.starting(starting_at).first
   end
 
   private

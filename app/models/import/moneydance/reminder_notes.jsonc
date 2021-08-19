@@ -6,11 +6,15 @@
   "ackdt": "20210801",      // last_date entered (?)
   "ldt": "0",               // last_date | 0 (none)
   "ts": "1627853939930",    // last_commit_at (?)
-  "weeklymod": "0",   // weeks to skip (0 = every week, 1 = every 2nd week, 2 = every 3rd week)
+
+  "daily": "0",       // every n day(s)
+
   "weeklydays": "0",  // every week on this day (unless 0). 1 = Sunday. 7 = Saturday. Comma separated.
+  "weeklymod": "0",   // weeks to skip (0 = every week, 1 = every 2nd week, 2 = every 3rd week)
+
   "monthlydays": "1", // every month on this day (unless 0)
   "monthlymod": "0",  // months to skip (0 = every month, 1 = every 2nd month, 2 = every 3rd month)
-  "daily": "0",       // every n day(s)
+
   "yearly": "0",      // every n year(s)
 
   "acdays": "0",      // auto-commit n days before (positive number). 0 or -1 = disabled.

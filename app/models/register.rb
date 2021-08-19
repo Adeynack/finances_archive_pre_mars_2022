@@ -38,7 +38,7 @@ class Register < ApplicationRecord
 
   # Splits pointing to this register. NOT splits of this register's exchanges.
   # Other Register --> Exchange --> Split --> THIS REGISTER
-  has_many :splits, dependent: false
+  has_many :splits, dependent: :destroy
 
   has_currency :currency
 
