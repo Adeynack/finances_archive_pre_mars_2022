@@ -43,6 +43,9 @@ Metrics/CyclomaticComplexity:
 Metrics/MethodLength:
   Max: 30 # default: 10
 
+Metrics/ModuleLength:
+  Enabled: false
+
 Performance/CaseWhenSplat:
   Enabled: true
 

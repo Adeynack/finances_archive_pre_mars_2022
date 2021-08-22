@@ -48,6 +48,29 @@ Keep this open in a terminal tab.
 bin/webpack-dev-server
 ```
 
+## Import
+
+### Moneydance
+
+```bash
+bundle rake data:import:md
+```
+
+Options (via ENV):
+
+| ENV                | Default         |
+| ------------------ | --------------- |
+| `MD_IMPORT_FILE`   | ./tmp/md.json   |
+| `BOOK_OWNER_EMAIL` | joe@example.com |
+| `DEFAULT_CURRENCY` | EUR             |
+| `AUTO_DELETE_BOOK` | 0 (false)       |
+
+Useful during development:
+
+```bash
+rake db:truncate_all db:fixtures:load data:import:md
+```
+
 ## Development Notes
 
 ### GEMS & Libs to consider

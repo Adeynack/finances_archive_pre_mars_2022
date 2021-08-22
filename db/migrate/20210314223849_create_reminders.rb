@@ -11,7 +11,7 @@ class CreateReminders < ActiveRecord::Migration[6.1]
       t.enum :mode, as: :reminder_mode, null: false, default: :manual
       t.date :first_date, null: false, comment: "From when to apply the reminder."
       t.date :last_date, comment: "Until when to apply the reminder (optional)."
-      t.jsonb :schedule, comment: "Expressed as a 'Montrose' JSON. For one-shot reminders, `nil`, happening only on `first_date`."
+      t.jsonb :recurrence, comment: "Expressed as a 'Montrose::Recurrence' JSON. For one-shot reminders, `nil`, happening only on `first_date`."
       t.date :last_commit_at, comment: "Last time for which this reminder was committed. `nil` means it never was."
       t.date :next_occurence_at, comment: "Next time this reminder is scheduled for. Serves as a cache to quickly obtain all reminders that are due."
       # Exchange Template

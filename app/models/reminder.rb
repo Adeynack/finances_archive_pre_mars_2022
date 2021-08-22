@@ -13,9 +13,9 @@
 #  mode                 :enum             default("manual"), not null
 #  first_date           :date             not null
 #  last_date            :date
-#  schedule             :jsonb
-#  last_commit_at       :datetime
-#  next_occurence_at    :datetime
+#  recurrence           :jsonb
+#  last_commit_at       :date
+#  next_occurence_at    :date
 #  exchange_register_id :bigint           not null, indexed
 #  exchange_description :string           not null
 #  exchange_memo        :text
@@ -46,7 +46,7 @@ class Reminder < ApplicationRecord
 
   def calculate_next_occurence_at
     return nil if last_date&.past?
-    return first_date unless schedule
+    return first_date unless recurrence
 
     starting_at = [last_commit_at, first_date].max if last_commit_at
     starting_at ||= [Time.zone.today, starting_at].max

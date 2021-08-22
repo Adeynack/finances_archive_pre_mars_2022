@@ -9,7 +9,7 @@ namespace :data do
 
       book_owner_email = ENV.fetch("BOOK_OWNER_EMAIL", "joe@example.com")
       default_currency = ENV.fetch("DEFAULT_CURRENCY", "EUR")
-      auto_delete_book = ["true", "1"].include? ENV.fetch("AUTO_DELETE_BOOK", "false").downcase
+      auto_delete_book = ENV.fetch("AUTO_DELETE_BOOK", "0") == "1"
 
       importer = Import::Moneydance::MoneydanceImport.new
       importer.import logger: Logger.new($stdout), json_content: json_content, book_owner_email: book_owner_email, default_currency: default_currency, auto_delete_book: auto_delete_book

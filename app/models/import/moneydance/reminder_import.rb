@@ -57,8 +57,11 @@ module Import::Moneydance::ReminderImport
       extract_reminder_recurence_weekly(md_reminder),
       extract_reminder_recurence_monthly(md_reminder),
       extract_reminder_recurence_yearly(md_reminder),
-    ].compact!
+    ]
+    schedules.compact!
     raise StandardError, "multiple schedules are not supported by this import" if schedules.length > 1
+
+    schedules.first
   end
 
   def extract_reminder_recurence_daily(md_reminder)
@@ -77,15 +80,32 @@ module Import::Moneydance::ReminderImport
     return nil if weekly_days.empty?
 
     week_step = md_reminder.fetch("weeklymod", 0).to_i + 1
-    
+
     Montrose.every(week_step.weeks, on: weekly_days)
   end
 
   def extract_reminder_recurence_monthly(md_reminder)
+    monthly_days = md_reminder.fetch("monthlydays", "").split(",")
+    monthly_days.map!(&:to_i).map! do |day|
+      case day
+      when 0 then nil
+      when 32 then -1 # Day 32 in Moneydance means "last day of the month" (-1 in Montrose)
+      else day
+      end
+    end
+    monthly_days.compact!
+    return nil if monthly_days.empty?
 
+    month_step = md_reminder.fetch("monthlymod", 0).to_i + 1
+
+    Montrose.every(month_step.months, mday: monthly_days)
   end
 
   def extract_reminder_recurence_yearly(md_reminder)
+    yearly_interval = md_reminder["yearly"]&.to_i
+    return nil unless yearly_interval&.positive?
+
+    Montrose.every(yearly_interval.years)
   end
 
   def import_reminder_splits(md_splits, reminder)
