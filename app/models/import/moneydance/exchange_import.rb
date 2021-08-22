@@ -7,7 +7,7 @@ module Import::Moneydance::ExchangeImport
     logger.info "Importing exchanges (MD transactions)"
     total = md_items_by_type["txn"].count
     ordered_md_transactions = md_items_by_type["txn"].sort_by { |t| t["dtentered"] }
-    ::Parallel.each_with_index(ordered_md_transactions) do |md_transaction, index|
+    ordered_md_transactions.each_with_index do |md_transaction, index|
       number = index + 1
       percent = (number.to_f / total * 100).floor
       logger.info "[#{number}/#{total} (#{percent}%)] Importing transaction #{md_transaction['id']}"
@@ -43,9 +43,6 @@ module Import::Moneydance::ExchangeImport
     md_splits_per_index.keys.sort.each do |md_split_index|
       md_split = md_splits_per_index[md_split_index]
       import_split(md_split, exchange)
-    rescue StandardError
-      logger.error "Error importing split #{md_split['id']}"
-      raise
     end
   end
 
@@ -72,6 +69,7 @@ module Import::Moneydance::ExchangeImport
       memo: md_split["desc"].presence,
       status: from_md_stat(md_split["stat"])
     )
+    md_split.fetch("tags", "").split("\t").each { |tag_name| split.tag tag_name }
     split.import_origins.create! external_system: "moneydance", external_id: md_split["id"]
   end
 end

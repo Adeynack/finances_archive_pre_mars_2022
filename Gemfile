@@ -71,7 +71,6 @@ group :development do
   gem "spring"
   gem "guard"
   gem "guard-minitest"
-  gem "parallel"
 end
 
 group :test do

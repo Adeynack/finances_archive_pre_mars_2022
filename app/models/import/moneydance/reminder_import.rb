@@ -127,6 +127,7 @@ module Import::Moneydance::ReminderImport
       memo: md_split["desc"].presence,
       status: from_md_stat(md_split["stat"])
     )
+    md_split.fetch("tags", "").split("\t").each { |tag| split.tag(tag) }
     split.import_origins.create! external_system: "moneydance", external_id: md_split["id"]
   end
 end
