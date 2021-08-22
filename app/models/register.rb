@@ -23,13 +23,13 @@ class Register < ApplicationRecord
   include Currencyable
   include Taggable
   include Importable
+  include Hierarchical
 
   belongs_to :book
-  belongs_to :parent, class_name: "Register", optional: true, inverse_of: :children
+  is_hierarchical from: :parent, to: :children
 
   has_one :default_category, class_name: "Register", required: false, dependent: false
 
-  has_many :children, class_name: "Register", foreign_key: "parent_id", inverse_of: :parent, dependent: :destroy
   has_many :reminders, dependent: :restrict_with_error, foreign_key: "exchange_register_id", inverse_of: :exchange_register
 
   # Exchanges originating from this register.

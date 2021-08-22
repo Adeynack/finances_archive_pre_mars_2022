@@ -3,8 +3,8 @@
 class Import::Moneydance::MoneydanceImport
   include Import::Moneydance::Utils
   include Import::Moneydance::RegisterImport
-  include Import::Moneydance::ExchangeImport
   include Import::Moneydance::ReminderImport
+  include Import::Moneydance::ExchangeImport
 
   attr_reader :logger
   attr_reader :md_json
@@ -21,8 +21,8 @@ class Import::Moneydance::MoneydanceImport
 
     set_book book_owner_email: book_owner_email, default_currency: default_currency, auto_delete_book: auto_delete_book
     import_accounts
-    import_exchanges
     import_reminders
+    import_exchanges
   end
 
   private

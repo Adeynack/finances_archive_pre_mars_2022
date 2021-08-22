@@ -53,6 +53,26 @@ class Reminder < ApplicationRecord
     recurrence.starting(starting_at).first
   end
 
+  def debug
+    [
+      "Reminder: #{title}",
+      "  description: #{description}",
+      "  mode:        #{mode}",
+      "  first date:  #{first_date}",
+      "  last date:   #{last_date}",
+      "  recurrence:  #{recurrence.to_json}",
+      "  register:    #{exchange_register.parent_chain.reverse.map!(&:name).join(' / ')}",
+      reminder_splits.map do |split|
+        [
+          "    - register: #{split.register.parent_chain.reverse.map!(&:name).join(' / ')}",
+          "      amount:   #{split.amount}",
+          "      memo:     #{split.memo}",
+        ]
+      end,
+      "",
+    ].flatten
+  end
+
   private
 
   def validate_last_date_after_first_date

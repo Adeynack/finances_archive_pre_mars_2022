@@ -42,8 +42,12 @@ class Book < ApplicationRecord
       end
     end
     output_register.call(level: 1, parent_id: nil)
-
     nil
   end
   # rubocop:enable Metrics/AbcSize
+
+  def debug_reminders
+    reminders.order(:title).includes(:exchange_register, :reminder_splits).flat_map(&:debug).each { |line| logger.info(line) }
+    nil
+  end
 end
