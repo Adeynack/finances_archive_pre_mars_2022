@@ -3,9 +3,10 @@
 class BooksController < ApplicationController
   before_action :set_book, only: [:show, :edit, :update, :destroy]
 
+  # @route GET / (root)
   # @route GET /books (books)
   def index
-    @books = Book.all
+    @books = current_user.all_accessible_books.order(:name)
   end
 
   # @route GET /books/:id (book)

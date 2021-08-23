@@ -10,4 +10,9 @@ html
   body
     p class="notice" = notice
     p class="alert" = alert
+    - if current_user
+      p
+        | Logged as #{current_user.display_name} (#{current_user.email})
+        '  |
+        = link_to "Log Out", destroy_user_session_path, method: :delete
     = yield

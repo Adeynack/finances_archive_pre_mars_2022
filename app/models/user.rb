@@ -19,8 +19,13 @@ class User < ApplicationRecord
 
   has_many :books, dependent: :destroy, foreign_key: "owner_id", inverse_of: :owner
   has_many :book_roles, dependent: :destroy
+  has_many :accessible_books, through: :book_roles, source: :book
 
   validates :email, presence: true
   validates :display_name, presence: true
   validates :encrypted_password, presence: true
+
+  def all_accessible_books
+    books.union(accessible_books)
+  end
 end

@@ -14,6 +14,7 @@ gem "pg", "~> 1.1"
 gem "redis", "~> 4.0"
 
 # Model & ORM
+gem "active_record_union"
 gem "activerecord-pg_enum"
 # gem "active_record_extended"
 gem "friendly_id"
