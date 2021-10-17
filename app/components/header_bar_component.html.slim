@@ -5,9 +5,11 @@ p
 
   span> Current Book:
   - if @current_book
-    = link_to @current_book.name, books_url, title: "Click here to select a different book."
+    = link_to @current_book.name, @current_book, title: "Return to book main page"
   - else
-    = link_to "None", books_url, title: "Click here to select a different book."
+    = "None"
+  span<> |
+  = link_to "Change book", books_url, title: "Click here to select a different book."
   span<> |
 
   - if @current_user

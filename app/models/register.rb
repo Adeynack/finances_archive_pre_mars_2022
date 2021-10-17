@@ -43,8 +43,8 @@ class Register < ApplicationRecord
   has_currency :currency
 
   scope :root, -> { where(parent: nil) }
-  scope :accounts, -> { where(type: Register.account_types) }
-  scope :categories, -> { where(type: Register.category_types) }
+  scope :accounts, -> { where(type: Register.account_type_names) }
+  scope :categories, -> { where(type: Register.category_type_names) }
 
   validates :info, bubble_up: true
 
@@ -89,6 +89,14 @@ class Register < ApplicationRecord
         Registers::Expense,
         Registers::Income,
       ]
+    end
+
+    def account_type_names
+      @account_type_names ||= account_types.map(&:sti_name)
+    end
+
+    def category_type_names
+      @category_type_names ||= category_types.map(&:sti_name)
     end
   end
 end

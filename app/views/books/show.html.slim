@@ -2,9 +2,7 @@ p id="notice" = notice
 
 h1 = @book.name
 
-= link_to "Edit Book", edit_book_path(@book)
-
-/ <p id="notice"><%= notice %></p>
-
-/ <%= link_to 'Edit', edit_book_path(@book) %> |
-/ <%= link_to 'Back', books_path %>
+= render OptionBarComponent.new( \
+  link_to("Accounts", book_accounts_path(@book)),
+  link_to("Categories", book_categories_path(@book)),
+  link_to("Edit Book", edit_book_path(@book)))

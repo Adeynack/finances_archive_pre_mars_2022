@@ -47,12 +47,12 @@ jobs:
           DATABASE_URL: postgres://postgres:postgres@127.0.0.1/finances
           RAILS_ENV: test
         run: bundle exec rails db:setup db:migrate
-      - name: Model Annotation
+      - name: Model and Routes Annotation
         # To fix: bundle exec rake annotate_models
         env:
           DATABASE_URL: postgres://postgres:postgres@127.0.0.1/finances
           ANNOTATE_FROZEN: true
-        run: bundle exec rake annotate_models
+        run: bundle exec annotate
       - name: Controllers Annotation
         # To fix: bundle exec chusaku
         run: bundle exec chusaku --dry-run --exit-with-error-on-annotation

@@ -22,7 +22,7 @@ class User < ApplicationRecord
   has_many :book_roles, dependent: :destroy
   has_many :accessible_books, through: :book_roles, source: :book
 
-  belongs_to :last_book, class_name: "Book", dependent: false, inverse_of: false
+  belongs_to :last_book, class_name: "Book", dependent: false, inverse_of: false, optional: true
 
   validates :email, presence: true
   validates :display_name, presence: true

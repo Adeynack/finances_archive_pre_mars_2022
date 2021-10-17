@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# A basic concept of hierarchy between elemenst of the same model (or table).
+# A basic concept of hierarchy between elements of the same model (or table).
 #
 # TODO: Research for existing solutions to this.
 # TODO: How could we preload those? Making them associations?

@@ -1,0 +1,5 @@
+p#grouped_accounts
+  = render TreeViewComponent.new \
+      @accounts_per_parent[nil],
+      ->(a) { link_to a.name, book_account_path(@book, a) },
+      ->(a) { @accounts_per_parent[a.id] }
