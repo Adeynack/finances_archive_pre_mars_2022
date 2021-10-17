@@ -2,7 +2,16 @@ p
   span
     strong Finances
   span &nbsp;|&nbsp;
+
+  span> Current Book:
+  - if @current_book
+    = link_to @current_book.name, books_url, title: "Click here to select a different book."
+  - else
+    = link_to "None", books_url, title: "Click here to select a different book."
+  span<> |
+
   - if @current_user
     span title=@current_user.email = "Logged as #{@current_user.display_name}"
-    span &nbsp;|&nbsp;
+    span<> |
     span = link_to "Log Out", destroy_user_session_path, method: :delete
+    span<> |
