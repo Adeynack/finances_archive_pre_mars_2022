@@ -13,11 +13,11 @@
 #  parent_id           :bigint           indexed
 #  starts_at           :date             not null
 #  currency_iso_code   :string(3)        not null
+#  notes               :text
 #  initial_balance     :integer          default(0), not null
 #  active              :boolean          default(TRUE), not null
 #  default_category_id :bigint           indexed
 #  info                :jsonb
-#  notes               :text
 #
 class Registers::Expense < Register
 end

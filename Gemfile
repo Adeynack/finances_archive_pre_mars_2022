@@ -33,6 +33,7 @@ gem "bcrypt", "~> 3.1.7" # Use Active Model has_secure_password
 gem "awesome_print"
 gem "kaminari"
 gem "dotenv-rails"
+gem "view_component", require: "view_component/engine"
 
 # Jobs
 gem "sidekiq"

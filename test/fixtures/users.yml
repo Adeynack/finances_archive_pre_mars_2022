@@ -11,6 +11,7 @@
 #  reset_password_token   :string           indexed
 #  reset_password_sent_at :datetime
 #  remember_created_at    :datetime
+#  last_book_id           :bigint           indexed
 #
 joe:
   email: joe@example.com

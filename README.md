@@ -48,6 +48,24 @@ Keep this open in a terminal tab.
 bin/webpack-dev-server
 ```
 
+### Code Maintenance
+
+#### Annotations
+
+Annotate models after migrations through the *Rake* task.
+
+```bash
+bundle exec rake annotate_models
+```
+
+#### Annotate Controllers
+
+Annotate controllers with their routes using the *chusaku* command.
+
+```bash
+bundle exec chusaku
+```
+
 ## Import
 
 ### Moneydance

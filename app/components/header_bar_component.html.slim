@@ -1,0 +1,8 @@
+p
+  span
+    strong Finances
+  span &nbsp;|&nbsp;
+  - if @current_user
+    span title=@current_user.email = "Logged as #{@current_user.display_name}"
+    span &nbsp;|&nbsp;
+    span = link_to "Log Out", destroy_user_session_path, method: :delete

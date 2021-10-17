@@ -11,6 +11,7 @@ class BooksController < ApplicationController
 
   # @route GET /books/:id (book)
   def show
+    current_user.update! last_book: @book
   end
 
   # @route GET /books/new (new_book)
