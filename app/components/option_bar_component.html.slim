@@ -1,6 +1,7 @@
-- first = true
-- @options.each do |option|
-  - unless first
+hr
+- if @options.present?
+  span<> |
+  - @options.each do |option|
+    = option
     span<> |
-  - first = false
-  = option
+hr

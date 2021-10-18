@@ -1,6 +1,7 @@
 ul
   - @items.each do |item|
-    li = render_item(item)
     - children = extract_children(item)
+    li
+      span = render_item(item)
     - if children.present?
       = render UlTreeComponent.new(children, @children_extractor, &@item_renderer)

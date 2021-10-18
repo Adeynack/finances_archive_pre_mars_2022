@@ -1,1 +1,3 @@
+h1 Categories
+= render OptionBarComponent.new(link_to("New Category", new_book_category_path))
 = render UlTreeComponent.by_parent_id(@categories_per_parent) { |c| link_to c.name, book_category_path(@book, c) }
