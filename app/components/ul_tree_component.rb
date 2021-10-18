@@ -8,7 +8,7 @@ class UlTreeComponent < ViewComponent::Base
     @children_extractor =
       case children_extractor
       when Proc then children_extractor
-      when Symbol then ->(parent_item) { item.send(children_extractor) }
+      when Symbol then ->(parent_item) { parent_item.send(children_extractor) }
       else raise ArgumentError, "invalid children_extractor"
       end
   end

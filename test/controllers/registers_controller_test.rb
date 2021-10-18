@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: registers
@@ -35,8 +37,8 @@ class RegistersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should create register" do
-    assert_difference('Register.count') do
-      post registers_url, params: { register: {  } }
+    assert_difference("Register.count") do
+      post registers_url, params: { register: {} }
     end
 
     assert_redirected_to register_url(Register.last)
@@ -53,12 +55,12 @@ class RegistersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update register" do
-    patch register_url(@register), params: { register: {  } }
+    patch register_url(@register), params: { register: {} }
     assert_redirected_to register_url(@register)
   end
 
   test "should destroy register" do
-    assert_difference('Register.count', -1) do
+    assert_difference("Register.count", -1) do
       delete register_url(@register)
     end
 
