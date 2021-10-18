@@ -5,7 +5,12 @@ class UlTreeComponent < ViewComponent::Base
     super
     @items = items
     @item_renderer = block
-    @children_extractor = children_extractor
+    @children_extractor =
+      case children_extractor
+      when Proc then children_extractor
+      when Symbol then ->(parent_item) { item.send(children_extractor) }
+      else raise ArgumentError, "invalid children_extractor"
+      end
   end
 
   class << self
@@ -18,15 +23,13 @@ class UlTreeComponent < ViewComponent::Base
     end
   end
 
+  private
+
   def render_item(item)
     @item_renderer.call(item)
   end
 
   def extract_children(item)
-    case @children_extractor
-    when Proc then @children_extractor.call(item)
-    when Symbol then item.send(@children_extractor)
-    else raise ArgumentError, "invalid children_extractor"
-    end
+    @children_extractor.call(item)
   end
 end
