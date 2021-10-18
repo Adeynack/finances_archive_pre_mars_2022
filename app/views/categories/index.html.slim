@@ -1,4 +1,1 @@
-= render TreeViewComponent.new \
-    @categories_per_parent[nil],
-    ->(c) { link_to c.name, book_category_path(@book, c) },
-    ->(c) { @categories_per_parent[c.id] }
+= render UlTreeComponent.by_parent_id(@categories_per_parent) { |c| link_to c.name, book_category_path(@book, c) }
