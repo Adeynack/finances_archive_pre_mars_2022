@@ -12,12 +12,16 @@ class CategoriesController < ApplicationController
   def show
   end
 
+  # @route GET /books/:book_id/categories/:id/edit (edit_book_category)
   def edit
   end
 
+  # @route PATCH /books/:book_id/categories/:id (book_category)
+  # @route PUT /books/:book_id/categories/:id (book_category)
   def update
   end
 
+  # @route DELETE /books/:book_id/categories/:id (book_category)
   def destroy
   end
 
