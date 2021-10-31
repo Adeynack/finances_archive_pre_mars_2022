@@ -1,10 +1,11 @@
 # frozen_string_literal: true
 
 class UlTreeComponent < ViewComponent::Base
-  def initialize(items, children_extractor = :child, &block)
+  def initialize(items, children_extractor = :child, root_list: true, &block)
     super
     @items = items
     @item_renderer = block
+    @root_list = root_list
     @children_extractor =
       case children_extractor
       when Proc then children_extractor

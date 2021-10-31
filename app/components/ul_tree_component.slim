@@ -1,11 +1,11 @@
-ul
+ul class=(["ul-tree-component", @root_list ? "root-list" : "sub-list"].join(" "))
   - @items.each do |item|
     - children = extract_children(item)
     - if children.blank?
-      li
+      li.without-children
         = render_item(item)
     - else
-      li
+      li.with-children
         details
           summary = render_item(item)
-          = render UlTreeComponent.new(children, @children_extractor, &@item_renderer)
+          = render UlTreeComponent.new(children, @children_extractor, root_list: false, &@item_renderer)
