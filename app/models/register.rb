@@ -23,10 +23,9 @@ class Register < ApplicationRecord
   include Currencyable
   include Taggable
   include Importable
-  include Hierarchical
 
   belongs_to :book
-  is_hierarchical from: :parent, to: :children
+  has_closure_tree order: :name
 
   has_one :default_category, class_name: "Register", required: false, dependent: false
 
@@ -42,7 +41,6 @@ class Register < ApplicationRecord
 
   has_currency :currency
 
-  scope :root, -> { where(parent: nil) }
   scope :accounts, -> { where(type: Register.account_type_names) }
   scope :categories, -> { where(type: Register.category_type_names) }
 

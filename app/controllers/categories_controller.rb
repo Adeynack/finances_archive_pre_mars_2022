@@ -5,7 +5,7 @@ class CategoriesController < ApplicationController
 
   # @route GET /books/:book_id/categories (book_categories)
   def index
-    @categories_per_parent = @book.registers.categories.order(:name).group_by(&:parent_id)
+    @categories = @book.categories
   end
 
   # @route GET /books/:book_id/categories/:id (book_category)

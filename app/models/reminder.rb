@@ -61,10 +61,10 @@ class Reminder < ApplicationRecord
       "  first date:  #{first_date}",
       "  last date:   #{last_date}",
       "  recurrence:  #{recurrence.to_json}",
-      "  register:    #{exchange_register.parent_chain.reverse.map!(&:name).join(' / ')}",
+      "  register:    #{exchange_register.ancestry_path.join(' / ')}",
       reminder_splits.map do |split|
         [
-          "    - register: #{split.register.parent_chain.reverse.map!(&:name).join(' / ')}",
+          "    - register: #{split.register.ancestry_path.join(' / ')}",
           "      amount:   #{split.amount}",
           "      memo:     #{split.memo}",
         ]

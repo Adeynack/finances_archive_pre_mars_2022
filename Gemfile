@@ -18,6 +18,7 @@ gem "active_record_union"
 gem "activerecord-pg_enum"
 # gem "active_record_extended"
 gem "friendly_id"
+gem "closure_tree"
 
 # Auth & Administration
 gem "devise"

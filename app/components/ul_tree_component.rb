@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class UlTreeComponent < ViewComponent::Base
-  def initialize(items, children_extractor, &block)
+  def initialize(items, children_extractor = :child, &block)
     super
     @items = items
     @item_renderer = block
@@ -20,6 +20,12 @@ class UlTreeComponent < ViewComponent::Base
         ->(item) { items_hashed_by_parent_id[item.id] },
         &block
       )
+    end
+
+    def from_hash_tree(hash_tree)
+      UlTreeComponent.new(hash_tree, ->(item) { item.second }) do |item|
+        yield item.first
+      end
     end
   end
 
