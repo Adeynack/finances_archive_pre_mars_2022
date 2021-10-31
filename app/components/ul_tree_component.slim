@@ -1,4 +1,4 @@
-ul class=(["ul-tree-component", @root_list ? "root-list" : "sub-list"].join(" "))
+ul.ul-tree-component class=(@root_list ? "root-list" : "sub-list")
   - @items.each do |item|
     - children = extract_children(item)
     - if children.blank?
