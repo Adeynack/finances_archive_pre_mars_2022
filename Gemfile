@@ -41,7 +41,7 @@ gem "sidekiq-scheduler"
 
 # Assets
 gem "sass-rails", ">= 6"
-gem "webpacker", "~> 5.0"
+gem "webpacker", "~> 5.0" # TODO: switch to ESBUILD using `jsbundling-rails`
 
 # Geography & Money & Data Modelling
 gem "countries"

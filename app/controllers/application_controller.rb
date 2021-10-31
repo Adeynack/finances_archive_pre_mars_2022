@@ -7,6 +7,6 @@ class ApplicationController < ActionController::Base
   private
 
   def set_book
-    @book = Book.find(params[:book_id])
+    @book = Book.find(params[:book_id]) if params.key?(:book_id)
   end
 end
