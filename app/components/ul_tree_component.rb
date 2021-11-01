@@ -39,4 +39,8 @@ class UlTreeComponent < ViewComponent::Base
   def extract_children(item)
     @children_extractor.call(item)
   end
+
+  def ul_extra_classes
+    @root_list ? "root-list" : "sub-list"
+  end
 end

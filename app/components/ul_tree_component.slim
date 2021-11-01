@@ -1,4 +1,4 @@
-ul.ul-tree-component class=(@root_list ? "root-list" : "sub-list")
+ul.ul-tree-component class=ul_extra_classes
   - @items.each do |item|
     - children = extract_children(item)
     - if children.blank?
