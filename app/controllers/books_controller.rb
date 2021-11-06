@@ -1,12 +1,10 @@
 # frozen_string_literal: true
 
 class BooksController < ApplicationController
-  before_action :set_book, only: [:show, :edit, :update, :destroy]
-
   # @route GET / (root)
   # @route GET /books (books)
   def index
-    @books = current_user.all_accessible_books.order(:name)
+    @books = current_user.all_accessible_books.order(:name).includes(:owner)
   end
 
   # @route GET /books/:id (book)
@@ -50,11 +48,17 @@ class BooksController < ApplicationController
     redirect_to books_url, notice: "Book was successfully destroyed."
   end
 
-  private
+  protected
 
   def set_book
-    @book = Book.find(params[:id])
+    super(book_id: params[:id]) unless [:index, :create].include?(params[:action])
   end
+
+  def breadcrumbs
+    [book_crumb]
+  end
+
+  private
 
   def book_params
     params.fetch(:book, {})

@@ -1,12 +1,16 @@
 p
   span
     strong Finances
-  span &nbsp;|&nbsp;
+  span<> |
 
   - if @current_user
     span title="Logged as #{@current_user.email}. Click here to see user's detail and log out." = @current_user.display_name
     / span = link_to "Log Out", destroy_user_session_path, method: :delete
 
-  - if @current_book
+  - breadcrumbs = @breadcrumbs.compact
+  - if breadcrumbs.present?
     span<> |
-    = link_to @current_book.name, @current_book, title: "Book overview"
+    - breadcrumbs.each_with_index do |breadcrumb, index|
+      - if index > 0
+        span<> >
+      = link_to breadcrumb.name, breadcrumb.target, title: breadcrumb.title
