@@ -7,10 +7,9 @@ p
     span title="Logged as #{@current_user.email}. Click here to see user's detail and log out." = @current_user.display_name
     / span = link_to "Log Out", destroy_user_session_path, method: :delete
 
-  - breadcrumbs = @breadcrumbs.compact
-  - if breadcrumbs.present?
+  - if content_for?(:breadcrumbs)
     span<> |
-    - breadcrumbs.each_with_index do |breadcrumb, index|
-      - if index > 0
-        span<> >
-      = link_to breadcrumb.name, breadcrumb.target, title: breadcrumb.title
+    = yield :breadcrumbs
+  - elsif !Rails.env.production?
+    span<> |
+    span --No Breadcrumbs Defined--

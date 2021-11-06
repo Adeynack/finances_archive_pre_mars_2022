@@ -1,3 +1,4 @@
-- @title_to_path_hash.each do |title, path|
-  = link_to title, path
-  span<> >
+- @steps.each_with_index do |step, index|
+  - if index > 0
+    span<> >
+  = link_to step[:label], step[:to]

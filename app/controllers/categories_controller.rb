@@ -28,15 +28,6 @@ class CategoriesController < ApplicationController
   private
 
   def set_category
-    @category = @book.registers.categories.find(params[:id])
-  end
-
-  protected
-
-  def breadcrumbs
-    [
-      book_crumb,
-      Crumb.new(name: "Categories", target: book_categories_path(@book)),
-    ]
+    @category = @book.categories.find(params[:id])
   end
 end

@@ -1,17 +1,19 @@
 # frozen_string_literal: true
 
 class AccountsController < ApplicationController
+  before_action :set_account, only: [:show]
+
   # @route GET /books/:book_id/accounts (book_accounts)
   def index
-    @accounts_per_parent = @book.registers.accounts.order(:name).group_by(&:parent_id)
+    @accounts_per_parent = @book.accounts.order(:name).group_by(&:parent_id)
   end
 
-  protected
+  def show
+  end
 
-  def breadcrumbs
-    [
-      book_crumb,
-      Crumb.new(name: "Accounts", target: book_accounts_path(@book)),
-    ]
+  private
+
+  def set_account
+    @account = @book.accounts.find(params[:id])
   end
 end

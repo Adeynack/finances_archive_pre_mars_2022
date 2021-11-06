@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class BooksController < ApplicationController
+  before_action :set_book, only: [:show, :edit, :update, :destroy]
+
   # @route GET / (root)
   # @route GET /books (books)
   def index
@@ -50,15 +52,15 @@ class BooksController < ApplicationController
 
   protected
 
-  def set_book
-    super(book_id: params[:id]) unless [:index, :create].include?(params[:action])
-  end
-
   def breadcrumbs
     [book_crumb]
   end
 
   private
+
+  def set_book
+    @book = current_user.all_accessible_books.find(params[:id])
+  end
 
   def book_params
     params.fetch(:book, {})
