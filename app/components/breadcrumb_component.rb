@@ -3,9 +3,7 @@
 class BreadcrumbComponent < ViewComponent::Base
   def initialize(*steps)
     super
-    ap steps
     @steps = steps.filter_map { |step| transform_step(step) }
-    ap @steps
   end
 
   private

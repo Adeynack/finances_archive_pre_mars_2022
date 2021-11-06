@@ -19,5 +19,5 @@
 #  default_category_id :bigint           indexed
 #  info                :jsonb
 #
-class Registers::Expense < Register
+class Registers::Expense < Registers::Category
 end

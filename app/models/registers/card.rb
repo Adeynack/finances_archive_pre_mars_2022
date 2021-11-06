@@ -19,6 +19,6 @@
 #  default_category_id :bigint           indexed
 #  info                :jsonb
 #
-class Registers::Card < Register
+class Registers::Card < Registers::Account
   attribute :info, Registers::CardInfo
 end

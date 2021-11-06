@@ -1,0 +1,5 @@
+- content_for :breadcrumbs do
+  = render BreadcrumbComponent.new(\
+    @book,
+    { label: "Categories", to: book_categories_path(@book) },
+    @category&.then { |c| { label: c.name, to: book_category_path(@book, c) } })

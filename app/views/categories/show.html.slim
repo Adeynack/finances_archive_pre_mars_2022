@@ -1,2 +1,3 @@
-= render BreadcrumbComponent.new(@book.name => @book, "Categories" => book_categories_path(@book))
-h1 = @category.name
+= render "breadcrumbs"
+
+h1 #{@category.name} (#{@category.type})

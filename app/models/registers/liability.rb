@@ -19,5 +19,5 @@
 #  default_category_id :bigint           indexed
 #  info                :jsonb
 #
-class Registers::Liability < Register
+class Registers::Liability < Registers::Account
 end
