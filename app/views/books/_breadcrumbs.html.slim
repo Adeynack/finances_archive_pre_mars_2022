@@ -1,2 +1,2 @@
 - content_for :breadcrumbs do
-  = render BreadcrumbComponent.new(@book)
+  = render BreadcrumbComponent.new(@book || [])

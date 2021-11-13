@@ -16,6 +16,10 @@ class BreadcrumbComponent < ViewComponent::Base
   end
 
   def transform_book(book)
-    { label: book.name, to: book }
+    {
+      label: book.name,
+      to: book,
+      title: book&.then { |b| "The current book is \"#{b.name}\", owned by #{b.owner.display_name} (#{b.owner.email})" }
+    }
   end
 end
