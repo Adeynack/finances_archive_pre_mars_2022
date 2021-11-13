@@ -11,6 +11,7 @@ class BreadcrumbComponent < ViewComponent::Base
   def transform_step(step)
     case step
     when Book then transform_book(step)
+    when User then transform_user(step)
     else step
     end
   end
@@ -20,6 +21,14 @@ class BreadcrumbComponent < ViewComponent::Base
       label: book.name,
       to: book,
       title: book&.then { |b| "The current book is \"#{b.name}\", owned by #{b.owner.display_name} (#{b.owner.email})" }
+    }
+  end
+
+  def transform_user(user)
+    {
+      label: user.display_name,
+      to: user,
+      title: user.email
     }
   end
 end

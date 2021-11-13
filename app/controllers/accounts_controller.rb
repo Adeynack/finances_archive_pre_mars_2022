@@ -8,6 +8,7 @@ class AccountsController < ApplicationController
     @accounts_per_parent = @book.accounts.order(:name).group_by(&:parent_id)
   end
 
+  # @route GET /books/:book_id/accounts/:id (book_account)
   def show
   end
 

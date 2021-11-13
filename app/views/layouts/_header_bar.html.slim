@@ -1,11 +1,10 @@
 p
   span
     strong Finances
-  span<> |
 
-  - if @current_user
-    span title="Logged as #{@current_user.email}. Click here to see user's detail and log out." = @current_user.display_name
-    / span = link_to "Log Out", destroy_user_session_path, method: :delete
+  - if current_user
+    span<> |
+    = link_to current_user.display_name, current_user, title: "Logged as #{current_user.email}. Click here to see user's detail and log out."
 
   - if content_for?(:breadcrumbs)
     span<> |

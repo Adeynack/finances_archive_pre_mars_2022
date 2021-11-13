@@ -50,12 +50,6 @@ class BooksController < ApplicationController
     redirect_to books_url, notice: "Book was successfully destroyed."
   end
 
-  protected
-
-  def breadcrumbs
-    [book_crumb]
-  end
-
   private
 
   def set_book
