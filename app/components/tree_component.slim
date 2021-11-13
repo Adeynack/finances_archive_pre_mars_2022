@@ -1,4 +1,4 @@
-ul.ul-tree-component class=ul_extra_classes
+ul.tree-component class=ul_extra_classes
   - @items.each do |item|
     - children = extract_children(item)
     - if children.blank?
@@ -8,4 +8,4 @@ ul.ul-tree-component class=ul_extra_classes
       li.with-children
         details
           summary = render_item(item)
-          = render UlTreeComponent.new(children, @children_extractor, root_list: false, &@item_renderer)
+          = render TreeComponent.new(children, @children_extractor, root_list: false, &@item_renderer)

@@ -1,12 +1,12 @@
-ul.ul-tree-component.root-list {
+ul.tree-component.root-list {
   padding-left: 0;
 }
 
-ul.ul-tree-component.sub-list {
+ul.tree-component.sub-list {
   padding-left: 16px;
 }
 
-ul.ul-tree-component {
+ul.tree-component {
   li.without-children {
     list-style-type: square;
     list-style-position: inside;
