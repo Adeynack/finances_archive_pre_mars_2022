@@ -2,7 +2,7 @@ version: '2'
 
 services:
   postgres:
-    image: 'postgres:13.2' # <--> .github/workflows/tests.yml
+    image: 'postgres:12.4' # <--> .github/workflows/tests.yml
     ports:
       - '${PG_PORT}:5432'
     volumes:
@@ -12,4 +12,4 @@ services:
   redis:
     image: redis
     ports:
-      - '${REDIS_PORT}:6379'
+      - '6379:6379'
