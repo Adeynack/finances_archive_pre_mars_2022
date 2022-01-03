@@ -18,6 +18,7 @@
 #  active              :boolean          default(TRUE), not null
 #  default_category_id :bigint           indexed
 #  info                :jsonb
+#  notes               :text
 #
 require "test_helper"
 
