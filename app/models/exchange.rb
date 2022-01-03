@@ -12,7 +12,7 @@
 #  cheque      :string
 #  description :string           not null
 #  memo        :text
-#  status      :enum             default(NULL), not null
+#  status      :enum             default("uncleared"), not null
 #
 class Exchange < ApplicationRecord
   include Taggable
@@ -22,7 +22,7 @@ class Exchange < ApplicationRecord
 
   has_many :splits, dependent: :destroy
 
-  enum status: [:uncleared, :reconciling, :cleared].index_with(:to_s)
+  enum status: [:uncleared, :reconciling, :cleared].index_with(&:to_s)
 
   validates :description, presence: true
   validates :date, presence: true

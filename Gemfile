@@ -3,10 +3,10 @@
 source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby "2.7.2" # <--> .github/workflows/tests.yml
+ruby "2.7.4" # <--> .github/workflows/tests.yml
 
 # Core
-gem "rails", "~> 6.1.3"
+gem "rails", "~> 6.1.4"
 gem "puma", "~> 5.0"
 
 # Database
@@ -40,11 +40,12 @@ gem "sidekiq-scheduler"
 gem "sass-rails", ">= 6"
 gem "webpacker", "~> 5.0"
 
-# Geography & Money
+# Geography & Money & Data Modelling
 gem "countries"
 gem "money", "~> 6.13.7"
 gem "money-rails", "~> 1.13.3"
 gem "iban-tools"
+gem "montrose", git: "https://github.com/rossta/montrose.git"
 
 group :development, :test do
   # gem "byebug", platforms: [:mri, :mingw, :x64_mingw]

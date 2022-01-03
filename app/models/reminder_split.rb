@@ -15,6 +15,9 @@
 #  status             :enum             default("uncleared"), not null
 #
 class ReminderSplit < ApplicationRecord
+  include Taggable
+  include Importable
+
   belongs_to :reminder
   belongs_to :register
 end

@@ -24,7 +24,7 @@ jobs:
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 2.7.2 # <--> Gemfile
+          ruby-version: 2.7.4 # <--> Gemfile
           bundler-cache: true
       - uses: actions/setup-node@v2
         with:

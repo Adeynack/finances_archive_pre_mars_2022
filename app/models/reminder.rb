@@ -13,8 +13,9 @@
 #  mode                 :enum             default("manual"), not null
 #  first_date           :date             not null
 #  last_date            :date
-#  recurrence           :string
-#  last_commit_at       :string
+#  recurrence           :jsonb
+#  last_commit_at       :date
+#  next_occurence_at    :date
 #  exchange_register_id :bigint           not null, indexed
 #  exchange_description :string           not null
 #  exchange_memo        :text
@@ -30,16 +31,46 @@ class Reminder < ApplicationRecord
   has_many :reminder_splits, dependent: :destroy
 
   enum mode: [:manual, :auto_commit, :auto_cancel].index_with(&:to_s)
+  serialize :recurrence, Montrose::Recurrence
 
   validates :title, presence: true
   validates :first_date, presence: true
   validate :validate_last_date_after_first_date
-  validates :exchange_register, presence: true
   validate :validate_exchange_register_on_same_book_as_reminder
   validates :exchange_description, presence: true
 
   before_validation do
     self.first_date = Time.zone.today if first_date.blank?
+    self.next_occurence_at = calculate_next_occurence_at
+  end
+
+  def calculate_next_occurence_at
+    return nil if last_date&.past?
+    return first_date unless recurrence
+
+    starting_at = [last_commit_at, first_date].max if last_commit_at
+    starting_at ||= [Time.zone.today, starting_at].max
+    recurrence.starting(starting_at).first
+  end
+
+  def debug
+    [
+      "Reminder: #{title}",
+      "  description: #{description}",
+      "  mode:        #{mode}",
+      "  first date:  #{first_date}",
+      "  last date:   #{last_date}",
+      "  recurrence:  #{recurrence.to_json}",
+      "  register:    #{exchange_register.parent_chain.reverse.map!(&:name).join(' / ')}",
+      reminder_splits.map do |split|
+        [
+          "    - register: #{split.register.parent_chain.reverse.map!(&:name).join(' / ')}",
+          "      amount:   #{split.amount}",
+          "      memo:     #{split.memo}",
+        ]
+      end,
+      "",
+    ].flatten
   end
 
   private
@@ -49,6 +80,9 @@ class Reminder < ApplicationRecord
   end
 
   def validate_exchange_register_on_same_book_as_reminder
-    errors.add :exchange_register, "must belong to the same book as the reminder" if exchange_register.book_id != book_id
+    return if exchange_register_id.blank?
+
+    register = exchange_register || Register.find(exchange_register_id)
+    errors.add :exchange_register, "must belong to the same book as the reminder" if register.present? && register.book_id != book_id
   end
 end

@@ -48,6 +48,30 @@ Keep this open in a terminal tab.
 bin/webpack-dev-server
 ```
 
+## Import
+
+### Moneydance
+
+```bash
+bundle rake data:import:md
+```
+
+Options (via ENV):
+
+| ENV                | Default         | Description                                                        |
+| ------------------ | --------------- | ------------------------------------------------------------------ |
+| `MD_IMPORT_FILE`   | ./tmp/md.json   | Path to the JSON file to import, exported from Moneydance.         |
+| `BOOK_OWNER_EMAIL` | joe@example.com | E-Mail of the owner of the book to create.                         |
+| `DEFAULT_CURRENCY` | EUR             | Default currency of the book to create.                            |
+| `AUTO_DELETE_BOOK` | 0 (false)       | Destroy the book if it already exists (clean import from scratch). |
+
+Here's a useful command during development. It is faster than destroying the existing book. It
+simply truncates all of the development database, seeds it with the test fixtures and imports.
+
+```bash
+rake db:truncate_all db:seed db:fixtures:load data:import:md
+```
+
 ## Development Notes
 
 ### GEMS & Libs to consider

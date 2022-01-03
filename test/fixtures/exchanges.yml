@@ -10,5 +10,5 @@
 #  cheque      :string
 #  description :string           not null
 #  memo        :text
-#  status      :enum             default(NULL), not null
+#  status      :enum             default("uncleared"), not null
 #
