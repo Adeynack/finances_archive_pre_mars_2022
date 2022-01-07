@@ -7,7 +7,7 @@ ruby File.read(".ruby-version").strip # <--> .github/workflows/tests.yml
 
 # Core
 gem "rails", "~> 6.1.4"
-gem "puma", "~> 5.0"
+gem "puma", "~> 5.5"
 
 # Database
 gem "pg", "~> 1.1"
