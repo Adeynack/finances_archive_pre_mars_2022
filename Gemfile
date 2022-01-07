@@ -58,6 +58,7 @@ group :development, :test do
   gem "pry-doc" # ruby/3.0.0 isn't supported by this pry-doc version
   gem "pry-rescue"
   gem "pry-stack_explorer"
+  gem "standard"
   gem "rubocop", require: false
   gem "rubocop-rails", require: false
   gem "rubocop-performance", require: false

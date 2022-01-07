@@ -35,44 +35,44 @@ class Registers::CardTest < ActiveSupport::TestCase
 
   test "cannot create a card when account number is not a string" do
     error = assert_raise(ActiveRecord::RecordInvalid) do
-      Registers::Card.create! name: "Visa", book: Book.take, info: { account_number: 123 }
+      Registers::Card.create! name: "Visa", book: Book.take, info: {account_number: 123}
     end
     assert_equal "Validation failed: Info / Account number is invalid", error.message
   end
 
   test "cannot create a card when IBAN is not valid" do
     error = assert_raise(ActiveRecord::RecordInvalid) do
-      Registers::Card.create! name: "Visa", book: Book.take, info: { iban: "foo" }
+      Registers::Card.create! name: "Visa", book: Book.take, info: {iban: "foo"}
     end
     assert_equal "Validation failed: Info / IBAN is invalid", error.message
   end
 
   test "can create a card when IBAN is valid" do
-    card = Registers::Card.create! name: "Visa", book: Book.take, info: { iban: "SE35 5000 0000 0549 1000 0003" }
+    card = Registers::Card.create! name: "Visa", book: Book.take, info: {iban: "SE35 5000 0000 0549 1000 0003"}
     assert card.valid?
   end
 
   test "cannot create a card when the interest rate is not a number" do
     error = assert_raise(ActiveRecord::RecordInvalid) do
-      Registers::Card.create! name: "Visa", book: Book.take, info: { interest_rate: "foo" }
+      Registers::Card.create! name: "Visa", book: Book.take, info: {interest_rate: "foo"}
     end
     assert_equal "Validation failed: Info / Interest rate is not a number", error.message
   end
 
   test "can create a card when the interest rate is coercable into a number" do
-    card = Registers::Card.create! name: "Visa", book: Book.take, info: { interest_rate: "123.435" }
+    card = Registers::Card.create! name: "Visa", book: Book.take, info: {interest_rate: "123.435"}
     assert card.valid?
     assert_equal 123.435, card.info.interest_rate
   end
 
   test "can create a card when the expires_at is a valid date string" do
-    card = Registers::Card.create! name: "Visa", book: Book.take, info: { expires_at: "2022-06-01" }
+    card = Registers::Card.create! name: "Visa", book: Book.take, info: {expires_at: "2022-06-01"}
     assert card.valid?
     assert_equal "2022-06-01", card.info.expires_at
   end
 
   test "can create a card when the expires_at is a date object" do
-    card = Registers::Card.create! name: "Visa", book: Book.take, info: { expires_at: Date.parse("2022-06-02") }
+    card = Registers::Card.create! name: "Visa", book: Book.take, info: {expires_at: Date.parse("2022-06-02")}
     assert card.valid?
     assert_equal "2022-06-02", card.info.expires_at
   end

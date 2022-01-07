@@ -36,7 +36,7 @@ class Book < ApplicationRecord
     output_register = ->(level:, node:) do
       node.each do |r, children|
         logger.info [
-          "#{'|   ' * (level - 1)}|- #{r.type} '#{r.name}' (#{r.currency_iso_code})#{' ⛔️' unless r.active}",
+          "#{"|   " * (level - 1)}|- #{r.type} '#{r.name}' (#{r.currency_iso_code})#{" ⛔️" unless r.active}",
           "#{exchange_count_per_register_id.fetch(r.id, 0) + split_count_per_register_id.fetch(r.id, 0)} exchanges (#{exchange_count_per_register_id.fetch(r.id, 0)} + #{split_count_per_register_id.fetch(r.id, 0)})",
         ].join(" // ")
         output_register.call(level: level + 1, node: children)

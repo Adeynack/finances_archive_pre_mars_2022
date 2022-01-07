@@ -22,12 +22,12 @@ module Import::Moneydance::RegisterImport
 
   def import_account_batch(accounts_to_import, md_accounts_by_parent_id)
     types = accounts_to_import.map { |a| a["type"] }.uniq!.sort!
-    logger.info "Importer MD accounts of type#{types.many? ? 's' : ''} #{types.join(', ')}"
+    logger.info "Importer MD accounts of type#{types.many? ? "s" : ""} #{types.join(", ")}"
 
     accounts_to_import.each do |account|
       import_account_recursively parent_register: nil,
-                                 md_account: account,
-                                 md_accounts_by_parent_id: md_accounts_by_parent_id
+        md_account: account,
+        md_accounts_by_parent_id: md_accounts_by_parent_id
     end
   end
 
@@ -41,12 +41,12 @@ module Import::Moneydance::RegisterImport
     when "l" then [Registers::Liability, nil]
     when "o" then [Registers::Loan, nil]
     when "v" then [Registers::Investment, extract_investment_info(md_account)]
-    else raise StandardError, "Unknown account type code \"#{md_account['type']}\"."
+    else raise StandardError, "Unknown account type code \"#{md_account["type"]}\"."
     end
   end
 
   def import_account_recursively(parent_register:, md_account:, md_accounts_by_parent_id:)
-    logger.info "Importing MD '#{md_account['type']}' type account \"#{md_account['name']}\" (ID \"#{md_account['id']}\")"
+    logger.info "Importing MD '#{md_account["type"]}' type account \"#{md_account["name"]}\" (ID \"#{md_account["id"]}\")"
     register = create_register(md_account, parent_register)
     register_id_by_md_acctid[md_account["id"]] = register.id
     register_id_by_md_old_id[md_account["old_id"]] = register.id
@@ -82,8 +82,8 @@ module Import::Moneydance::RegisterImport
   def import_child_accounts(md_account, parent_register, md_accounts_by_parent_id)
     (md_accounts_by_parent_id[md_account["id"]] || []).each do |child|
       import_account_recursively parent_register: parent_register,
-                                 md_account: child,
-                                 md_accounts_by_parent_id: md_accounts_by_parent_id
+        md_account: child,
+        md_accounts_by_parent_id: md_accounts_by_parent_id
     end
   end
 

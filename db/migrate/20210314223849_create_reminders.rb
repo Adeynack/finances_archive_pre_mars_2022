@@ -15,7 +15,7 @@ class CreateReminders < ActiveRecord::Migration[6.1]
       t.date :last_commit_at, comment: "Last time for which this reminder was committed. `nil` means it never was."
       t.date :next_occurence_at, comment: "Next time this reminder is scheduled for. Serves as a cache to quickly obtain all reminders that are due."
       # Exchange Template
-      t.references :exchange_register, foreign_key: { to_table: :registers }, null: false, comment: "From which register does the money come from."
+      t.references :exchange_register, foreign_key: {to_table: :registers}, null: false, comment: "From which register does the money come from."
       t.string :exchange_description, null: false, comment: "Label of the exchange."
       t.text :exchange_memo, comment: "Detail about the exchange."
       t.enum :exchange_status, as: :exchange_status, null: false, default: "uncleared"

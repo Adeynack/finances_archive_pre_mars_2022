@@ -8,11 +8,11 @@ module Currencyable
   class_methods do
     def ensure_the_currency_is_known(model_attribute)
       validates model_attribute,
-                inclusion: {
-                  in: KNOWN_CURRENCY_ISO_CODES,
-                  allow_nil: true,
-                  message: "%{value} is not a known currency ISO code" # rubocop:disable Style/FormatStringToken
-                }
+        inclusion: {
+          in: KNOWN_CURRENCY_ISO_CODES,
+          allow_nil: true,
+          message: "%{value} is not a known currency ISO code" # rubocop:disable Style/FormatStringToken
+        }
     end
 
     def define_iso_code_setter(model_attribute)

@@ -9,10 +9,10 @@ class CreateRegisterHierarchies < ActiveRecord::Migration[6.1]
     end
 
     add_index :register_hierarchies, [:ancestor_id, :descendant_id, :generations],
-              unique: true,
-              name: "register_anc_desc_idx"
+      unique: true,
+      name: "register_anc_desc_idx"
 
     add_index :register_hierarchies, [:descendant_id],
-              name: "register_desc_idx"
+      name: "register_desc_idx"
   end
 end
