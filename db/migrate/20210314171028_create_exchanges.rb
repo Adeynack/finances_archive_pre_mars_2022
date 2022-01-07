@@ -10,7 +10,7 @@ class CreateExchanges < ActiveRecord::Migration[6.1]
       t.string :cheque, comment: "Cheque information."
       t.string :description, null: false, comment: "Label of the exchange."
       t.text :memo, comment: "Detail about the exchange."
-      t.enum :status, as: :exchange_status, null: false, default: "uncleared"
+      t.enum :status, enum_type: :exchange_status, null: false, default: "uncleared"
 
       t.index :date
     end

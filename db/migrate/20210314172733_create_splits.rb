@@ -9,7 +9,7 @@ class CreateSplits < ActiveRecord::Migration[6.1]
       t.integer :amount, null: false
       t.integer :counterpart_amount, comment: "Amount in the destination register, if it differs from 'amount' (ex: an exchange rate applies)."
       t.text :memo, comment: "Detail about the exchange, to show in the destination register."
-      t.enum :status, as: :exchange_status, null: false, default: "uncleared"
+      t.enum :status, enum_type: :exchange_status, null: false, default: "uncleared"
     end
   end
 end

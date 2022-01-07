@@ -60,4 +60,5 @@ jobs:
       - name: Tests
         env:
           DATABASE_URL: postgres://postgres:postgres@127.0.0.1:5432/finances
+          CI: true
         run: bundle exec rails test

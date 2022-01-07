@@ -11,7 +11,7 @@ module Currencyable
         inclusion: {
           in: KNOWN_CURRENCY_ISO_CODES,
           allow_nil: true,
-          message: "%{value} is not a known currency ISO code" # rubocop:disable Style/FormatStringToken
+          message: "%{value} is not a known currency ISO code"
         }
     end
 
@@ -43,7 +43,7 @@ module Currencyable
       end
     end
 
-    def has_currency(attribute_name, optional: true) # rubocop:disable Naming/PredicateName
+    def has_currency(attribute_name, optional: true)
       raise ArgumentError, "has_currency needs the symbol of the attribute representing the ISO code of a currency" unless attribute_name.is_a?(Symbol)
 
       model_attribute = :"#{attribute_name}_iso_code"

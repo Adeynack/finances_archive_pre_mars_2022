@@ -16,7 +16,7 @@ class CreateRegisters < ActiveRecord::Migration[6.1]
     create_table :registers do |t|
       t.timestamps
       t.string :name, null: false
-      t.enum :type, as: :register_type, null: false
+      t.enum :type, enum_type: :register_type, null: false
       t.references :book, null: false, foreign_key: true
       t.references :parent, foreign_key: {to_table: :registers}, comment: "A null parent means it is a root register."
       t.date :starts_at, null: false

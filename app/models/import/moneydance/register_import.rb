@@ -24,10 +24,8 @@ module Import::Moneydance::RegisterImport
     types = accounts_to_import.map { |a| a["type"] }.uniq!.sort!
     logger.info "Importer MD accounts of type#{types.many? ? "s" : ""} #{types.join(", ")}"
 
-    accounts_to_import.each do |account|
-      import_account_recursively parent_register: nil,
-        md_account: account,
-        md_accounts_by_parent_id: md_accounts_by_parent_id
+    accounts_to_import.each do |md_account|
+      import_account_recursively parent_register: nil, md_account:, md_accounts_by_parent_id:
     end
   end
 
@@ -59,7 +57,7 @@ module Import::Moneydance::RegisterImport
     register_class.create!(
       created_at: from_md_unix_date(md_account["creation_date"]),
       name: md_account["name"].presence&.strip,
-      book: book,
+      book:,
       parent: parent_register,
       starts_at: from_md_int_date(md_account["date_created"]),
       currency_iso_code: extract_currency_iso_code(md_account),
@@ -81,9 +79,7 @@ module Import::Moneydance::RegisterImport
 
   def import_child_accounts(md_account, parent_register, md_accounts_by_parent_id)
     (md_accounts_by_parent_id[md_account["id"]] || []).each do |child|
-      import_account_recursively parent_register: parent_register,
-        md_account: child,
-        md_accounts_by_parent_id: md_accounts_by_parent_id
+      import_account_recursively parent_register:, md_account: child, md_accounts_by_parent_id:
     end
   end
 

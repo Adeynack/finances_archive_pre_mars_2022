@@ -11,7 +11,6 @@ module Import::Moneydance::ReminderImport
     end
   end
 
-  # rubocop:disable Metrics/AbcSize
   def import_reminder(md_reminder)
     transaction = extract_transaction_hash_from_reminder(md_reminder)
     reminder = book.reminders.create!(

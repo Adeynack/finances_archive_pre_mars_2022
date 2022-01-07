@@ -15,7 +15,8 @@ ActiveRecord::Schema.define(version: 2021_10_31_080038) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  # These are custom enum types that must be created before they can be used in the schema definition
+  # Custom types defined in this database.
+  # Note that some types may not work with other database engines. Be careful if changing database.
   create_enum "book_role_name", ["admin", "writer", "reader"]
   create_enum "exchange_status", ["uncleared", "reconciling", "cleared"]
   create_enum "register_type", ["Bank", "Card", "Investment", "Asset", "Liability", "Loan", "Institution", "Expense", "Income"]
@@ -26,7 +27,7 @@ ActiveRecord::Schema.define(version: 2021_10_31_080038) do
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "book_id", null: false
     t.bigint "user_id", null: false
-    t.enum "role", null: false, as: "book_role_name"
+    t.enum "role", null: false, enum_type: "book_role_name"
     t.index ["book_id", "user_id", "role"], name: "index_book_roles_on_book_id_and_user_id_and_role", unique: true
     t.index ["book_id"], name: "index_book_roles_on_book_id"
     t.index ["user_id"], name: "index_book_roles_on_user_id"
@@ -49,7 +50,7 @@ ActiveRecord::Schema.define(version: 2021_10_31_080038) do
     t.string "cheque", comment: "Cheque information."
     t.string "description", null: false, comment: "Label of the exchange."
     t.text "memo", comment: "Detail about the exchange."
-    t.enum "status", default: "uncleared", null: false, as: "exchange_status"
+    t.enum "status", default: "uncleared", null: false, enum_type: "exchange_status"
     t.index ["date"], name: "index_exchanges_on_date"
     t.index ["register_id"], name: "index_exchanges_on_register_id"
   end
@@ -78,7 +79,7 @@ ActiveRecord::Schema.define(version: 2021_10_31_080038) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "name", null: false
-    t.enum "type", null: false, as: "register_type"
+    t.enum "type", null: false, enum_type: "register_type"
     t.bigint "book_id", null: false
     t.bigint "parent_id", comment: "A null parent means it is a root register."
     t.date "starts_at", null: false
@@ -101,7 +102,7 @@ ActiveRecord::Schema.define(version: 2021_10_31_080038) do
     t.integer "amount", null: false
     t.integer "counterpart_amount", comment: "Amount in the destination register, if it differs from 'amount' (ex: an exchange rate applies)."
     t.text "memo", comment: "Detail about the exchange, to show in the destination register."
-    t.enum "status", default: "uncleared", null: false, as: "exchange_status"
+    t.enum "status", default: "uncleared", null: false, enum_type: "exchange_status"
     t.index ["register_id"], name: "index_reminder_splits_on_register_id"
     t.index ["reminder_id"], name: "index_reminder_splits_on_reminder_id"
   end
@@ -112,7 +113,7 @@ ActiveRecord::Schema.define(version: 2021_10_31_080038) do
     t.bigint "book_id", null: false
     t.string "title", null: false
     t.text "description"
-    t.enum "mode", default: "manual", null: false, as: "reminder_mode"
+    t.enum "mode", default: "manual", null: false, enum_type: "reminder_mode"
     t.date "first_date", null: false, comment: "From when to apply the reminder."
     t.date "last_date", comment: "Until when to apply the reminder (optional)."
     t.jsonb "recurrence", comment: "Expressed as a 'Montrose::Recurrence' JSON. For one-shot reminders, `nil`, happening only on `first_date`."
@@ -121,7 +122,7 @@ ActiveRecord::Schema.define(version: 2021_10_31_080038) do
     t.bigint "exchange_register_id", null: false, comment: "From which register does the money come from."
     t.string "exchange_description", null: false, comment: "Label of the exchange."
     t.text "exchange_memo", comment: "Detail about the exchange."
-    t.enum "exchange_status", default: "uncleared", null: false, as: "exchange_status"
+    t.enum "exchange_status", default: "uncleared", null: false, enum_type: "exchange_status"
     t.index ["book_id"], name: "index_reminders_on_book_id"
     t.index ["exchange_register_id"], name: "index_reminders_on_exchange_register_id"
   end
@@ -134,7 +135,7 @@ ActiveRecord::Schema.define(version: 2021_10_31_080038) do
     t.integer "amount", null: false
     t.integer "counterpart_amount", comment: "Amount in the destination register, if it differs from 'amount' (ex: an exchange rate applies)."
     t.text "memo", comment: "Detail about the exchange, to show in the destination register."
-    t.enum "status", default: "uncleared", null: false, as: "exchange_status"
+    t.enum "status", default: "uncleared", null: false, enum_type: "exchange_status"
     t.index ["exchange_id"], name: "index_splits_on_exchange_id"
     t.index ["register_id"], name: "index_splits_on_register_id"
   end

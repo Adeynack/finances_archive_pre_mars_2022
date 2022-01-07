@@ -11,9 +11,9 @@ Bundler.require(*Rails.groups)
 module Finances
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 6.1
+    config.load_defaults 7.0
 
-    config.autoload_paths += Dir[Rails.root.join("app", "validators", "**/")]
+    config.autoload_paths += Dir[Rails.root.join("app/validators/**/")]
 
     # Configuration for the application, engines, and railties goes here.
     #

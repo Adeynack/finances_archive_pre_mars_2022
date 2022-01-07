@@ -27,7 +27,6 @@ class Book < ApplicationRecord
 
   delegate :categories, :accounts, to: :registers
 
-  # rubocop:disable Metrics/AbcSize
   def debug_registers_tree
     exchange_count_per_register_id = Exchange.group(:register_id).count
     split_count_per_register_id = Split.group(:register_id).count
