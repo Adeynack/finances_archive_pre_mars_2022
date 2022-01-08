@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     services:
       postgres:
-        image: postgres:12.4 # <--> docker-compose.yml
+        image: postgres:12.4 # <--> must be one of the version in https://github.com/nerdgeschoss/development-environment/blob/main/docker-compose.yml
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres

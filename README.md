@@ -15,37 +15,26 @@ Look in [`test/fixtures/users.yml`](test/fixtures/users.yml) for a list
 of development accounts loaded with the fixtures, to log in the application
 in development mode.
 
-### Start a development session
+### Start a Development Session
 
 #### Dependencies
 
-Keep this open in a terminal tab.
+This project works in development against the [nerdgeschoss](https://nerdgeschoss.de/)
+[Development Environment](https://github.com/nerdgeschoss/development-environment#nerdgeschoss-development-environment).
+
+#### Rails Development Server
+
+This uses the _Rails 7_ development server script.
 
 ```bash
-docker compose up # starts the dependencies (ex: Redis, PostgreSQL)
-```
-
-#### Rails Application
-
-Keep this open in a terminal tab.
-
-```bash
-rails serve
-```
-
-#### WebPack Development Server
-
-Keep this open in a terminal tab.
-
-```bash
-bin/webpack-dev-server
+bin/dev
 ```
 
 ### Code Maintenance
 
 #### Annotations
 
-Annotate models after migrations through the *Rake* task.
+Annotate models after migrations through the _Rake_ task.
 
 ```bash
 bundle exec rake annotate_models
@@ -53,7 +42,7 @@ bundle exec rake annotate_models
 
 #### Annotate Controllers
 
-Annotate controllers with their routes using the *chusaku* command.
+Annotate controllers with their routes using the _chusaku_ command.
 
 ```bash
 bundle exec chusaku
@@ -82,9 +71,3 @@ simply truncates all of the development database, seeds it with the test fixture
 ```bash
 rake db:truncate_all db:seed db:fixtures:load data:import:md
 ```
-
-## Development Notes
-
-### GEMS & Libs to consider
-
-https://viewcomponent.org/motivation.html
