@@ -12,7 +12,7 @@ class BubbleUpValidator < ActiveModel::EachValidator
     return if value.valid?
 
     value.errors.full_messages.each do |msg|
-      record.errors.add(attribute, "/ #{msg}", options.merge(value:))
+      record.errors.add(attribute, "/ #{msg}", **options.merge(value:))
     end
   end
 end
