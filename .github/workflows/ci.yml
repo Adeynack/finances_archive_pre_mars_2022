@@ -56,7 +56,7 @@ jobs:
         # To fix: bundle exec chusaku
         run: bundle exec chusaku --dry-run --exit-with-error-on-annotation
       - name: Lint
-        run: bundle exec rubocop
+        run: bundle exec rubocop -c .rubocop.yml
       - name: Tests
         env:
           DATABASE_URL: postgres://postgres:postgres@127.0.0.1:5432/finances
