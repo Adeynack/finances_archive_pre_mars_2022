@@ -1,14 +1,39 @@
-p
-  span
-    strong Finances
+/ p
+/   span
+/     strong Finances
 
-  - if current_user
-    span<> |
-    = link_to current_user.display_name, current_user, title: "Logged as #{current_user.email}. Click here to see user's detail and log out."
+/   - if current_user
+/     span<> |
+/     = link_to current_user.display_name, current_user, title: "Logged as #{current_user.email}. Click here to see user's detail and log out."
 
-  - if content_for?(:breadcrumbs)
-    span<> |
-    = yield :breadcrumbs
-  - elsif !Rails.env.production?
-    span<> |
-    span --No Breadcrumbs Defined--
+/   - if content_for?(:breadcrumbs)
+/     span<> |
+/     = yield :breadcrumbs
+/   - elsif !Rails.env.production?
+/     span<> |
+/     span --No Breadcrumbs Defined--
+/ ---------
+nav.navbar.sticky-top.navbar-expand-lg.navbar-light.bg-light
+  .container-fluid
+    .navbar-brand Finances
+    button.navbar-toggler type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"
+      span.navbar-toggler-icon
+    .collapse.navbar-collapse id="navbarSupportedContent"
+      ul.navbar-nav.me-auto.mb-2.mb-lg-0
+        - if @book
+          li.nav-item
+            = link_to @book.name, @book, class: "nav-link"
+          li.nav-item
+            = link_to "Accounts", book_accounts_path(@book), class: "nav-link"
+          li.nav-item
+            = link_to "Categories", book_categories_path(@book), class: "nav-link"
+      - if @current_user
+        ul.navbar-nav
+          li.nav-item.dropdown
+            a.nav-link.dropdown-toggle href="#" id="user_dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"
+              = @current_user.display_name
+            ul.dropdown-menu.dropdown-menu-end aria-labelledby="user_dropdown"
+              li
+                = link_to @current_user.email, @current_user, class: "dropdown-item"
+              li
+                div.dropdown-item Log Out
