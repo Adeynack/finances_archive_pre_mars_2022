@@ -7,7 +7,7 @@ ruby "2.7.4" # <--> .github/workflows/tests.yml
 
 # Core
 gem "rails", "~> 6.1.4"
-gem "puma", "~> 5.5"
+gem "puma", "~> 5.6"
 
 # Database
 gem "pg", "~> 1.1"
