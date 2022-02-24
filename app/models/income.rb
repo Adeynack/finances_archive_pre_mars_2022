@@ -19,6 +19,5 @@
 #  default_category_id :bigint           indexed
 #  info                :jsonb
 #
-class Registers::Investment < Registers::Account
-  attribute :info, Registers::InvestmentInfo
+class Income < Category
 end

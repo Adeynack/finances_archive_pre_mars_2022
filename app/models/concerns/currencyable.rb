@@ -3,7 +3,7 @@
 module Currencyable
   extend ActiveSupport::Concern
 
-  KNOWN_CURRENCY_ISO_CODES = Money::Currency.all.map(&:iso_code)
+  KNOWN_CURRENCY_ISO_CODES = Money::Currency.all.map(&:iso_code).freeze
 
   class_methods do
     def ensure_the_currency_is_known(model_attribute)

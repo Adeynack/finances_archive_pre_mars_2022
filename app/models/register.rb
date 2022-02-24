@@ -20,6 +20,7 @@
 #  info                :jsonb
 #
 class Register < ApplicationRecord
+  include Classable
   include Currencyable
   include Taggable
   include Importable
@@ -44,6 +45,7 @@ class Register < ApplicationRecord
   scope :accounts, -> { where(type: Register.account_type_names) }
   scope :categories, -> { where(type: Register.category_type_names) }
 
+  # TODO: On sub-types without info, updating this field fails. It should fail because it has to be `null`, not because it does not have a `valid?` method. To re-create: Asset.first.update! info: { foo: "bar" }
   validates :info, bubble_up: true
 
   before_create do
@@ -52,49 +54,24 @@ class Register < ApplicationRecord
   end
 
   class << self
-    def store_full_sti_class
-      # save 'Asset' to the DB instead of 'Registers::Asset'
-      false
-    end
-
-    def find_sti_class(type_name)
-      # avoiding string building and regex computation by bypassing it here by a direct hash lookup
-      type_name_to_sti_class[type_name]
-    end
-
-    def type_name_to_sti_class
-      @type_name_to_sti_class ||= all_types.index_by { |t| t.name.demodulize }
-    end
-
     def all_types
-      @all_types ||= account_types + category_types
+      @all_types ||= (account_types + category_types).freeze
     end
 
     def account_types
-      @account_types ||= [
-        Registers::Asset,
-        Registers::Bank,
-        Registers::Card,
-        Registers::Institution,
-        Registers::Investment,
-        Registers::Liability,
-        Registers::Loan,
-      ]
+      @account_types ||= find_descendant_from_files(Account).sort_by(&:sti_name).freeze
     end
 
     def category_types
-      @category_types ||= [
-        Registers::Expense,
-        Registers::Income,
-      ]
+      @category_types ||= find_descendant_from_files(Category).sort_by(&:sti_name).freeze
     end
 
     def account_type_names
-      @account_type_names ||= account_types.map(&:sti_name)
+      @account_type_names ||= account_types.map(&:sti_name).freeze
     end
 
     def category_type_names
-      @category_type_names ||= category_types.map(&:sti_name)
+      @category_type_names ||= category_types.map(&:sti_name).freeze
     end
   end
 end

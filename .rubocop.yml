@@ -17,6 +17,10 @@ inherit_gem:
 Style/FrozenStringLiteralComment:
   Enabled: true
 
+Style/MutableConstant:
+  Enabled: true
+  EnforcedStyle: strict
+
 Style/TrailingCommaInArrayLiteral:
   Enabled: true
   EnforcedStyleForMultiline: consistent_comma

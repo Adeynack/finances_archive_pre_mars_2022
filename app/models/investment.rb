@@ -19,10 +19,6 @@
 #  default_category_id :bigint           indexed
 #  info                :jsonb
 #
-require "test_helper"
-
-class RegisterTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
+class Investment < Account
+  attribute :info, InvestmentInfo
 end

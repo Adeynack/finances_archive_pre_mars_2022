@@ -19,6 +19,6 @@
 #  default_category_id :bigint           indexed
 #  info                :jsonb
 #
-class Registers::Category < Register
+class Category < Register
   # self.abstract_class = true
 end

@@ -31,14 +31,14 @@ module Import::Moneydance::RegisterImport
 
   def register_class_and_info_from_md_account(md_account)
     case md_account["type"]
-    when "a" then [Registers::Asset, nil]
-    when "b" then [Registers::Bank, extract_bank_account_info(md_account)]
-    when "c" then [Registers::Card, extract_card_account_info(md_account)]
-    when "e" then [Registers::Expense, nil]
-    when "i" then [Registers::Income, nil]
-    when "l" then [Registers::Liability, nil]
-    when "o" then [Registers::Loan, nil]
-    when "v" then [Registers::Investment, extract_investment_info(md_account)]
+    when "a" then [Asset, nil]
+    when "b" then [Bank, extract_bank_account_info(md_account)]
+    when "c" then [Card, extract_card_account_info(md_account)]
+    when "e" then [Expense, nil]
+    when "i" then [Income, nil]
+    when "l" then [Liability, nil]
+    when "o" then [Loan, nil]
+    when "v" then [Investment, extract_investment_info(md_account)]
     else raise StandardError, "Unknown account type code \"#{md_account["type"]}\"."
     end
   end
@@ -85,14 +85,14 @@ module Import::Moneydance::RegisterImport
 
   def extract_bank_account_info(md_account)
     bank_account_number = md_account["bank_account_number"].presence
-    Registers::BankInfo.new(
+    BankInfo.new(
       account_number: bank_account_number,
       iban: IBANTools::IBAN.valid?(bank_account_number) ? bank_account_number : nil
     )
   end
 
   def extract_card_account_info(md_account)
-    Registers::CardInfo.new(
+    CardInfo.new(
       account_number: nil, # "bank_account_number" stores the card number in MD
       bank_name: md_account["bank_name"].presence,
       iban: nil, # "bank_account_number" stores the card number in MD
@@ -104,7 +104,7 @@ module Import::Moneydance::RegisterImport
   end
 
   def extract_investment_info(md_account)
-    Registers::InvestmentInfo.new(
+    InvestmentInfo.new(
       account_number: md_account["invst_account_number"]
     )
   end
