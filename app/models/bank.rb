@@ -20,5 +20,9 @@
 #  info                :jsonb
 #
 class Bank < Account
-  attribute :info, BankInfo
+  store_accessor :info, :account_number, :iban
+
+  validates :iban, iban: {allow_nil: true}
+
+  coerce_attribute :account_number, to: String
 end

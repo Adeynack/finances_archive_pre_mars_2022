@@ -20,5 +20,7 @@
 #  info                :jsonb
 #
 class Investment < Account
-  attribute :info, InvestmentInfo
+  store_accessor :info, :account_number
+
+  coerce_attribute :account_number, to: String
 end
