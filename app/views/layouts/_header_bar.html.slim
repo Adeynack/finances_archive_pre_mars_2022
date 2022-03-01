@@ -1,34 +1,9 @@
-/ p
-/   span
-/     strong Finances
-
-/   - if current_user
-/     span<> |
-/     = link_to current_user.display_name, current_user, title: "Logged as #{current_user.email}. Click here to see user's detail and log out."
-
-/   - if content_for?(:breadcrumbs)
-/     span<> |
-/     = yield :breadcrumbs
-/   - elsif !Rails.env.production?
-/     span<> |
-/     span --No Breadcrumbs Defined--
-/ ---------
-nav.navbar.sticky-top.navbar-expand-sm.navbar-light.bg-light
-  .container-fluid
-    .navbar-brand Finances
-    button.navbar-toggler type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"
-      span.navbar-toggler-icon
-    .collapse.navbar-collapse id="navbarSupportedContent"
-      ul.navbar-nav.me-auto.mb-2.mb-lg-0
-        - if @book
-          = nav_item_link_to @book.name, @book
-          = nav_item_link_to "Accounts", book_accounts_path(@book)
-          = nav_item_link_to "Categories", book_categories_path(@book)
-      - if @current_user
-        ul.navbar-nav
-          li.nav-item.dropdown
-            a.nav-link.dropdown-toggle href="#" id="user_dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"
-              = @current_user.display_name
-            ul.dropdown-menu.dropdown-menu-end aria-labelledby="user_dropdown"
-              = dropdown_menu_link_to @current_user.email, @current_user
-              = dropdown_menu_link_to "Log Out", "#"
+nav
+  span.navbar-title Finances
+  span.navbar-main-content
+    - if @book
+      = nav_item_link_to @book.name, @book
+      = nav_item_link_to "Accounts", book_accounts_path(@book)
+      = nav_item_link_to "Categories", book_categories_path(@book)
+    - if @current_user
+      = nav_item_link_to "User", @current_user, title: "#{@current_user.display_name} (#{@current_user.email})"

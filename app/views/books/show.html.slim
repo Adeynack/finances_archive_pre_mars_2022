@@ -5,7 +5,5 @@ p id="notice" = notice
 h1 = @book.name
 
 = render OptionBarComponent.new( \
-  link_to("Accounts", book_accounts_path(@book)),
-  link_to("Categories", book_categories_path(@book)),
   link_to("Edit Book", edit_book_path(@book)),
   link_to("Change Book", books_path))
