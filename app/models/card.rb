@@ -20,5 +20,14 @@
 #  info                :jsonb
 #
 class Card < Account
-  attribute :info, CardInfo
+  store_accessor :info, :bank_name, :account_number, :iban, :interest_rate, :credit_limit, :card_number, :expires_at
+
+  validates :iban, iban: {allow_nil: true}
+  validates :interest_rate, numericality: {allow_nil: true}
+  validates :credit_limit, numericality: {allow_nil: true, only_integer: true}
+  validates :expires_at, date: {allow_nil: true}
+
+  coerce_attribute :bank_name, :account_number, :card_number, to: String
+  coerce_attribute :interest_rate, to: Float
+  coerce_attribute :credit_limit, to: Integer
 end

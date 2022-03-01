@@ -24,9 +24,12 @@ class Register < ApplicationRecord
   include Currencyable
   include Taggable
   include Importable
+  include AttributeStripping
+  include AttributeManipulable
 
   belongs_to :book
   has_closure_tree order: :name
+  coerce_attribute :info, to: :min_hash
 
   has_one :default_category, class_name: "Register", required: false, dependent: false
 
@@ -44,9 +47,6 @@ class Register < ApplicationRecord
 
   scope :accounts, -> { where(type: Register.account_type_names) }
   scope :categories, -> { where(type: Register.category_type_names) }
-
-  # TODO: On sub-types without info, updating this field fails. It should fail because it has to be `null`, not because it does not have a `valid?` method. To re-create: Asset.first.update! info: { foo: "bar" }
-  validates :info, bubble_up: true
 
   before_create do
     self.starts_at ||= Time.zone.today

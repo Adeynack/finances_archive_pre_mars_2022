@@ -24,55 +24,54 @@ require "test_helper"
 class CardTest < ActiveSupport::TestCase
   test "info is all nil by default" do
     card = Card.create! name: "Visa", book: Book.take
-    assert_nil card.info.account_number
-    assert_nil card.info.iban
-    assert_nil card.info.interest_rate
-    assert_nil card.info.credit_limit
-    assert_nil card.info.card_number
-    assert_nil card.info.expires_at
+    assert_nil card.account_number
+    assert_nil card.iban
+    assert_nil card.interest_rate
+    assert_nil card.credit_limit
+    assert_nil card.card_number
+    assert_nil card.expires_at
   end
 
-  test "cannot create a card when account number is not a string" do
-    error = assert_raise(ActiveRecord::RecordInvalid) do
-      Card.create! name: "Visa", book: Book.take, info: {account_number: 123}
-    end
-    assert_equal "Validation failed: Info / Account number is invalid", error.message
+  test "numeric account number is coerced into a string" do
+    card = Card.create! name: "Visa", book: Book.take, account_number: 123
+    assert_equal "123", card.account_number
   end
 
   test "cannot create a card when IBAN is not valid" do
     error = assert_raise(ActiveRecord::RecordInvalid) do
-      Card.create! name: "Visa", book: Book.take, info: {iban: "foo"}
+      Card.create! name: "Visa", book: Book.take, iban: "foo"
     end
-    assert_equal "Validation failed: Info / IBAN is invalid", error.message
+    assert_equal "Validation failed: IBAN is invalid", error.message
   end
 
   test "can create a card when IBAN is valid" do
-    card = Card.create! name: "Visa", book: Book.take, info: {iban: "SE35 5000 0000 0549 1000 0003"}
+    card = Card.create! name: "Visa", book: Book.take, iban: "SE35 5000 0000 0549 1000 0003"
     assert card.valid?
   end
 
   test "cannot create a card when the interest rate is not a number" do
     error = assert_raise(ActiveRecord::RecordInvalid) do
-      Card.create! name: "Visa", book: Book.take, info: {interest_rate: "foo"}
+      Card.create! name: "Visa", book: Book.take, interest_rate: "foo"
     end
-    assert_equal "Validation failed: Info / Interest rate is not a number", error.message
+    assert_equal "Validation failed: Interest rate is not a number", error.message
   end
 
   test "can create a card when the interest rate is coercable into a number" do
-    card = Card.create! name: "Visa", book: Book.take, info: {interest_rate: "123.435"}
+    card = Card.create! name: "Visa", book: Book.take, interest_rate: "123.435"
     assert card.valid?
-    assert_equal 123.435, card.info.interest_rate
+    assert_equal Float, card.interest_rate.class
+    assert_equal 123.435, card.interest_rate
   end
 
   test "can create a card when the expires_at is a valid date string" do
-    card = Card.create! name: "Visa", book: Book.take, info: {expires_at: "2022-06-01"}
+    card = Card.create! name: "Visa", book: Book.take, expires_at: "2022-06-01"
     assert card.valid?
-    assert_equal "2022-06-01", card.info.expires_at
+    assert_equal "2022-06-01", card.expires_at
   end
 
   test "can create a card when the expires_at is a date object" do
-    card = Card.create! name: "Visa", book: Book.take, info: {expires_at: Date.parse("2022-06-02")}
+    card = Card.create! name: "Visa", book: Book.take, expires_at: Date.parse("2022-06-02")
     assert card.valid?
-    assert_equal "2022-06-02", card.info.expires_at
+    assert_equal "2022-06-02", card.expires_at
   end
 end
