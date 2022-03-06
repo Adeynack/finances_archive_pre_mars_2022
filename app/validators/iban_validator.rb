@@ -3,7 +3,7 @@
 class IBANValidator < ActiveModel::EachValidator
   def validate_each(record, attribute, value)
     if value.nil?
-      record.errors.add(attribute, :blank) unless options[:allow_nil] == true
+      record.errors.add(attribute, :blank) unless options.fetch(:allow_nil, true)
       return
     end
 

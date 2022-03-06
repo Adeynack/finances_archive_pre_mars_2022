@@ -12,22 +12,18 @@
 #  book_id             :bigint           not null, indexed
 #  parent_id           :bigint           indexed
 #  starts_at           :date             not null
+#  expires_at          :date
 #  currency_iso_code   :string(3)        not null
 #  notes               :text
-#  initial_balance     :integer          default(0), not null
+#  initial_balance     :bigint           default(0), not null
 #  active              :boolean          default(TRUE), not null
 #  default_category_id :bigint           indexed
-#  info                :jsonb
+#  institution_name    :string
+#  account_number      :string
+#  iban                :string
+#  interest_rate       :decimal(, )
+#  credit_limit        :bigint
+#  card_number         :string
 #
 class Card < Account
-  store_accessor :info, :bank_name, :account_number, :iban, :interest_rate, :credit_limit, :card_number, :expires_at
-
-  validates :iban, iban: {allow_nil: true}
-  validates :interest_rate, numericality: {allow_nil: true}
-  validates :credit_limit, numericality: {allow_nil: true, only_integer: true}
-  validates :expires_at, date: {allow_nil: true}
-
-  coerce_attribute :bank_name, :account_number, :card_number, to: String
-  coerce_attribute :interest_rate, to: Float
-  coerce_attribute :credit_limit, to: Integer
 end

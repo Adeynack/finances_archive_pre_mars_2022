@@ -12,12 +12,18 @@
 #  book_id             :bigint           not null, indexed
 #  parent_id           :bigint           indexed
 #  starts_at           :date             not null
+#  expires_at          :date
 #  currency_iso_code   :string(3)        not null
 #  notes               :text
-#  initial_balance     :integer          default(0), not null
+#  initial_balance     :bigint           default(0), not null
 #  active              :boolean          default(TRUE), not null
 #  default_category_id :bigint           indexed
-#  info                :jsonb
+#  institution_name    :string
+#  account_number      :string
+#  iban                :string
+#  interest_rate       :decimal(, )
+#  credit_limit        :bigint
+#  card_number         :string
 #
 class Register < ApplicationRecord
   include Classable
@@ -25,11 +31,9 @@ class Register < ApplicationRecord
   include Taggable
   include Importable
   include AttributeStripping
-  include AttributeManipulable
 
   belongs_to :book
   has_closure_tree order: :name
-  coerce_attribute :info, to: :min_hash
 
   has_one :default_category, class_name: "Register", required: false, dependent: false
 
@@ -45,6 +49,14 @@ class Register < ApplicationRecord
 
   has_currency :currency
 
+  validates :name, presence: true
+  validates :starts_at, date: true
+  validates :expires_at, date: true
+  validates :initial_balance, presence: true, numericality: {only_integer: true}
+  validates :iban, iban: true
+  validates :interest_rate, numericality: {allow_nil: true}
+  validates :credit_limit, numericality: {allow_nil: true, only_integer: true}
+
   scope :accounts, -> { where(type: Register.account_type_names) }
   scope :categories, -> { where(type: Register.category_type_names) }
 
@@ -54,6 +66,10 @@ class Register < ApplicationRecord
   end
 
   class << self
+    def all_sti_names
+      @all_sti_names ||= all_types.map(&:sti_name)
+    end
+
     def all_types
       @all_types ||= (account_types + category_types).freeze
     end

@@ -54,7 +54,7 @@ module Import::Moneydance::RegisterImport
 
   def create_register(md_account, parent_register)
     register_class, account_info = register_class_and_info_from_md_account(md_account)
-    register_class.create!(
+    attributes = account_info.merge(
       created_at: from_md_unix_date(md_account["creation_date"]),
       name: md_account["name"].presence&.strip,
       book:,
@@ -67,6 +67,7 @@ module Import::Moneydance::RegisterImport
       info: account_info,
       notes: md_account["comment"].presence&.strip
     )
+    register_class.create!(attributes)
   end
 
   def extract_currency_iso_code(md_account)

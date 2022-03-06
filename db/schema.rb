@@ -10,8 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_31_080038) do
-
+ActiveRecord::Schema[7.0].define(version: 2021_10_31_080038) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -23,8 +22,8 @@ ActiveRecord::Schema.define(version: 2021_10_31_080038) do
   create_enum "reminder_mode", ["manual", "auto_commit", "auto_cancel"]
 
   create_table "book_roles", force: :cascade do |t|
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.bigint "book_id", null: false
     t.bigint "user_id", null: false
     t.enum "role", null: false, enum_type: "book_role_name"
@@ -34,8 +33,8 @@ ActiveRecord::Schema.define(version: 2021_10_31_080038) do
   end
 
   create_table "books", force: :cascade do |t|
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "name", null: false
     t.bigint "owner_id", null: false
     t.string "default_currency_iso_code", limit: 3, null: false
@@ -43,8 +42,8 @@ ActiveRecord::Schema.define(version: 2021_10_31_080038) do
   end
 
   create_table "exchanges", force: :cascade do |t|
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.date "date", null: false, comment: "Date the exchange appears in the book."
     t.bigint "register_id", null: false, comment: "From which register does the money come from."
     t.string "cheque", comment: "Cheque information."
@@ -56,8 +55,8 @@ ActiveRecord::Schema.define(version: 2021_10_31_080038) do
   end
 
   create_table "import_origins", force: :cascade do |t|
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "subject_type", null: false
     t.bigint "subject_id", null: false
     t.string "external_system", null: false
@@ -76,27 +75,33 @@ ActiveRecord::Schema.define(version: 2021_10_31_080038) do
   end
 
   create_table "registers", force: :cascade do |t|
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "name", null: false
     t.enum "type", null: false, enum_type: "register_type"
     t.bigint "book_id", null: false
     t.bigint "parent_id", comment: "A null parent means it is a root register."
-    t.date "starts_at", null: false
+    t.date "starts_at", null: false, comment: "Opening date of the register."
+    t.date "expires_at", comment: "Optional expiration date of the register (ex: for a credit card)."
     t.string "currency_iso_code", limit: 3, null: false
     t.text "notes"
-    t.integer "initial_balance", default: 0, null: false
+    t.bigint "initial_balance", default: 0, null: false
     t.boolean "active", default: true, null: false
     t.bigint "default_category_id", comment: "The category automatically selected when entering a new exchange from this register."
-    t.jsonb "info"
+    t.string "institution_name", comment: "Name of the institution (ex: bank) managing the registry (ex: credit card)."
+    t.string "account_number", comment: "Number by which the register is referred to (ex: bank account number)."
+    t.string "iban", comment: "In the case the register is identified by an International Bank Account Number (IBAN)."
+    t.decimal "interest_rate", comment: "In the case the register is being charged interests, its rate (ex: credit card)."
+    t.bigint "credit_limit", comment: "In the case the register has a credit limit (ex: credit card, credit margin)."
+    t.string "card_number", comment: "In the case the register is linked to a card, its number (ex: a credit card)."
     t.index ["book_id"], name: "index_registers_on_book_id"
     t.index ["default_category_id"], name: "index_registers_on_default_category_id"
     t.index ["parent_id"], name: "index_registers_on_parent_id"
   end
 
   create_table "reminder_splits", force: :cascade do |t|
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.bigint "reminder_id", null: false
     t.bigint "register_id", null: false, comment: "To which register is the money going to for this split."
     t.integer "amount", null: false
@@ -108,8 +113,8 @@ ActiveRecord::Schema.define(version: 2021_10_31_080038) do
   end
 
   create_table "reminders", force: :cascade do |t|
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.bigint "book_id", null: false
     t.string "title", null: false
     t.text "description"
@@ -128,8 +133,8 @@ ActiveRecord::Schema.define(version: 2021_10_31_080038) do
   end
 
   create_table "splits", force: :cascade do |t|
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.bigint "exchange_id", null: false
     t.bigint "register_id", null: false, comment: "To which register is the money going to for this split."
     t.integer "amount", null: false
@@ -141,8 +146,8 @@ ActiveRecord::Schema.define(version: 2021_10_31_080038) do
   end
 
   create_table "taggings", force: :cascade do |t|
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.bigint "tag_id", null: false
     t.string "subject_type", null: false
     t.bigint "subject_id", null: false
@@ -153,21 +158,21 @@ ActiveRecord::Schema.define(version: 2021_10_31_080038) do
   end
 
   create_table "tags", force: :cascade do |t|
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "name", null: false
     t.index ["name"], name: "index_tags_on_name", unique: true
   end
 
   create_table "users", force: :cascade do |t|
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "email", null: false
     t.string "encrypted_password", null: false
     t.string "display_name", null: false
     t.string "reset_password_token"
-    t.datetime "reset_password_sent_at"
-    t.datetime "remember_created_at"
+    t.datetime "reset_password_sent_at", precision: nil
+    t.datetime "remember_created_at", precision: nil
     t.bigint "last_book_id", comment: "Last opened book."
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["last_book_id"], name: "index_users_on_last_book_id"

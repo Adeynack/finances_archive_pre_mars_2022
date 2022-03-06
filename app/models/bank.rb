@@ -12,17 +12,18 @@
 #  book_id             :bigint           not null, indexed
 #  parent_id           :bigint           indexed
 #  starts_at           :date             not null
+#  expires_at          :date
 #  currency_iso_code   :string(3)        not null
 #  notes               :text
-#  initial_balance     :integer          default(0), not null
+#  initial_balance     :bigint           default(0), not null
 #  active              :boolean          default(TRUE), not null
 #  default_category_id :bigint           indexed
-#  info                :jsonb
+#  institution_name    :string
+#  account_number      :string
+#  iban                :string
+#  interest_rate       :decimal(, )
+#  credit_limit        :bigint
+#  card_number         :string
 #
 class Bank < Account
-  store_accessor :info, :account_number, :iban
-
-  validates :iban, iban: {allow_nil: true}
-
-  coerce_attribute :account_number, to: String
 end
