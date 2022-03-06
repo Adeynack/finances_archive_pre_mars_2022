@@ -31,13 +31,13 @@ module Import::Moneydance::RegisterImport
 
   def register_class_and_info_from_md_account(md_account)
     case md_account["type"]
-    when "a" then [Asset, nil]
+    when "a" then [Asset, {}]
     when "b" then [Bank, extract_bank_account_info(md_account)]
     when "c" then [Card, extract_card_account_info(md_account)]
-    when "e" then [Expense, nil]
-    when "i" then [Income, nil]
-    when "l" then [Liability, nil]
-    when "o" then [Loan, nil]
+    when "e" then [Expense, {}]
+    when "i" then [Income, {}]
+    when "l" then [Liability, {}]
+    when "o" then [Loan, {}]
     when "v" then [Investment, extract_investment_info(md_account)]
     else raise StandardError, "Unknown account type code \"#{md_account["type"]}\"."
     end
@@ -64,10 +64,9 @@ module Import::Moneydance::RegisterImport
       initial_balance: md_account["sbal"]&.then(&:to_i),
       active: md_account["is_inactive"] != "y",
       default_category_id: extract_default_category_id(md_account),
-      info: account_info,
       notes: md_account["comment"].presence&.strip
     )
-    register_class.create!(attributes)
+    register_class.create! attributes
   end
 
   def extract_currency_iso_code(md_account)
@@ -95,7 +94,7 @@ module Import::Moneydance::RegisterImport
   def extract_card_account_info(md_account)
     {
       account_number: nil, # "bank_account_number" stores the card number in MD
-      bank_name: md_account["bank_name"].presence,
+      institution_name: md_account["bank_name"].presence,
       iban: nil, # "bank_account_number" stores the card number in MD
       interest_rate: md_account["apr"].presence&.to_f,
       credit_limit: md_account["credit_limit"].presence&.to_f&.then { |l| (l * 10).to_i },
