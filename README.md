@@ -7,8 +7,8 @@
 ```bash
 bundle # installs ruby gems
 yarn install # installs the JavaScript packages
-rails db:create db:migrate # creates the database and loads the schema
-rails db:fixtures:load # (optional) creates demo data within the app
+bin/rails db:create db:migrate # creates the database and loads the schema
+bin/rails db:fixtures:load # (optional) creates demo data within the app
 ```
 
 Look in [`test/fixtures/users.yml`](test/fixtures/users.yml) for a list
@@ -37,7 +37,7 @@ bin/dev
 Annotate models after migrations through the _Rake_ task.
 
 ```bash
-bundle exec rake annotate_models
+bin/rake annotate_models
 ```
 
 #### Annotate Controllers
@@ -45,7 +45,7 @@ bundle exec rake annotate_models
 Annotate controllers with their routes using the _chusaku_ command.
 
 ```bash
-bundle exec chusaku
+bin/chusaku
 ```
 
 ## Import
@@ -53,7 +53,7 @@ bundle exec chusaku
 ### Moneydance
 
 ```bash
-bundle rake data:import:md
+bin/rake data:import:md
 ```
 
 Options (via ENV):
@@ -69,5 +69,5 @@ Here's a useful command during development. It is faster than destroying the exi
 simply truncates all of the development database, seeds it with the test fixtures and imports.
 
 ```bash
-rake db:truncate_all db:seed db:fixtures:load data:import:md
+bin/rake db:truncate_all db:seed db:fixtures:load data:import:md
 ```
