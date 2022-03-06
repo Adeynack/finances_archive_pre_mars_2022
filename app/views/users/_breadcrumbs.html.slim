@@ -1,0 +1,4 @@
+- content_for :breadcrumbs do
+  = render BreadcrumbComponent.new(\
+    @book,
+    (@user == current_user ? [] : @user))

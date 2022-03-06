@@ -1,0 +1,6 @@
+= render "breadcrumbs"
+
+h1 Accounts
+
+p#grouped_accounts
+  = render TreeComponent.by_parent_id(@accounts_per_parent) { |a| link_to a.name, book_account_path(@book, a) }

@@ -6,12 +6,11 @@ module Import::Moneydance::ReminderImport
   def import_reminders
     logger.info "Importing reminders"
     md_items_by_type["reminder"].each do |md_reminder|
-      logger.info "Importing reminder '#{md_reminder['desc']}' (#{md_reminder['id']})"
+      logger.info "Importing reminder '#{md_reminder["desc"]}' (#{md_reminder["id"]})"
       import_reminder(md_reminder)
     end
   end
 
-  # rubocop:disable Metrics/AbcSize
   def import_reminder(md_reminder)
     transaction = extract_transaction_hash_from_reminder(md_reminder)
     reminder = book.reminders.create!(
@@ -112,8 +111,8 @@ module Import::Moneydance::ReminderImport
     md_splits.keys.sort.each do |md_split_index|
       md_split = md_splits[md_split_index]
       import_reminder_split(md_split, reminder)
-    rescue StandardError
-      logger.error "Error importing reminder split #{md_split['id']}"
+    rescue
+      logger.error "Error importing reminder split #{md_split["id"]}"
       raise
     end
   end

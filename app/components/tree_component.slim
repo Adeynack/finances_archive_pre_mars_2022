@@ -1,0 +1,11 @@
+ul.tree-component class=ul_extra_classes
+  - @items.each do |item|
+    - children = extract_children(item)
+    - if children.blank?
+      li.without-children
+        = render_item(item)
+    - else
+      li.with-children
+        details
+          summary = render_item(item)
+          = render TreeComponent.new(children, @children_extractor, root_list: false, &@item_renderer)

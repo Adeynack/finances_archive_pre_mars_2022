@@ -1,0 +1,7 @@
+- if @steps&.first == []
+  span<>
+- else
+  - @steps.each_with_index do |step, index|
+    - if index > 0
+      span<> >
+    = link_to step[:label], step[:to], title: step[:title]

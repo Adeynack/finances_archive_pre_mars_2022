@@ -11,9 +11,12 @@ Bundler.require(*Rails.groups)
 module Finances
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 6.1
+    config.load_defaults 7.0
 
-    config.autoload_paths += Dir[Rails.root.join("app", "validators", "**/")]
+    config.autoload_paths += Dir["#{root}/app/models/accounts/**/"]
+    config.autoload_paths += Dir["#{root}/app/models/categories/**/"]
+    config.autoload_paths += Dir["#{root}/app/models/refinements/**/"]
+    config.autoload_paths += Dir["#{root}/app/validators/**/"]
 
     # Configuration for the application, engines, and railties goes here.
     #
@@ -22,5 +25,6 @@ module Finances
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+    # config.template_engine = :slim
   end
 end

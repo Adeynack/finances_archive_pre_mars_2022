@@ -24,7 +24,23 @@
 require "test_helper"
 
 class ReminderTest < ActiveSupport::TestCase
-  test "create a reminder" do
+  test "create a reminder with a recurence" do
+    book = books(:joe)
+    first_bank = registers(:first_bank)
+    reminder = book.reminders.create!(
+      title: "Test 1",
+      last_date: nil,
+      exchange_description: "Reminder Exchange Template",
+      exchange_register: first_bank,
+      recurrence: Montrose.every(:year, mday: 7, month: :january)
+    )
+    assert_equal Time.zone.today, reminder.first_date
+    assert Time.zone.today, reminder.next_occurence_at.year >= Time.zone.today.year
+    assert_equal 1, reminder.next_occurence_at.month
+    assert_equal 7, reminder.next_occurence_at.day
+  end
+
+  test "create a reminder with no recurence" do
     book = books(:joe)
     first_bank = registers(:first_bank)
     reminder = book.reminders.create!(

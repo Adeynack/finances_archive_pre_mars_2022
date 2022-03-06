@@ -3,16 +3,16 @@
 module Currencyable
   extend ActiveSupport::Concern
 
-  KNOWN_CURRENCY_ISO_CODES = Money::Currency.all.map(&:iso_code)
+  KNOWN_CURRENCY_ISO_CODES = Money::Currency.all.map(&:iso_code).freeze
 
   class_methods do
     def ensure_the_currency_is_known(model_attribute)
       validates model_attribute,
-                inclusion: {
-                  in: KNOWN_CURRENCY_ISO_CODES,
-                  allow_nil: true,
-                  message: "%{value} is not a known currency ISO code" # rubocop:disable Style/FormatStringToken
-                }
+        inclusion: {
+          in: KNOWN_CURRENCY_ISO_CODES,
+          allow_nil: true,
+          message: "%{value} is not a known currency ISO code"
+        }
     end
 
     def define_iso_code_setter(model_attribute)
@@ -43,7 +43,7 @@ module Currencyable
       end
     end
 
-    def has_currency(attribute_name, optional: true) # rubocop:disable Naming/PredicateName
+    def has_currency(attribute_name, optional: true)
       raise ArgumentError, "has_currency needs the symbol of the attribute representing the ISO code of a currency" unless attribute_name.is_a?(Symbol)
 
       model_attribute = :"#{attribute_name}_iso_code"

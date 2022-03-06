@@ -1,0 +1,9 @@
+= render "breadcrumbs"
+
+p id="notice" = notice
+
+h1 = @book.name
+
+= render OptionBarComponent.new( \
+  link_to("Edit Book", edit_book_path(@book)),
+  link_to("Change Book", books_path))

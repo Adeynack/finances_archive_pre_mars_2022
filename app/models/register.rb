@@ -12,21 +12,28 @@
 #  book_id             :bigint           not null, indexed
 #  parent_id           :bigint           indexed
 #  starts_at           :date             not null
+#  expires_at          :date
 #  currency_iso_code   :string(3)        not null
-#  initial_balance     :integer          default(0), not null
+#  notes               :text
+#  initial_balance     :bigint           default(0), not null
 #  active              :boolean          default(TRUE), not null
 #  default_category_id :bigint           indexed
-#  info                :jsonb
-#  notes               :text
+#  institution_name    :string
+#  account_number      :string
+#  iban                :string
+#  interest_rate       :decimal(, )
+#  credit_limit        :bigint
+#  card_number         :string
 #
 class Register < ApplicationRecord
   include Currencyable
   include Taggable
   include Importable
-  include Hierarchical
+  include AttributeStripping
+  using ClassRefinements
 
   belongs_to :book
-  is_hierarchical from: :parent, to: :children
+  has_closure_tree order: :name
 
   has_one :default_category, class_name: "Register", required: false, dependent: false
 
@@ -42,53 +49,19 @@ class Register < ApplicationRecord
 
   has_currency :currency
 
-  scope :root, -> { where(parent: nil) }
-  scope :accounts, -> { where(type: Register.account_types) }
-  scope :categories, -> { where(type: Register.category_types) }
+  validates :name, presence: true
+  validates :starts_at, date: true
+  validates :expires_at, date: true
+  validates :initial_balance, presence: true, numericality: {only_integer: true}
+  validates :iban, iban: true
+  validates :interest_rate, numericality: {allow_nil: true}
+  validates :credit_limit, numericality: {allow_nil: true, only_integer: true}
 
-  validates :info, bubble_up: true
+  scope :accounts, -> { where(type: Register.account_type_names) }
+  scope :categories, -> { where(type: Register.category_type_names) }
 
   before_create do
     self.starts_at ||= Time.zone.today
     self.currency_iso_code ||= book.default_currency_iso_code
-  end
-
-  class << self
-    def store_full_sti_class
-      # save 'Asset' to the DB instead of 'Registers::Asset'
-      false
-    end
-
-    def find_sti_class(type_name)
-      # avoiding string building and regex computation by bypassing it here by a direct hash lookup
-      type_name_to_sti_class[type_name]
-    end
-
-    def type_name_to_sti_class
-      @type_name_to_sti_class ||= all_types.index_by { |t| t.name.demodulize }
-    end
-
-    def all_types
-      @all_types ||= account_types + category_types
-    end
-
-    def account_types
-      @account_types ||= [
-        Registers::Asset,
-        Registers::Bank,
-        Registers::Card,
-        Registers::Institution,
-        Registers::Investment,
-        Registers::Liability,
-        Registers::Loan,
-      ]
-    end
-
-    def category_types
-      @category_types ||= [
-        Registers::Expense,
-        Registers::Income,
-      ]
-    end
   end
 end

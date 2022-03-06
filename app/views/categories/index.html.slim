@@ -1,0 +1,5 @@
+= render "breadcrumbs"
+
+h1 Categories
+= render OptionBarComponent.new(link_to("New Category", new_book_category_path))
+= render TreeComponent.from_hash_tree(@categories.hash_tree) { |c| link_to c.name, book_category_path(@book, c) }

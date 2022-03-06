@@ -1,0 +1,5 @@
+- content_for :breadcrumbs do
+  = render BreadcrumbComponent.new(\
+    @book,
+    { label: "Accounts", to: book_accounts_path(@book) },
+    @account&.then { |a| { label: a.name, to: book_account_path(@book, a) } })

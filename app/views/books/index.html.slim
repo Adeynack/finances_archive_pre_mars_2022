@@ -1,0 +1,20 @@
+= render "breadcrumbs"
+
+p id="notice"
+  = notice
+h1 Select Book
+p
+  = link_to "Create a new book", new_book_path
+p
+  table
+    thead
+      tr
+        th Book Name
+        th Owner
+    tbody
+      - @books.each do |book|
+        tr
+          td = link_to book.name, book
+          td = link_to "#{book.owner.display_name}", book.owner, title: book.owner.email
+          td = link_to "Edit", edit_book_path(book)
+          td = link_to "Destroy", book, method: :delete, data: { confirm: "Are you sure?" }

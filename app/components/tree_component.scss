@@ -1,0 +1,19 @@
+ul.tree-component.root-list {
+  padding-left: 0;
+}
+
+ul.tree-component.sub-list {
+  padding-left: 16px;
+}
+
+ul.tree-component {
+  li.without-children {
+    list-style-type: square;
+    list-style-position: inside;
+  }
+
+  li.with-children {
+    list-style-type: none;
+  }
+}
+// TODO: Find a way to have those included in the SCSS pipeline.

@@ -2,12 +2,13 @@
 
 # Validates that the value is either a Date, or a string representing one.
 # Blank strings are threated as nil.
+# Nil is allowed by default.
 class DateValidator < ActiveModel::EachValidator
   def validate_each(record, attribute, value)
     return if value.is_a?(Date)
 
     if value.blank?
-      record.errors.add(attribute, :blank) unless options[:allow_nil] == true
+      record.errors.add(attribute, :blank) unless options.fetch(:allow_nil, true)
       return
     end
 

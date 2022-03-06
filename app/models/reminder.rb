@@ -31,7 +31,7 @@ class Reminder < ApplicationRecord
   has_many :reminder_splits, dependent: :destroy
 
   enum mode: [:manual, :auto_commit, :auto_cancel].index_with(&:to_s)
-  serialize :recurrence, Montrose::Recurrence
+  serialize :recurrence, MontroseJSONSerializer
 
   validates :title, presence: true
   validates :first_date, presence: true
@@ -48,8 +48,8 @@ class Reminder < ApplicationRecord
     return nil if last_date&.past?
     return first_date unless recurrence
 
-    starting_at = [last_commit_at, first_date].max if last_commit_at
-    starting_at ||= [Time.zone.today, starting_at].max
+    starting_at = [last_commit_at, first_date].compact.max if last_commit_at
+    starting_at ||= [Time.zone.today, starting_at].compact.max
     recurrence.starting(starting_at).first
   end
 
@@ -61,10 +61,10 @@ class Reminder < ApplicationRecord
       "  first date:  #{first_date}",
       "  last date:   #{last_date}",
       "  recurrence:  #{recurrence.to_json}",
-      "  register:    #{exchange_register.parent_chain.reverse.map!(&:name).join(' / ')}",
+      "  register:    #{exchange_register.ancestry_path.join(" / ")}",
       reminder_splits.map do |split|
         [
-          "    - register: #{split.register.parent_chain.reverse.map!(&:name).join(' / ')}",
+          "    - register: #{split.register.ancestry_path.join(" / ")}",
           "      amount:   #{split.amount}",
           "      memo:     #{split.memo}",
         ]

@@ -11,7 +11,7 @@ class CreateBookRoles < ActiveRecord::Migration[6.1]
       t.timestamps
       t.references :book, null: false, foreign_key: true
       t.references :user, null: false, foreign_key: true
-      t.enum :role, as: :book_role_name, null: false
+      t.enum :role, enum_type: :book_role_name, null: false
 
       t.index [:book_id, :user_id, :role], unique: true
     end

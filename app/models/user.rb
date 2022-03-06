@@ -13,14 +13,22 @@
 #  reset_password_token   :string           indexed
 #  reset_password_sent_at :datetime
 #  remember_created_at    :datetime
+#  last_book_id           :bigint           indexed
 #
 class User < ApplicationRecord
   devise :database_authenticatable, :recoverable, :rememberable, :registerable, :validatable # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
 
   has_many :books, dependent: :destroy, foreign_key: "owner_id", inverse_of: :owner
   has_many :book_roles, dependent: :destroy
+  has_many :accessible_books, through: :book_roles, source: :book
+
+  belongs_to :last_book, class_name: "Book", dependent: false, inverse_of: false, optional: true
 
   validates :email, presence: true
   validates :display_name, presence: true
   validates :encrypted_password, presence: true
+
+  def all_accessible_books
+    books.union(accessible_books)
+  end
 end

@@ -10,7 +10,7 @@ module Import::Moneydance::ExchangeImport
     ordered_md_transactions.each_with_index do |md_transaction, index|
       number = index + 1
       percent = (number.to_f / total * 100).floor
-      logger.info "[#{number}/#{total} (#{percent}%)] Importing transaction #{md_transaction['id']}"
+      logger.info "[#{number}/#{total} (#{percent}%)] Importing transaction #{md_transaction["id"]}"
       import_transaction(md_transaction)
     end
   end

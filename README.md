@@ -7,45 +7,45 @@
 ```bash
 bundle # installs ruby gems
 yarn install # installs the JavaScript packages
-rails db:create db:migrate # creates the database and loads the schema
-rails db:fixtures:load # (optional) creates demo data within the app
+bin/rails db:create db:migrate # creates the database and loads the schema
+bin/rails db:fixtures:load # (optional) creates demo data within the app
 ```
 
 Look in [`test/fixtures/users.yml`](test/fixtures/users.yml) for a list
 of development accounts loaded with the fixtures, to log in the application
 in development mode.
 
-### Start a development session
+### Start a Development Session
 
 #### Dependencies
 
-Keep this open in a terminal tab.
+This project works in development against the [nerdgeschoss](https://nerdgeschoss.de/)
+[Development Environment](https://github.com/nerdgeschoss/development-environment#nerdgeschoss-development-environment).
+
+#### Rails Development Server
+
+This uses the _Rails 7_ development server script.
 
 ```bash
-docker compose up # starts the dependencies (ex: Redis, PostgreSQL)
+bin/dev
 ```
 
-If the ports clash (ex: you have another project open using those ports), change
-the ports in the `.env` file and launch using this command instead.
+### Code Maintenance
+
+#### Annotations
+
+Annotate models after migrations through the _Rake_ task.
 
 ```bash
-docker compose up --env-file .env
+bin/rake annotate_models
 ```
 
-#### Rails Application
+#### Annotate Controllers
 
-Keep this open in a terminal tab.
-
-```bash
-rails serve
-```
-
-#### WebPack Development Server
-
-Keep this open in a terminal tab.
+Annotate controllers with their routes using the _chusaku_ command.
 
 ```bash
-bin/webpack-dev-server
+bin/chusaku
 ```
 
 ## Import
@@ -53,7 +53,7 @@ bin/webpack-dev-server
 ### Moneydance
 
 ```bash
-bundle rake data:import:md
+bin/rake data:import:md
 ```
 
 Options (via ENV):
@@ -69,11 +69,5 @@ Here's a useful command during development. It is faster than destroying the exi
 simply truncates all of the development database, seeds it with the test fixtures and imports.
 
 ```bash
-rake db:truncate_all db:seed db:fixtures:load data:import:md
+bin/rake db:truncate_all db:seed db:fixtures:load data:import:md
 ```
-
-## Development Notes
-
-### GEMS & Libs to consider
-
-https://viewcomponent.org/motivation.html
