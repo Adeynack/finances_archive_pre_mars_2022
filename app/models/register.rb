@@ -26,11 +26,11 @@
 #  card_number         :string
 #
 class Register < ApplicationRecord
-  include Classable
   include Currencyable
   include Taggable
   include Importable
   include AttributeStripping
+  using ClassRefinements
 
   belongs_to :book
   has_closure_tree order: :name
@@ -63,31 +63,5 @@ class Register < ApplicationRecord
   before_create do
     self.starts_at ||= Time.zone.today
     self.currency_iso_code ||= book.default_currency_iso_code
-  end
-
-  class << self
-    def all_sti_names
-      @all_sti_names ||= all_types.map(&:sti_name)
-    end
-
-    def all_types
-      @all_types ||= (account_types + category_types).freeze
-    end
-
-    def account_types
-      @account_types ||= find_descendant_from_files(Account).sort_by(&:sti_name).freeze
-    end
-
-    def category_types
-      @category_types ||= find_descendant_from_files(Category).sort_by(&:sti_name).freeze
-    end
-
-    def account_type_names
-      @account_type_names ||= account_types.map(&:sti_name).freeze
-    end
-
-    def category_type_names
-      @category_type_names ||= category_types.map(&:sti_name).freeze
-    end
   end
 end

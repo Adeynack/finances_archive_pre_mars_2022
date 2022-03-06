@@ -83,7 +83,6 @@ group :development, :test do
   gem "pry-rails"
   gem "pry-byebug"
   gem "pry-doc" # ruby/3.0.0 isn't supported by this pry-doc version
-  gem "pry-rescue"
   gem "pry-stack_explorer"
   gem "standard"
   gem "rubocop", require: false
@@ -92,7 +91,7 @@ group :development, :test do
   gem "annotate", github: "dabit/annotate_models", branch: "rails-7"
   gem "chusaku", require: false
   gem "i18n-tasks"
-  # gem "ruby_jard", git: "https://github.com/nguyenquangminh0711/ruby_jard"
+  gem "ruby_jard", git: "https://github.com/nguyenquangminh0711/ruby_jard"
   gem "bullet"
 end
 
